@@ -1,26 +1,11 @@
 from models.base import TimeStampedModel
-from models.molecules import Molecule
-from enum import Enum as eEnum
 from sqlalchemy.orm import validates
-
+from models.allowed_values import Solvents
+from helper_functions import validate_enum
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Float, Enum
 from sqlalchemy.orm import Relationship
 
-
-def validate_enum(value, enum_cls, field_name="unknown"):
-    if isinstance(value, enum_cls):
-        return value
-    try:
-        return enum_cls(value)
-    except ValueError:
-        allowed = [e.value for e in enum_cls]
-        raise ValueError(f"Ungültiger Wert '{value}' für {field_name}. Erlaubt: {allowed}")
-
-
-class Solvents(str, eEnum):
-    toluene = "toluene"
-    water = "water"
 
 
 class Measurement(TimeStampedModel):
