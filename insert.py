@@ -22,7 +22,8 @@ from main import session
 
 # new measurement
 mol1 = mol.Molecule.query.filter(mol.Molecule.name == "toluene").first()
-mol2 = mol.Molecule.query.filter(mol.Molecule.name == "PDI-TEMPO").first()
+mol2 = mol.Molecule.query.filter(mol.Molecule.name == "BDP-co-NO1").first()
+
 
 exp1 = ms.TREPR()
 exp1.temperature = 80
@@ -33,6 +34,7 @@ exp1.solvent = "water"
 
 session.add(exp1)
 
+"""
 exp2 = ms.TREPR()
 exp2.temperature = 80
 exp2.molecule = mol2
@@ -43,3 +45,4 @@ exp2.frequency = 9.75
 session.add(exp2)
 
 session.commit()
+"""

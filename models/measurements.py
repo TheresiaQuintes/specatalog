@@ -1,9 +1,9 @@
 from models.base import TimeStampedModel
 from sqlalchemy.orm import validates
-from models.allowed_values import Solvents
+from models.allowed_values import Solvents, Devices, FrequencyBands
 from helper_functions import validate_enum
 
-from sqlalchemy import Column, Integer, ForeignKey, String, Float, Enum
+from sqlalchemy import Column, Integer, ForeignKey, String, Float, Enum, Date, Text, Boolean
 from sqlalchemy.orm import Relationship
 
 
@@ -27,7 +27,23 @@ class Measurement(TimeStampedModel):
 
     # metadata
     temperature = Column(Float, nullable=False)
-    measurement_set = Column(String(60))
+    solvent = Column(Enum(Solvents), nullable=False)
+    concentration = Column(String(512))
+    date = Column(Date, nullable=False)
+    location = Column(String(512))
+    device = Column(Enum(Devices))
+    series = Column(String(512))
+    path = Column(Text, nullable=False, unique=True)
+    corrected = Column(Boolean, nullable=False)
+    evaluated = Column(Boolean, nullable=False)
+
+    @validates("solvent")
+    def validate_solvent(self, key, value):
+        return validate_enum(value, Solvents, key)
+
+    @validates("device")
+    def validate_device(self, key, value):
+        return validate_enum(value, Devices, key)
 
     def __repr__(self):
 
@@ -44,9 +60,14 @@ class TREPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "trepr",}
 
-    frequency = Column(Float, nullable=False)
+    frequency_band = Column(Enum(FrequencyBands), nullable=False)
     excitation_wl = Column(Float, nullable=False)
-    solvent = Column(Enum(Solvents))
-    @validates("solvent")
-    def validate_solvent(self, key, value):
-        return validate_enum(value, Solvents, key)
+    excitation_energy = Column(Float)
+    attenuation = Column(Float, nullable=False)
+    number_of_scans = Column(Integer)
+    repetitionrate = Column(Float)
+    mode = Column(String(256))
+
+    @validates("frequency_band")
+    def validate_frequency_band(self, key, value):
+        return validate_enum(value, FrequencyBands, key)

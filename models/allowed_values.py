@@ -5,6 +5,17 @@ class Solvents(str, eEnum):
     water = "water"
 
 
+class Devices(str, eEnum):
+    leer = ""
+    elexsys = "ELEXSYS"
+    emx_nano = "EMXnano"
+
+class FrequencyBands(str, eEnum):
+    s = "S"
+    x = "X"
+    q = "Q"
+    w = "W"
+
 class Chromophores(str, eEnum):
     bdp0 = "BDP0"
     bdp1 = "BDP1"
