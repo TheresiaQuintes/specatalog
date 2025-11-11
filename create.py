@@ -12,7 +12,7 @@ class MoleculeModel(BaseModel):
     molecular_formula: str
     structural_formula: str
     smiles: str
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
 class SingleMoleculeModel(MoleculeModel):
     model_class: Type=mol.Single
@@ -93,7 +93,7 @@ class MeasurementModel(BaseModel):
     corrected: bool
     evaluated: bool
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
 
 class CWEPRModel(MeasurementModel):
@@ -141,7 +141,6 @@ class PulseEPRModel(MeasurementModel):
 def create_new_measurement(data):
     molecule = mol.Molecule.query.filter(
         mol.Molecule.id == data.molecular_id).first()
-    print(type(molecule))
     if molecule is None:
         raise ValueError(f"Kein Molekül mit ID {data.molecular_id} gefunden.")
 

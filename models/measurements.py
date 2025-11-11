@@ -2,6 +2,8 @@ from models.base import TimeStampedModel
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean
 from sqlalchemy.orm import Relationship
+from sqlalchemy.sql.sqltypes import Enum as SAEnum
+from models.allowed_values import Devices, FrequencyBands, PulseExperiments, Solvents
 
 
 
@@ -24,11 +26,11 @@ class Measurement(TimeStampedModel):
 
     # metadata
     temperature = Column(Float, nullable=False)
-    solvent = Column(String(128), nullable=False)
+    solvent = Column(SAEnum(Solvents), nullable=False)
     concentration = Column(String(512))
     date = Column(Date, nullable=False)
     location = Column(String(512))
-    device = Column(String(128))
+    device = Column(SAEnum(Devices))
     series = Column(String(512))
     path = Column(Text, nullable=False, unique=True)
     corrected = Column(Boolean, nullable=False)
@@ -49,7 +51,7 @@ class TREPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "trepr",}
 
-    frequency_band = Column(String(32), nullable=False)
+    frequency_band = Column(SAEnum(FrequencyBands), nullable=False)
     excitation_wl = Column(Float, nullable=False)
     excitation_energy = Column(Float)
     attenuation = Column(Float, nullable=False)
@@ -67,7 +69,7 @@ class CWEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "cwepr",}
 
-    frequency_band = Column(String(32), nullable=False)
+    frequency_band = Column(SAEnum(FrequencyBands), nullable=False)
     attenuation = Column(Float, nullable=False)
 
 
@@ -80,7 +82,7 @@ class PulseEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "pulse_epr",}
 
-    pulse_experiment = Column(String(32), nullable=False)
-    frequency_band = Column(String(32))
+    pulse_experiment = Column(SAEnum(PulseExperiments), nullable=False)
+    frequency_band = Column(SAEnum(FrequencyBands))
 
     dsc_path = Column(Text, nullable=False, unique=True)

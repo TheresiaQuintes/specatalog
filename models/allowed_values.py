@@ -1,17 +1,18 @@
-from enum import Enum as eEnum
+from enum import Enum
 
-class Solvents(str, eEnum):
+class Solvents(str, Enum):
     toluene = "toluene"
     water = "water"
 
 
-class Devices(str, eEnum):
+class Devices(str, Enum):
     leer = ""
     elexsys = "ELEXSYS"
     emx_nano = "EMXnano"
+    ELEXSYS = "ELEXSYS"
 
 
-class FrequencyBands(str, eEnum):
+class FrequencyBands(str, Enum):
     leer = ""
     s = "S"
     x = "X"
@@ -19,14 +20,14 @@ class FrequencyBands(str, eEnum):
     w = "W"
 
 
-class PulseExperiments(str, eEnum):
+class PulseExperiments(str, Enum):
     peanut = "PEANUT"
     peldor = "PELDOR"
     tn = "TN"
     saturation_recovery = "SR"
 
 
-class Chromophores(str, eEnum):
+class Chromophores(str, Enum):
     bdp0 = "BDP0"
     bdp1 = "BDP1"
     ndi0 = "NDI0"
@@ -40,7 +41,7 @@ class Chromophores(str, eEnum):
     por2 = "POR2"
 
 
-class Doublets(str, eEnum):
+class Doublets(str, Enum):
     no1 = "NO1"
     no2 = "NO2"
     no3 = "NO3"
@@ -49,13 +50,13 @@ class Doublets(str, eEnum):
     tri = "TRI"
 
 
-class Linker(str, eEnum):
+class Linker(str, Enum):
     bi = "BI"
     co = "co"
     sup_h = "sup_H"
     xylene = "xy"
 
 
-class Radicals(str, eEnum):
+class Radicals(str, Enum):
     trp = "TRP"
     flav = "FLAV"
