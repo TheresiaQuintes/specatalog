@@ -1,8 +1,9 @@
 import helper_functions as hf
 import models.measurements as ms
 import models.molecules as mol
-from main import session
+from main import Session
 
+session = Session()
 
 # Filter models
 MeasurementFilter = hf.make_filter_model(ms.Measurement)

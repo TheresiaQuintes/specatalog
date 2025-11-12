@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 engine = alc.create_engine(f"sqlite:///{BASE_DIR}/spektro.db", echo=True)
 
 # initialise session and connect to engine
-session = orm.scoped_session(
+Session = orm.scoped_session(
     orm.sessionmaker(
         autoflush=False,
         autocommit=False,

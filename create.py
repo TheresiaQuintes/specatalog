@@ -1,12 +1,15 @@
 import models.measurements as ms
 import models.molecules as mol
-from main import session
+from main import Session
 from helper_functions import safe_commit
 import datetime
 from pydantic import BaseModel, Field, ConfigDict, field_validator, computed_field
 import models.allowed_values as av
 from typing import Optional
 from typing import Type
+
+session = Session()
+
 
 class MoleculeModel(BaseModel):
     molecular_formula: str
