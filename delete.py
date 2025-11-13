@@ -1,8 +1,19 @@
 from models.measurements import Measurement
 from models.molecules import Molecule
-from main import session
+from main import Session
+import helper_functions as hf
 
-ms = Measurement.query.filter(Measurement.id==1).first() # ID wird gelöscht, wird nicht neu vergeben = Lücken in ID-Liste können existieren. Wenn ID die letzte war, wird sie neu vergeben
+session = Session()
 
-session.delete(ms)
-session.commit()
+
+def delete_object(obj):
+    session.delete(obj)
+    hf.safe_commit(session)
+
+def delete_molecule(mol_id):
+    obj = Molecule.query.filter(Molecule.id==mol_id).first()
+    delete_object(obj)
+
+def delete_measurement(mes_id):
+    obj = Measurement.query.filter(Measurement.id==mes_id).first()
+    delete_object(obj)
