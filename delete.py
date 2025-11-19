@@ -1,7 +1,7 @@
 from models.measurements import Measurement
 from models.molecules import Molecule
 from main import Session
-import helper_functions as hf
+import helpers.helper_functions as hf
 
 session = Session()
 

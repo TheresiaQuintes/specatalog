@@ -1,4 +1,4 @@
-import helper_functions as hf
+import helpers.helper_functions as hf
 import models.measurements as ms
 import models.molecules as mol
 from main import Session

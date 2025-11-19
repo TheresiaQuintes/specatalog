@@ -1,6 +1,6 @@
 import models.molecules as mol
 from main import Session
-from helper_functions import safe_commit
+from helpers.helper_functions import safe_commit
 
 session = Session()
 
