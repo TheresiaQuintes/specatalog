@@ -2,7 +2,12 @@ from models.base import TimeStampedModel
 from sqlalchemy import Column, Integer, ForeignKey, String, Text
 from sqlalchemy.orm import Relationship
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
-from user.allowed_values import Chromophores, Doublets, Linker, Radicals
+
+from main import BASE_PATH
+import importlib.util
+spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
+av = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(av)
 
 
 class Molecule(TimeStampedModel):
@@ -48,9 +53,9 @@ class RP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "rp",}
 
-    radical_1 = Column(SAEnum(Radicals), nullable=False)
-    linker = Column(SAEnum(Linker), nullable=False)
-    radical_2 = Column(SAEnum(Radicals), nullable=False)
+    radical_1 = Column(SAEnum(av.Radicals), nullable=False)
+    linker = Column(SAEnum(av.Linker), nullable=False)
+    radical_2 = Column(SAEnum(av.Radicals), nullable=False)
 
 
 class TDP(Molecule):
@@ -61,9 +66,9 @@ class TDP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "tdp",}
 
-    doublet = Column(SAEnum(Doublets), nullable=False)
-    linker = Column(SAEnum(Linker), nullable=False)
-    chromophore = Column(SAEnum(Chromophores), nullable=False)
+    doublet = Column(SAEnum(av.Doublets), nullable=False)
+    linker = Column(SAEnum(av.Linker), nullable=False)
+    chromophore = Column(SAEnum(av.Chromophores), nullable=False)
 
 
 
@@ -75,6 +80,6 @@ class TTP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "ttp",}
 
-    triplet_1= Column(SAEnum(Chromophores), nullable=False)
-    linker = Column(SAEnum(Linker), nullable=False)
-    triplet_2 = Column(SAEnum(Chromophores), nullable=False)
+    triplet_1= Column(SAEnum(av.Chromophores), nullable=False)
+    linker = Column(SAEnum(av.Linker), nullable=False)
+    triplet_2 = Column(SAEnum(av.Chromophores), nullable=False)

@@ -14,7 +14,12 @@ def safe_commit(session):
         session.rollback()
         print("❌ Fehler beim Commit:", e)
 
-
+def safe_flush(session):
+    try:
+        session.flush()
+    except SQLAlchemyError as e:
+        session.rollback()
+        print("❌ Fehler beim Flush:", e)
 
 
 def make_filter_model(model: Type[DeclarativeMeta]) -> Type[BaseModel]:

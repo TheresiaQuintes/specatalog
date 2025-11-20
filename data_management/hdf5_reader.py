@@ -1,4 +1,6 @@
 import h5py
+from crud_db import read as r
+from main import BASE_PATH
 
 class H5Object:
     def __init__(self, h5node, writable=False, auto_flush=True):
@@ -101,3 +103,12 @@ def load_h5(filename, mode="r"):
     """
     f = h5py.File(filename, mode)
     return H5Object(f, writable=(mode != "r")), f
+
+
+def load_from_id(ms_id, mode="r"):
+    find_measurement = r.MeasurementFilter(id=ms_id)
+    m = r.run_query(find_measurement)[0]
+    data_path = BASE_PATH / m.path / f"measurement_M{m.id}.h5"
+    dat, file = load_h5(data_path, "a")
+
+    return dat, file

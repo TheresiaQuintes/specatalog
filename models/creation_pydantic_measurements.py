@@ -1,8 +1,13 @@
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from typing import Type, Optional
 import models.measurements as ms
-import user.allowed_values as av
 import datetime
+
+from main import BASE_PATH
+import importlib.util
+spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
+av = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(av)
 
 class MeasurementModel(BaseModel):
     molecular_id: int
@@ -14,9 +19,8 @@ class MeasurementModel(BaseModel):
     location: Optional[str]=None
     device: Optional[av.Devices]=None
     series: Optional[str]=None
-    path: str
-    corrected: bool
-    evaluated: bool
+    corrected: bool=False
+    evaluated: bool=False
 
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
@@ -30,7 +34,7 @@ class CWEPRModel(MeasurementModel):
         return v
 
     frequency_band: av.FrequencyBands
-    attenuation: float
+    attenuation: str
 
 
 class TREPRModel(MeasurementModel):
@@ -44,7 +48,7 @@ class TREPRModel(MeasurementModel):
     frequency_band: av.FrequencyBands
     excitation_wl: float
     excitation_energy: Optional[float]=None
-    attenuation: float
+    attenuation: str
     number_of_scans: Optional[int]=None
     repetitionrate: Optional[float]=None
     mode: Optional[str]=None
@@ -59,5 +63,6 @@ class PulseEPRModel(MeasurementModel):
         return v
 
     frequency_band: Optional[av.FrequencyBands]=None
-    dsc_path: str
+    attenuation: Optional[str]=None
+    excitation_wl: Optional[float]=None
     pulse_experiment: av.PulseExperiments

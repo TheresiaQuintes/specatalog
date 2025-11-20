@@ -3,7 +3,12 @@ from models.base import TimeStampedModel
 from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean
 from sqlalchemy.orm import Relationship
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
-from user.allowed_values import Devices, FrequencyBands, PulseExperiments, Solvents, Names
+
+from main import BASE_PATH
+import importlib.util
+spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
+av = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(av)
 
 
 
@@ -26,12 +31,12 @@ class Measurement(TimeStampedModel):
 
     # metadata
     temperature = Column(Float, nullable=False)
-    solvent = Column(SAEnum(Solvents), nullable=False)
+    solvent = Column(SAEnum(av.Solvents), nullable=False)
     concentration = Column(String(512))
     date = Column(Date, nullable=False)
-    measured_by = Column(SAEnum(Names), nullable=False)
+    measured_by = Column(SAEnum(av.Names), nullable=False)
     location = Column(String(512))
-    device = Column(SAEnum(Devices))
+    device = Column(SAEnum(av.Devices))
     series = Column(String(512))
     path = Column(Text, nullable=False, unique=True)
     corrected = Column(Boolean, nullable=False)
@@ -40,7 +45,7 @@ class Measurement(TimeStampedModel):
 
     def __repr__(self):
 
-        return f"({self.__class__.__name__}: {self.molecule.name}, {self.method}, {self.temperature} K)"
+        return f"(M{self.id}: {self.__class__.__name__}; {self.molecule.name})"
 
 
 
@@ -52,10 +57,10 @@ class TREPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "trepr",}
 
-    frequency_band = Column(SAEnum(FrequencyBands), nullable=False)
+    frequency_band = Column(SAEnum(av.FrequencyBands), nullable=False)
     excitation_wl = Column(Float, nullable=False)
     excitation_energy = Column(Float)
-    attenuation = Column(Float, nullable=False)
+    attenuation = Column(String(32), nullable=False)
     number_of_scans = Column(Integer)
     repetitionrate = Column(Float)
     mode = Column(String(128))
@@ -70,8 +75,8 @@ class CWEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "cwepr",}
 
-    frequency_band = Column(SAEnum(FrequencyBands), nullable=False)
-    attenuation = Column(Float, nullable=False)
+    frequency_band = Column(SAEnum(av.FrequencyBands), nullable=False)
+    attenuation = Column(String(32), nullable=False)
 
 
 
@@ -83,7 +88,7 @@ class PulseEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "pulse_epr",}
 
-    pulse_experiment = Column(SAEnum(PulseExperiments), nullable=False)
-    frequency_band = Column(SAEnum(FrequencyBands))
-
-    dsc_path = Column(Text, nullable=False, unique=True)
+    pulse_experiment = Column(SAEnum(av.PulseExperiments), nullable=False)
+    frequency_band = Column(SAEnum(av.FrequencyBands))
+    attenuation = Column(String(32))
+    excitation_wl = Column(Float)

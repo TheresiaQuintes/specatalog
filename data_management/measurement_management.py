@@ -1,8 +1,7 @@
 from pathlib import Path
 import h5py
 import shutil
-from load_bruker_bes3t import load
-
+from data_management.data_loader import load
 
 SUPPORTED_FORMATS = {
     "bruker_bes3t": {".dsc", ".dta"},
