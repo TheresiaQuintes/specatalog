@@ -10,7 +10,7 @@ SUPPORTED_FORMATS = {
 CATEGORIES = ["raw", "scripts", "figures", "additional_info", "literature"]
 
 def create_measurement_dir(base_dir, ms_id):
-    path = Path(base_dir) / f"M{ms_id}"
+    path = Path(base_dir) / "data" / f"M{ms_id}"
     if path.exists():
         raise FileExistsError(f"Measurement folder {path} already exists!")
 
@@ -30,7 +30,7 @@ def create_measurement_dir(base_dir, ms_id):
 
 def measurement_path (base_dir, ms_id):
     ms_id = f"M{ms_id}"
-    path = Path(base_dir) / ms_id
+    path = Path(base_dir) /"data"/ ms_id
     if not path.exists():
         raise FileNotFoundError(f"Measurement folder {path} does not exist!")
     return path
@@ -196,7 +196,7 @@ def delete_measurement(base_dir, ms_id, save_delete=True):
     return
 
 
-def list_files(base_dir, ms_id, category="", recursive=False):
+def list_files(base_dir, ms_id, category=""):
     if category != "":
         if category not in CATEGORIES:
             raise ValueError(f"Ungültige Kategorie '{category}'. Erlaubt: {CATEGORIES}")
