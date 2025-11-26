@@ -1,6 +1,8 @@
+""" Place functions for load data of a specific type here. Add new data-types
+to measurement_management.SUPPORTED_FORMATS."""
+
 """Code taken from the epyrtools project by BertainaS
  (https://github.com/BertainaS/epyrtools)"""
-
 
 import numpy as np
 from pathlib import Path
