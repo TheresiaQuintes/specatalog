@@ -1,17 +1,13 @@
+from sqlalchemy import inspect
+from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import SQLAlchemyError
-from typing import Any, Optional, Type, Literal, Iterable
-from pydantic import BaseModel, create_model, ConfigDict
-from sqlalchemy.orm import DeclarativeMeta, class_mapper
 import sqlalchemy.sql.sqltypes as Sqltypes
 from sqlalchemy.sql.sqltypes import String, Integer, Float, Boolean, Date, DateTime, Text
-from sqlalchemy import inspect
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
-import datetime
-from sqlalchemy.orm.session import Session
-from typing import get_origin, get_args, Union
+from pydantic import BaseModel, create_model, ConfigDict
+from typing import Any, Optional, Literal, get_origin, get_args, Union
 from models.base import TimeStampedModel
-
-
+import datetime
 
 def safe_commit(session: Session) -> bool:
     """
