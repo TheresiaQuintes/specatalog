@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # read information from user-defaults-file
-defaults_path = Path(__file__).resolve().parent / "user" / "defaults.json"
+defaults_path = Path(__file__).resolve().parent / ".." / "user" / "defaults.json"
 
 with open(defaults_path, "r") as f:
     defaults = json.load(f)

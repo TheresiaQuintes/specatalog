@@ -20,8 +20,8 @@ measurement = create.create_new_measurement(new_measurement)
 
 
 mm.create_measurement_dir(ms_path, measurement.id)
-mm.new_raw_data_to_folder(ms_path, measurement.id, raw_data, "bruker_bes3t")
-mm.new_raw_data_to_hdf5(ms_path, measurement.id)
+mm.raw_data_to_folder(raw_data, "bruker_bes3t", ms_path,  measurement.id)
+mm.raw_data_to_hdf5(ms_path, measurement.id)
 
 
 
@@ -41,8 +41,8 @@ measurement = create.create_new_measurement(new_measurement)
 
 
 mm.create_measurement_dir(ms_path, measurement.id)
-mm.new_raw_data_to_folder(ms_path, measurement.id, raw_data, "bruker_bes3t")
-mm.new_raw_data_to_hdf5(ms_path, measurement.id)
+mm.raw_data_to_folder(raw_data, "bruker_bes3t", ms_path,  measurement.id)
+mm.raw_data_to_hdf5(ms_path, measurement.id)
 
 
 # %%
@@ -60,5 +60,5 @@ measurement = create.create_new_measurement(new_measurement)
 
 
 mm.create_measurement_dir(ms_path, measurement.id)
-mm.new_raw_data_to_folder(ms_path, measurement.id, raw_data, "bruker_bes3t")
-mm.new_raw_data_to_hdf5(ms_path, measurement.id)
+mm.raw_data_to_folder(raw_data, "bruker_bes3t", ms_path,  measurement.id)
+mm.raw_data_to_hdf5(ms_path, measurement.id)

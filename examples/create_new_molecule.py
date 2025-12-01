@@ -9,7 +9,7 @@ structural_formula_src_pdf = "/home/quintes/NAS/Theresia/praesentationen/doktora
 
 structural_formula_src_cdxml = "/home/quintes/NAS/Theresia/praesentationen/doktorarbeit/Abbildungen/eigene/strukturformeln/PDI-H-TZ-eTEMPO.cdxml"
 
-new_molecule = mol.TDPModel(molecular_formula="get from chemdraw2",
+new_molecule = mol.TDPModel(molecular_formula="get from chemdraw3",
                             doublet = "NO4",
                             linker = "co",
                             chromophore = "PDI4"

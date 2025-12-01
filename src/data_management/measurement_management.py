@@ -243,10 +243,10 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
         if not raw_data_2.exists():
             raise FileNotFoundError(f"Raw data not found at {raw_data_2}!")
 
-        new_file_to_archive(raw_data_1, ms_id, "raw", base_dir, update=True)
-        new_file_to_archive(raw_data_2, ms_id, "raw", base_dir, update=True)
+        new_file_to_archive(raw_data_1, base_dir, ms_id, "raw", update=True)
+        new_file_to_archive(raw_data_2, base_dir, ms_id, "raw", update=True)
         if raw_data_3.exists():
-            new_file_to_archive(raw_data_3, ms_id, "raw", base_dir, update=True)
+            new_file_to_archive(raw_data_3, base_dir, ms_id, "raw", update=True)
 
     else:
         raise ValueError(f"Data type: {fmt} unknown!")
@@ -332,16 +332,16 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
         data, x, params = load(dsc[0].with_suffix(""), "DSC", "n")
 
         # write intensities to dataset
-        new_dataset_to_hdf5(hdf5_path, data, "raw_data", "data")
-        new_dataset_to_hdf5(hdf5_path, data.real, "raw_data", "data_real")
-        new_dataset_to_hdf5(hdf5_path, data.imag, "raw_data", "data_imag")
+        new_dataset_to_hdf5(data, hdf5_path, "raw_data", "data")
+        new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", "data_real")
+        new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", "data_imag")
 
         # write axes-data
         if type(x) == list:  # multiple axes
             for n in range(len(x)):
-                new_dataset_to_hdf5(hdf5_path, x[n], "raw_data", f"axis_{n}")
+                new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{n}")
         else:  # only one xaxis
-            new_dataset_to_hdf5(hdf5_path, x, "raw_data", "xaxis")
+            new_dataset_to_hdf5(x, hdf5_path, "raw_data", "xaxis")
 
         # add metadata from DSC-file as attributes
         with h5py.File(hdf5_path, "a") as f:
