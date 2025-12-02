@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 # read information from user-defaults-file
-defaults_path = Path(__file__).resolve().parent / ".." / "user" / "defaults.json"
+defaults_path = Path(__file__).resolve().parent / ".." / ".." / "user" / "defaults.json"
 
 with open(defaults_path, "r") as f:
     defaults = json.load(f)
@@ -16,7 +16,7 @@ MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")
 
 # initialise engine
-engine = alc.create_engine(f"sqlite:///{BASE_PATH}/spektro.db", echo=True)
+engine = alc.create_engine(f"sqlite:///{BASE_PATH}/specatalog.db", echo=True)
 
 # initialise session and connect to engine
 Session = orm.scoped_session(

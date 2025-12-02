@@ -1,8 +1,8 @@
-from models import creation_pydantic_molecules as mol
-from crud_db import create
+from specatalog.models import creation_pydantic_molecules as mol
+from specatalog.crud_db import create
 import shutil
 from pathlib import Path
-from main import BASE_PATH
+from specatalog.main import BASE_PATH
 
 # %%
 structural_formula_src_pdf = "/home/quintes/NAS/Theresia/praesentationen/doktorarbeit/Abbildungen/eigene/strukturformeln/PDI-H-TZ-eTEMPO.pdf"

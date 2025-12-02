@@ -4,7 +4,7 @@ import sqlalchemy as alc
 import sqlalchemy.orm as orm
 from sqlalchemy import event
 
-from main import Session
+from specatalog.main import Session
 
 
 Model = orm.declarative_base()

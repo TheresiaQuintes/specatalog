@@ -1,8 +1,8 @@
 from pydantic import BaseModel, ConfigDict, field_validator, computed_field
 from typing import Type, Optional
-import models.molecules as mol
+import specatalog.models.molecules as mol
 
-from main import BASE_PATH
+from specatalog.main import BASE_PATH
 import importlib.util
 spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
 av = importlib.util.module_from_spec(spec)

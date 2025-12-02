@@ -1,8 +1,8 @@
-from models import creation_pydantic_measurements as ms
+from specatalog.models import creation_pydantic_measurements as ms
 from datetime import date
-from crud_db import create
-import data_management.measurement_management as mm
-from main import  BASE_PATH
+from specatalog.crud_db import create
+import specatalog.data_management.measurement_management as mm
+from specatalog.main import  BASE_PATH
 
 ms_path = BASE_PATH
 

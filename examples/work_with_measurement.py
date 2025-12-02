@@ -1,4 +1,4 @@
-import data_management.hdf5_reader as hf
+import specatalog.data_management.hdf5_reader as hf
 import matplotlib.pyplot as plt
 import numpy as np
 from pathlib import Path

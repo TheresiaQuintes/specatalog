@@ -1,11 +1,11 @@
-import models.measurements as ms
-import models.molecules as mol
-from models.base import TimeStampedModel
+import specatalog.models.measurements as ms
+import specatalog.models.molecules as mol
+from specatalog.models.base import TimeStampedModel
 
-import helpers.helper_functions as hf
+import specatalog.helpers.helper_functions as hf
 from typing import Union
 
-from main import Session
+from specatalog.main import Session
 session = Session()
 
 # %%

@@ -1,9 +1,9 @@
-from models.measurements import Measurement
-from models.molecules import Molecule
-from models.base import TimeStampedModel
+from specatalog.models.measurements import Measurement
+from specatalog.models.molecules import Molecule
+from specatalog.models.base import TimeStampedModel
 
-import helpers.helper_functions as hf
-from main import Session
+import specatalog.helpers.helper_functions as hf
+from specatalog.main import Session
 session = Session()
 
 

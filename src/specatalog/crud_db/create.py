@@ -1,13 +1,13 @@
-import models.molecules as mol
+import specatalog.models.molecules as mol
 
 from typing import TypeVar
-from models.creation_pydantic_measurements import MeasurementModel
-from models.measurements import Measurement
-from models.creation_pydantic_molecules import MoleculeModel
-from models.molecules import Molecule
+from specatalog.models.creation_pydantic_measurements import MeasurementModel
+from specatalog.models.measurements import Measurement
+from specatalog.models.creation_pydantic_molecules import MoleculeModel
+from specatalog.models.molecules import Molecule
 
-from helpers.helper_functions import safe_commit, safe_flush
-from main import Session, MOLECULES_PATH, MEASUREMENTS_PATH
+from specatalog.helpers.helper_functions import safe_commit, safe_flush
+from specatalog.main import Session, MOLECULES_PATH, MEASUREMENTS_PATH
 session = Session()
 
 measurement_model_pyd = TypeVar(

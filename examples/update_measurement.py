@@ -1,5 +1,5 @@
-from crud_db import read as r
-from crud_db import update as up
+from specatalog.crud_db import read as r
+from specatalog.crud_db import update as up
 
 measurement = r.run_query(r.MeasurementFilter(id=1))[0]
 

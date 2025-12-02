@@ -1,6 +1,6 @@
-from crud_db import read as r
-from data_management import measurement_management as mm
-from main import BASE_PATH
+from specatalog.crud_db import read as r
+from specatalog.data_management import measurement_management as mm
+from specatalog.main import BASE_PATH
 
 find_measurement = r.MeasurementFilter(molecular_id=1, method__ilike="__epr")
 order = r.MeasurementOrdering(method="desc")

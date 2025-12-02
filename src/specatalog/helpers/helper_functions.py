@@ -6,7 +6,7 @@ from sqlalchemy.sql.sqltypes import String, Integer, Float, Boolean, Date, DateT
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
 from pydantic import BaseModel, create_model, ConfigDict
 from typing import Any, Optional, Literal, get_origin, get_args, Union
-from models.base import TimeStampedModel
+from specatalog.models.base import TimeStampedModel
 import datetime
 
 def safe_commit(session: Session) -> bool:
@@ -303,9 +303,9 @@ def make_update_model(model: TimeStampedModel) -> BaseModel:
 
     """
     # define fields that must not be updated
-    if model.__module__ == "models.measurements":
+    if model.__module__ == "specatalog.models.measurements":
         exclude_fields = ["id", "molecular_id", "method", "created_at", "updated_at"]
-    elif model.__module__ == "models.molecules":
+    elif model.__module__ == "specatalog.models.molecules":
         exclude_fields = ["id", "group", "created_at", "updated_at"]
     else:
         raise ValueError("Unknown model class")

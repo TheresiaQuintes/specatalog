@@ -1,9 +1,9 @@
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from typing import Type, Optional
-import models.measurements as ms
+import specatalog.models.measurements as ms
 import datetime
 
-from main import BASE_PATH
+from specatalog.main import BASE_PATH
 import importlib.util
 spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
 av = importlib.util.module_from_spec(spec)

@@ -1,7 +1,7 @@
 from pathlib import Path
 import h5py
 import shutil
-from data_management.data_loader import load
+from specatalog.data_management.data_loader import load
 import numpy as np
 
 
