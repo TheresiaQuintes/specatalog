@@ -7,7 +7,7 @@ from specatalog.main import  BASE_PATH
 ms_path = BASE_PATH
 
 raw_data = "/home/quintes/Downloads/pdihtzetempo/01_Q_Bsw_PDI-H-TZ-eTEMPO_tol_dark_9dB_VG12_n2h4_80K"
-new_measurement = ms.CWEPRModel(molecular_id=2,
+new_measurement = ms.CWEPRModel(molecular_id=1,
                                 temperature=80,
                                 solvent="toluene",
                                 date=date(2024, 3, 4),
@@ -47,7 +47,7 @@ mm.raw_data_to_hdf5(ms_path, measurement.id)
 
 # %%
 raw_data = "/home/quintes/Downloads/pdihtzetempo/26_Q_Esenut_PDI-H-TZ-eTEMPO_tol_530nm_05mJ_15dB_VG12_n3h4_80K_11880G"
-new_measurement = ms.PulseEPRModel(molecular_id=2,
+new_measurement = ms.PulseEPRModel(molecular_id=1,
                                 temperature=80,
                                 solvent="toluene",
                                 date=date(2024, 3, 5),
