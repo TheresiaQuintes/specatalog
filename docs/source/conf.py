@@ -63,7 +63,7 @@ latex_engine = "xelatex"
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-}
+
 html_codeblock_linenos_style = "table"
 html_css_files = [
     'custom.css',
