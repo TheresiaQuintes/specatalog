@@ -5,7 +5,7 @@ on:
     paths:
       - 'docs/**'   # nur triggern, wenn sich Docs ändern
     branches:
-      - main        # nur bei Änderungen auf main
+      - master        # nur bei Änderungen auf master
 
 jobs:
   build-and-deploy:
