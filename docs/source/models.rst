@@ -16,6 +16,8 @@ base
 
    TimeStampedModel
 
+.. _models-measurements:
+
 measurements
 ------------
 .. currentmodule:: specatalog.models.measurements
@@ -32,6 +34,8 @@ measurements
    PulseEPR
    
 
+.. _models-creation-pydantic-measurements:
+
 creation_pydantic_measurements
 ------------------------------
 .. currentmodule:: specatalog.models.creation_pydantic_measurements
@@ -46,7 +50,10 @@ creation_pydantic_measurements
    CWEPRModel
    TREPRModel
    PulseEPRModel
-   
+
+
+.. _models-molecules:
+
 molecules
 ---------
 .. currentmodule:: specatalog.models.molecules
@@ -62,6 +69,9 @@ molecules
    RP
    TDP
    TTP
+
+
+.. _models-creation-pydantic-molecules:
 
 creation_pydantic_molecules
 ---------------------------

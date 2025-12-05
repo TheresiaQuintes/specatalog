@@ -15,6 +15,9 @@ create
    create_new_measurement
    create_new_molecule
 
+
+.. _crud-db-read:
+
 read
 ----
 .. currentmodule:: specatalog.crud_db.read
@@ -24,6 +27,9 @@ read
    :recursive:
 
    run_query
+
+
+.. _crud-db-filtermodels:
 
 FilterModels
 ^^^^^^^^^^^^
@@ -44,6 +50,8 @@ FilterModels
    RPFilter
    TDPFilter
    TTPFilter
+
+.. _crud-db-orderingmodels:
 
 OrderingModels
 ^^^^^^^^^^^^^^
@@ -77,6 +85,8 @@ update
    update_model
    automatic_name_update
   
+.. _crud-db-updatemodels:
+
 UpdateModels
 ^^^^^^^^^^^^
 .. currentmodule:: specatalog.crud_db.update

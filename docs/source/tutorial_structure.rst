@@ -48,7 +48,7 @@ In the directory of a measurement the files are organised:
 - **additional_info/ :** save additional information like metadata
 - **literature/ :** save literature concerning the measurement here
 
-In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the HDF5Object from  the: :doc:`data_management` package.
+In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the :class:`HDF5Object <specatalog.data_management.hdf5_reader.H5Object>`.
 
 
 molecules/
@@ -61,10 +61,25 @@ This file is created, when the archive-directory is set up by specatalog for the
 
 specatalog.db
 ^^^^^^^^^^^^^
-This is the main database file, which is created when the archive directory is set up by specatalog for the first time
+This is the main database file, which is created when the archive directory is set up by specatalog for the first time.
 
 
 
 
 The database
 ------------
+
+The SQLite database is stored in the archive folder. It consists of two main tables *molecules* and *measurements*.
+
+.. note::
+
+   The database can be queried using the :ref:`crud-db-read` module. Additionally the file specatalog.db can be opened by any programm that is able to read SQLite databases (e.g. *DB Browser for SQLite*). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
+   
+
+molecules table
+^^^^^^^^^^^^^^^
+The table contains the main information on the molecules. Each molecule belongs to a subgroup with specific additional information included. For the fields of the molecule table see the documentation of the :ref:`models-molecules` module. Each molecule gets an unique ID which references the molecule folder in the archive.
+
+measurements table
+^^^^^^^^^^^^^^^^^^
+Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= epxerimental method, e.g. TREPR). In this addtional table metatdata that are specific to the method are stored. For detaild information on the fields of the table have a look at the documentation of the :ref:`models-measurements` module. Each measurement getas an unique ID which references the measurement directory in the archive (at `/data/M{ms_id}`). 
