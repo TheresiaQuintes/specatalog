@@ -3,6 +3,8 @@ Molecules
 
 The molecules table shall be filled with all molecules which have been measured. Therefore, the following tutorialpage focusses on the creation of molecule entries and the work with them.
 
+.. _tutorial-molecules-new-entry:
+
 Creation of a new entry
 -----------------------
 First of all a new entry shall be added to the molecules table.
@@ -24,10 +26,10 @@ As an example we will add anthracene and a covalently bonded pair of perylene an
 						     name="anthracene")
 						   
 		per_tempo = mol.TDPModel(molecular_formula="C29H30NO",
-				                 doublet = "NO1",     # name from allowed_values.py for TEMPO
-				                 linker = "co",       # name from allowed_values.py for a covalent bond
-				                 chromophore = "PER"  # name from allowed_values.py for perylene
-				                 )  
+					 doublet = "NO1",     # name from allowed_values.py for TEMPO
+					 linker = "co",       # name from allowed_values.py for a covalent bond
+					 chromophore = "PER"  # name from allowed_values.py for perylene
+					 )  
 	
 	The field ``molecular_formula`` is necessary in all cases. The other fields are dependent on the group. The name for a SingleMolecule is freely choosable but should be unique. For the molecules of the other groups (which are always composed of two components) the names for the components have to be from the lists in allowed values to assure consistency. You should name your compounds systematically and add the names to the ``allowed_values.py`` as described in :doc:`tutorial_allowed_values`. The name of the molecule is then automatically build from the names of the compounds.
 
