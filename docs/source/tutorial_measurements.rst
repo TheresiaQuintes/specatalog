@@ -71,6 +71,39 @@ First of all a new entry shall be added to the measurements table and the data-a
 	
 Query the database
 ------------------
+It is possible to filter the database for measurements with specific properties. This may become necessary in order to get an overview over the measurements that have been done or for finding out the ms_id of a specific measurement to work with. As an example we want to query the database for all trEPR measurements that have been done so far in frozen solution for the molecule with mol_id = 1 by you.
+
+1. Set up a filter model
+	
+	An empty filter model includes all possible fields. You can fill the model with your desired properties. All possible FilterModels and an explanation of their fields can be found :ref:`here <crud-db-filtermodels>`.::
+		
+		from specatalog.crud_db import read as r
+		
+		filter_model = r.TREPRFilter(molecular_id=1, temperature__le=80, measured_by="your name")
+
+2. (Optional) Set up an ordering model
+	
+	If you want to sort your results you can construct an :ref:`ordering model <crud-db-orderingmodels>`, where you can choose for each parameter if the list of results shall be ordered ascending (``"asc"``) or descending (``"descending"```). An OrderingModel is not required but in our example we sort the results with respect to the measurement data::
+		
+		ordering_model = r.TREPROrdering(date="asc")
+	
+
+3. Run the query using the function :func:`run_query <specatalog.crud_db.read.run_query>`.
+	
+	Now you can run the query and print the results. The printed results have the structure: (name of the data folder: method, name of the molecule)::
+		
+		results = r.run_query(filter_model, ordering_model)
+		
+		print(results)  # print the list with all results
+		>>> (M2: TREPR; PDI4-co-NO4)
+		
+		print(results[0].id)
+		>>> 2
+		
+		print(results[0].molecule.name
+		>>> PER-co-NO1
+	
+	The function returns a list of measurement objects. You cann call the values of the attributes like the ID or the molecule. The molecule is again an object where you can call all attributes.
 
 Update measurements
 -------------------

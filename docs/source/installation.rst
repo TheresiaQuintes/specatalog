@@ -15,10 +15,17 @@ Installation and Setup
 
       cd specatalog
 
-3. Optional but recommended: Create and activate a virtual environment::
+3. Optional but recommended: Create and activate a virtual environment
+
+- via python-venv::
 
       python -m venv ./.specatalog_venv
       source ./.specatalog_venv/bin/activate
+      
+- via anaconda::
+	  
+	  conda create -n specatalog_venv python=3.11
+	  conda activate specatalog_venv
  
 4. Install the package via pip::
 
