@@ -106,7 +106,7 @@ If you have to change information on molecules it is possible to update the data
 	Analoguos to the models for filtering :ref:`UpdateModels <crud-db-updatemodels>` exist. Each attribute of an object of the class UpdateModel can be set to a new attribute (of the correct type)::
 	
 		from specatalog.crud_db import update as up
-		update_mol_form = up.MoleculeUpdate(molecular_formula="corrected formula"
+		update_mol_form = up.MoleculeUpdate(molecular_formula="corrected formula")
 
 3. Update the database entry by using the function :func:`update_model <specatalog.crud_db.update.update_model>`.::
 	

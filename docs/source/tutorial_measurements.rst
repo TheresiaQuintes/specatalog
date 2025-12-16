@@ -108,6 +108,37 @@ It is possible to filter the database for measurements with specific properties.
 Update measurements
 -------------------
 
+If you have to change information on a measurement it is possible to update the database entries. As an example you have done some some analysis on your spectral data of the measurement with the ms_id=1 that you have saved in the archive folder. Now you can set the entry for evaluated to true in order to mark the dataset as evaluated.
+
+1. Load the measurement.
+	
+	We will load the entry with the ID=1 by querying the database for the measurement with id=1 and choosing the first (and only) result from the list.::
+	
+		from specatalog.crud_db import read as r
+		ms_1 = r.run_query(r.MeasurementFilter(id=1))[0]  
+
+2. Build an update filter
+	
+	Analoguos to the models for filtering :ref:`UpdateModels <crud-db-updatemodels>` exist. Each attribute of an object of the class UpdateModel can be set to a new attribute (of the correct type)::
+	
+		from specatalog.crud_db import update as up
+		update_evaluated = up.MeasurementUpdate(evaluated=True)
+
+3. Update the database entry by using the function :func:`update_model <specatalog.crud_db.update.update_model>`.::
+	
+	up.update_model(ms_1, update_evaluated)
+
 Delete measurements
 -------------------
 
+A measurement with the ID ms_id, can be easily deleted. Make sure to delete the database entry **and** the corresponding folder in the archive directory::
+
+	from specatalog.crud_db import delete as de
+	from specatalog.data_management import measurement_management as mm
+	from specatalog.main import BASE_PATH
+	
+	# deletion from database
+	de.delete_measurement(ms_id=14) 
+	
+	# deletion from directory
+	mm.delete_measurement(BASE_PATH, 14)
