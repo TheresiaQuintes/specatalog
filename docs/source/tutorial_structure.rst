@@ -48,7 +48,7 @@ In the directory of a measurement the files are organised:
 - **additional_info/ :** save additional information like metadata
 - **literature/ :** save literature concerning the measurement here
 
-In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the :class:`HDF5Object <specatalog.data_management.hdf5_reader.H5Object>`.
+In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the :class:`HDF5Object <specatalog.data_management.hdf5_reader.H5Object>` and in the Tutorial for the :doc:`tutorial_hdf5object`.
 
 
 molecules/
@@ -73,7 +73,7 @@ The SQLite database is stored in the archive folder. It consists of two main tab
 
 .. note::
 
-   The database can be queried using the :ref:`crud-db-read` module. Additionally the file specatalog.db can be opened by any programm that is able to read SQLite databases (e.g. *DB Browser for SQLite*). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
+   The database can be queried using the :ref:`crud-db-read` module. Additionally the file specatalog.db can be opened by any programm that is able to read SQLite databases (e.g. `DB Browser for SQLite <https://sqlitebrowser.org/>`_). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
    
 
 molecules table
