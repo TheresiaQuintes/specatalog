@@ -55,3 +55,9 @@ PostgreSQL (lokal)
 adapt in alembic.ini
 --------------------
 sqlalchemy.url = postgresql+psycopg2://admin:admin@localhost:5432/specatalog
+
+adapt in main
+-------------
+DATABASE_URL = (
+    f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@localhost:5432/specatalog"
+    )

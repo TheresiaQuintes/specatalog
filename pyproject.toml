@@ -32,5 +32,6 @@ specatalog = ["user/*.json"]
 
 [project.scripts]
 specatalog-welcome = "specatalog.cli:print_welcome"
+specatalog-configuration = "specatalog.cli:configure_db"
 specatalog-init-db = "specatalog.helpers.create_database:specatalog_init_db"
 specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"
