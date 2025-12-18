@@ -18,8 +18,21 @@ BASE_PATH = Path(defaults["base_path"]).resolve()
 MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")
 
-# initialise engine
-engine = alc.create_engine(f"sqlite:///{BASE_PATH}/specatalog.db", echo=True)
+# create database postgre
+USR_NAME = defaults["usr_name"]
+PASSWORD = defaults["password"]
+DATABASE_URL = (
+    f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@localhost:5432/specatalog"
+    )
+
+
+engine = alc.create_engine(
+    DATABASE_URL,
+    echo=True,
+    pool_size=10,
+    max_overflow=20,
+    pool_pre_ping=True
+)
 
 # initialise session and connect to engine
 Session = orm.scoped_session(
@@ -29,10 +42,3 @@ Session = orm.scoped_session(
         bind=engine
         )
     )
-
-# parameter fo the initalisation of new sqlite engines
-@alc.event.listens_for(alc.Engine, "connect")
-def set_sqlite_pragma(dbapi_connection, connection_record):
-    cursor = dbapi_connection.cursor()
-    cursor.execute("PRAGMA foreign_keys=ON")
-    cursor.close()

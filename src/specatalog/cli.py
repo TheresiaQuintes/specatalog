@@ -1,3 +1,7 @@
+from getpass import getpass
+from pathlib import Path
+import json
+
 def print_welcome():
     from specatalog.main import BASE_PATH
     print(f"""
@@ -6,3 +10,21 @@ def print_welcome():
           {BASE_PATH}\n
           Have fun!
           """)
+
+def configure_db():
+    user = input("Choose a username: ")
+    pw = getpass("Choose a password: ")
+    basepath = Path(input("Choose an absolute path for your archive base: "))
+    home_defaults = Path.home() / ".specatalog" / "defaults.json"
+    with home_defaults.open("r") as f:
+        cfg = json.load(f)
+    cfg["usr_name"] = user
+    cfg["password"] = pw
+    cfg["base_path"] = basepath
+
+    f.close()
+
+    with home_defaults.open("w") as f:
+        json.dump(cfg, f, indent=2)
+
+    f.close()

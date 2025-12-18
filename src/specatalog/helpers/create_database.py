@@ -2,6 +2,7 @@
 
 import sys
 from pathlib import Path
+import subprocess
 
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = (CURRENT_DIR / ".." / "..").resolve()
@@ -24,24 +25,33 @@ def create_archive_directory():
         return False
 
     try:
-        shutil.copy(CURRENT_DIR / "allowed_values_not_adapted.py", BASE_PATH / "allowed_values.py")
-        print(f"{BASE_PATH / 'allowed_values.py'} created.")
+        if not (BASE_PATH / "allowed_values.py").exists():
+            shutil.copy(CURRENT_DIR / "allowed_values_not_adapted.py",
+                        BASE_PATH / "allowed_values.py")
+            print(f"{BASE_PATH / 'allowed_values.py'} created.")
+        else:
+            print(f"{BASE_PATH / 'allowed_values.py'} exists.")
     except Exception as e:
         print(f"allowed_values.py could not be created: {e}.")
         return False
 
     return True
 
-def create_database():
-    # create database
+
+def run_alembic_upgrade():
+    """
+    Apply all migrations (initial schema)
+    """
     try:
-        from specatalog.main import engine, BASE_PATH
-        from specatalog.models.base import Model
-        Model.metadata.create_all(engine)
-        print(f"Database created at {BASE_PATH}")
+        subprocess.run(
+            ["alembic", "upgrade", "head"],
+            cwd=PROJECT_ROOT,
+            check=True
+        )
+        print("Database schema initialized via Alembic.")
         return True
-    except Exception as e:
-        print(f"Database could not be created: {e}.")
+    except subprocess.CalledProcessError as e:
+        print(f"Alembic failed: {e}")
         return False
 
 
@@ -52,7 +62,7 @@ def specatalog_init_db():
 
     if exist == "n":
         create_archive_directory()
-        create_database()
+        run_alembic_upgrade()
 
     else:
         print("No new archive created.")
