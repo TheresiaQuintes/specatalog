@@ -27,9 +27,7 @@ When using specatalog, your data are organised systematically in an archive dire
 	│   └── MOL{mol_id}/
 	│       ├── file_with_structure.cdxml
 	│       └── file_with_structure.pdf
-	│
-	├── allowed_values.py
-	└── specatalog.db
+	└── allowed_values.py
 
 
 base_dir/
@@ -59,21 +57,17 @@ allowed_values.py
 ^^^^^^^^^^^^^^^^^
 This file is created, when the archive-directory is set up by specatalog for the first time. It contains allowed values for several metadata, that are stored in the database. If it is necessary these lists of allowed values can be adapted. This is explained in detail in :doc:`tutorial_allowed_values`.
 
-specatalog.db
-^^^^^^^^^^^^^
-This is the main database file, which is created when the archive directory is set up by specatalog for the first time.
-
 
 
 
 The database
 ------------
 
-The SQLite database is stored in the archive folder. It consists of two main tables *molecules* and *measurements*.
+The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin and referenced in the code. After setup the database consists of two main tables *molecules* and *measurements*.
 
 .. note::
 
-   The database can be queried using the :ref:`crud-db-read` module. Additionally the file specatalog.db can be opened by any programm that is able to read SQLite databases (e.g. `DB Browser for SQLite <https://sqlitebrowser.org/>`_). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
+   The database can be queried using the :ref:`crud-db-read` module. Additionally the database can be opened by any programm that is able to read PostgreSQL databases (e.g. `DBeaver <https://dbeaver.com/docs/dbeaver/>`_). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
    
 
 molecules table

@@ -3,7 +3,7 @@ Installation and Setup
 
 .. admonition:: Requirements for installation
 
-   - Python3 installation
+   - Python 3.11 installation
    - pip
    - Open a terminal
 

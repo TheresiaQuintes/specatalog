@@ -8,6 +8,7 @@ PostgreSQL (lokal)
 ------------------
 
 ::
+
    sudo apt install postgresql
    sudo -u postgres psql
    
@@ -47,6 +48,9 @@ PostgreSQL (lokal)
    GRANT SELECT, INSERT, UPDATE, DELETE
    ON TABLES TO theresia;
 
+   GRANT USAGE, SELECT, UPDATE ON SEQUENCE molecules_id_seq TO theresia;
+   GRANT USAGE, SELECT, UPDATE ON SEQUENCE measurements_id_seq TO theresia;
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT, UPDATE ON SEQUENCES TO theresia;
 
    \q
 
