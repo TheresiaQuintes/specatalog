@@ -35,7 +35,9 @@ Installation and Setup
      
       specatalog-welcome
 
-6. Adapt the defaults file at: ``~/.specatalog/defaults.json`` and add the absoute path to the archive directory to ``base_path``. You can check the changes via ``specatalog-welcome``.
+6. Configure your database by defining a root-path for your archive folder and a username/password::
+
+	  specatalog-configuration
 
 
 7. Only if the archive directory and the database do **not** exist run::

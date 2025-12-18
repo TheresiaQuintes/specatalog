@@ -20,7 +20,7 @@ def configure_db():
         cfg = json.load(f)
     cfg["usr_name"] = user
     cfg["password"] = pw
-    cfg["base_path"] = basepath
+    cfg["base_path"] = str(basepath)
 
     f.close()
 

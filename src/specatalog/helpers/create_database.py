@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 
 CURRENT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = (CURRENT_DIR / ".." / "..").resolve()
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 # create archive directory
