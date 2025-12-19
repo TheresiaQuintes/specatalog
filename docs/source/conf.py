@@ -79,6 +79,7 @@ html_theme_options = {
     "navigation_with_keys": True,
 }
 
+
 # Autosummary-Einstellungen
 autosummary_generate = True      # <-- hier einfügen
 autodoc_typehints = "description"
