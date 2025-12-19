@@ -15,12 +15,14 @@ def configure_db():
     user = input("Choose a username: ")
     pw = getpass("Choose a password: ")
     basepath = Path(input("Choose an absolute path for your archive base: "))
+    database_url = input("Enter URL for the database (e.g.localhost:5432/specatalog: " or "localhost:5432/specatalog")
     home_defaults = Path.home() / ".specatalog" / "defaults.json"
     with home_defaults.open("r") as f:
         cfg = json.load(f)
     cfg["usr_name"] = user
     cfg["password"] = pw
     cfg["base_path"] = str(basepath)
+    cfg["database_url"] = str(database_url)
 
     f.close()
 

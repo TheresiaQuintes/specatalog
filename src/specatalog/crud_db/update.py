@@ -22,6 +22,7 @@ model_mapping_update = {
     "TREPRUpdate": ms.TREPR,
     "CWEPRUpdate": ms.CWEPR,
     "PulseEPRUpdate": ms.PulseEPR,
+    "UVVisUpdate": ms.UVVis,
     "MoleculeUpdate": mol.Molecule,
     "SingleMoleculeUpdate": mol.SingleMolecule,
     "RPUpdate": mol.RP,

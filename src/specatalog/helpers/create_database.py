@@ -3,6 +3,9 @@
 import sys
 from pathlib import Path
 import subprocess
+from alembic.config import Config
+from alembic import command
+from specatalog.main import DATABASE_URL_ADMIN
 
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -42,17 +45,11 @@ def run_alembic_upgrade():
     """
     Apply all migrations (initial schema)
     """
-    try:
-        subprocess.run(
-            ["alembic", "upgrade", "head"],
-            cwd=PROJECT_ROOT,
-            check=True
-        )
-        print("Database schema initialized via Alembic.")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"Alembic failed: {e}")
-        return False
+    alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
+    alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
+    command.upgrade(alembic_cfg, "head")
+    print("Database is up to date.")
+    return
 
 
 

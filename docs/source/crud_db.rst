@@ -45,6 +45,7 @@ FilterModels
    CWEPRFilter
    TREPRFilter
    PulseEPRFilter
+   UVVisFilter
    MoleculeFilter
    SingleMoleculeFilter
    RPFilter
@@ -67,6 +68,7 @@ OrderingModels
    CWEPROrdering
    TREPROrdering
    PulseEPROrdering
+   UVVisOrdering
    MoleculeOrdering
    SingleMoleculeOrdering
    RPOrdering
@@ -101,6 +103,7 @@ UpdateModels
    CWEPRUpdate
    TREPRUpdate
    PulseEPRUpdate
+   UVVisUpdate
    MoleculeUpdate
    SingleMoleculeUpdate
    RPUpdate

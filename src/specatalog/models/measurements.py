@@ -384,3 +384,70 @@ class PulseEPR(Measurement):
     frequency_band = Column(SAEnum(av.FrequencyBands))
     attenuation = Column(String(32))
     excitation_wl = Column(Float)
+
+
+class UVVis(Measurement):
+    """
+    UVvis  measurement.
+
+    This subclass of :class:`Measurement` represents an UVvis experiment.
+    This model adds the UVvis-specific parameter dim_cuvette.
+
+    The model participates in SQLAlchemy polymorphism using the
+    ``"uvvis"`` ``polymorphic_identity``. Any row in ``measurements`` where
+    ``method='uvvis'`` is therefore automatically loaded as a
+    :class:`UVVis` instance.
+
+    Attributes
+    ----------
+    id : int
+        Primary key linked to ``measurements.id`` with cascading delete.
+    dim_cuvette: str
+        Dimension of the cuvette.
+
+    Notes
+    -----
+    * The tablename is ``uvvis``.
+    * All shared measurement metadata (temperature, solvent, operator,
+      timestamps, file path, etc.) are inherited from :class:`Measurement`.
+    * The ``id`` corresponds directly to the entry in the main
+      ``measurements`` table via single-table inheritance.
+
+    Examples
+    --------
+    Creating a UVvis measurement:
+
+    >>> from models import UVVis, Molecule
+    >>> mol = Molecule(name="PDI-TEMPO")
+    >>> m = PulseEPR(
+    ...     molecule=mol,
+    ...     method="uvvis",
+    ...     temperature=298,
+    ...     solvent="Toluene",
+    ...     date=date(2025, 4, 12),
+    ...     measured_by="Bob",
+    ...     path="/data/M21/measurement_M21.h5",
+    ...     corrected=False,
+    ...     evaluated=False,
+    ...     dim_cuvette = "1cm"
+    ... )
+    >>> session.add(m)
+    >>> session.commit()
+
+    Loading via polymorphism:
+
+    >>> m = session.query(Measurement).filter_by(id=21).one()
+    >>> type(m)
+    <class 'models.UVVis'>
+    """
+
+
+    __tablename__ = "uvvis"
+
+    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
+                primary_key=True)
+
+    __mapper_args__ = {"polymorphic_identity": "uvvis",}
+
+
+    dim_cuvette = Column(String(64), nullable=False)

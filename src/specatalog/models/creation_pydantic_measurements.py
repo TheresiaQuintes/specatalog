@@ -195,3 +195,37 @@ class PulseEPRModel(MeasurementModel):
     attenuation: Optional[str]=None
     excitation_wl: Optional[float]=None
     pulse_experiment: av.PulseExperiments
+
+
+class UVVisModel(MeasurementModel):
+    """
+    Pydantic model for creating new :class:`ms.UVVis` measurements.
+
+    This subclass of :class:`MeasurementModel` adds UVvis-specific fields
+    required to create a UVvis-measurement in the database.
+    The ``measurement_class`` attribute is fixed to :class:`ms.UVVis` and
+    cannot be changed.
+
+    Attributes
+    ----------
+    measurement_class : Type
+        Always set to :class:`ms.UVVis`. Attempting to assign a different
+        class raises a validation error.
+    dim_cuvette : str
+        Dimension of the cuvette.
+
+    Notes
+    -----
+    * Additional fields are forbidden (``extra='forbid'``).
+    * Assignment is validated on set (``validate_assignment=True``).
+    * All further attributes are inherited from :class:`MeasurementModel`.
+
+    """
+    measurement_class: Type=ms.UVVis
+    @field_validator("measurement_class")
+    def check_grp(cls, v):
+        if v is not ms.UVVis:
+            raise ValueError("measurement_class must not be changed.")
+        return v
+
+    dim_cuvette: str

@@ -32,6 +32,7 @@ measurements
    CWEPR
    TREPR
    PulseEPR
+   UVVis
    
 
 .. _models-creation-pydantic-measurements:
@@ -50,6 +51,7 @@ creation_pydantic_measurements
    CWEPRModel
    TREPRModel
    PulseEPRModel
+   UVVisModel
 
 
 .. _models-molecules:

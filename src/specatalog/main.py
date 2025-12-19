@@ -12,6 +12,7 @@ if not home_defaults.exists():
 
 with home_defaults.open("r") as f:
     defaults = json.load(f)
+f.close()
 
 # set path defintions
 BASE_PATH = Path(defaults["base_path"]).resolve()
@@ -21,13 +22,17 @@ MOLECULES_PATH = Path("molecules")
 # create database postgre
 USR_NAME = defaults["usr_name"]
 PASSWORD = defaults["password"]
-DATABASE_URL = (
-    f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@localhost:5432/specatalog"
+database = defaults["database_url"]
+DATABASE_URL_USR = (
+    f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@{database}"
+    )
+DATABASE_URL_ADMIN = (
+    f"postgresql+psycopg2://specatalog_admin:administration_of_specatalog@{database}"
     )
 
 
 engine = alc.create_engine(
-    DATABASE_URL,
+    DATABASE_URL_USR,
     echo=True,
     pool_size=10,
     max_overflow=20,
