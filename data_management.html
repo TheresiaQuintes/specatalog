@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>data_management &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/data_management.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="create_measurement_dir" href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html" />
+    <link rel="prev" title="TTPModel" href="generated/specatalog.models.creation_pydantic_molecules.TTPModel.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">data_management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#measurement-management">measurement_management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html">create_measurement_dir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_file_to_archive.html">new_file_to_archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_dataset_to_hdf5.html">new_dataset_to_hdf5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_folder.html">raw_data_to_folder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html">raw_data_to_hdf5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html">delete_element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html">delete_measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html">list_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html">measurement_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.detect_supported_format.html">detect_supported_format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#hdf5-reader">hdf5_reader</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_h5.html">load_h5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html">load_from_id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html">H5Object</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">data_management</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/data_management.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="generated/specatalog.models.creation_pydantic_molecules.TTPModel.html" class="btn btn-neutral float-left" title="TTPModel" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html" class="btn btn-neutral float-right" title="create_measurement_dir" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-management">
+<h1>data_management<a class="headerlink" href="#data-management" title="Link to this heading"></a></h1>
+<p>The package data_management provides modules for the interaction with the datafiles stored in the archive. The module measurement_management provides CRUD-Functions for the archive, while the hdf5_reader module can be used for reading and updating the measurement.h5-files.</p>
+<section id="measurement-management">
+<span id="data-management-measurement-management"></span><h2>measurement_management<a class="headerlink" href="#measurement-management" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html#specatalog.data_management.measurement_management.create_measurement_dir" title="specatalog.data_management.measurement_management.create_measurement_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_measurement_dir</span></code></a>(base_dir, ms_id)</p></td>
+<td><p>Create a new directory for a single measurement with the measurement-ID ms_id in the folder of the archive (base_dir).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_file_to_archive.html#specatalog.data_management.measurement_management.new_file_to_archive" title="specatalog.data_management.measurement_management.new_file_to_archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_file_to_archive</span></code></a>(src, base_dir, ms_id, ...)</p></td>
+<td><p>Copy a file to the archive.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_dataset_to_hdf5.html#specatalog.data_management.measurement_management.new_dataset_to_hdf5" title="specatalog.data_management.measurement_management.new_dataset_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_dataset_to_hdf5</span></code></a>(data, hdf5_path, ...)</p></td>
+<td><p>Write a new dataset to a hdf5-file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_folder.html#specatalog.data_management.measurement_management.raw_data_to_folder" title="specatalog.data_management.measurement_management.raw_data_to_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_folder</span></code></a>(raw_data_path, fmt, ...)</p></td>
+<td><p>Copy raw datafiles to the archive.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5" title="specatalog.data_management.measurement_management.raw_data_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code></a>(base_dir, ms_id)</p></td>
+<td><p>Write the data from the raw data datafiles in the archive at &lt;base_dir&gt;/data/M&lt;ms_id&gt;/raw/ to the hdf5-file &lt;base_dir&gt;/data/M&lt;ms_id&gt;/measurement.h5</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element" title="specatalog.data_management.measurement_management.delete_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_element</span></code></a>(base_dir, ms_id, category, ...)</p></td>
+<td><p>Delete a file from the archive.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html#specatalog.data_management.measurement_management.delete_measurement" title="specatalog.data_management.measurement_management.delete_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_measurement</span></code></a>(base_dir, ms_id[, ...])</p></td>
+<td><p>Delete a whole measurement directory from the archive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html#specatalog.data_management.measurement_management.list_files" title="specatalog.data_management.measurement_management.list_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_files</span></code></a>(base_dir, ms_id[, category])</p></td>
+<td><p>List all files in a single measurement directory with the ID ms_id and all subdirectorys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html#specatalog.data_management.measurement_management.measurement_path" title="specatalog.data_management.measurement_management.measurement_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurement_path</span></code></a>(base_dir, ms_id)</p></td>
+<td><p>Create the absolute path to a measurement folder with the ID ms_id.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.detect_supported_format.html#specatalog.data_management.measurement_management.detect_supported_format" title="specatalog.data_management.measurement_management.detect_supported_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect_supported_format</span></code></a>(folder)</p></td>
+<td><p>Extract the format of a set of files from the suffixes of these files.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hdf5-reader">
+<h2>hdf5_reader<a class="headerlink" href="#hdf5-reader" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_h5.html#specatalog.data_management.hdf5_reader.load_h5" title="specatalog.data_management.hdf5_reader.load_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_h5</span></code></a>(filename[, mode])</p></td>
+<td><p>Load a hdf5-file as a H5Object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id" title="specatalog.data_management.hdf5_reader.load_from_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_id</span></code></a>(ms_id[, mode])</p></td>
+<td><p>Load a hdf5-measurement-file from the archive as a H5Object.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H5Object</span></code></a>(h5node[, writable, auto_flush])</p></td>
+<td><p>Represents a hdf5-file with its internal structure and all attributes/ datasets as a python object.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generated/specatalog.models.creation_pydantic_molecules.TTPModel.html" class="btn btn-neutral float-left" title="TTPModel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html" class="btn btn-neutral float-right" title="create_measurement_dir" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

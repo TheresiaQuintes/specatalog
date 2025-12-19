@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database administration &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/admin_database.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adding new models" href="admin_new_models.html" />
+    <link rel="prev" title="make_update_model" href="generated/specatalog.helpers.helper_functions.make_update_model.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database administration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#postgresql-lokal">PostgreSQL (lokal)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adapt-in-alembic-ini">adapt in alembic.ini</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adapt-in-main">adapt in main</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Database administration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/admin_database.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="generated/specatalog.helpers.helper_functions.make_update_model.html" class="btn btn-neutral float-left" title="make_update_model" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin_new_models.html" class="btn btn-neutral float-right" title="Adding new models" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-administration">
+<h1>Database administration<a class="headerlink" href="#database-administration" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>allowed_values nur admin hat schreibrechte?</p></li>
+</ul>
+<section id="postgresql-lokal">
+<h2>PostgreSQL (lokal)<a class="headerlink" href="#postgresql-lokal" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span> <span class="n">install</span> <span class="n">postgresql</span>
+<span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span>
+
+<span class="n">CREATE</span> <span class="n">ROLE</span> <span class="n">specatalog_admin</span>
+  <span class="n">WITH</span>
+    <span class="n">LOGIN</span>
+    <span class="n">PASSWORD</span> <span class="s1">&#39;administration_of_specatalog&#39;</span>
+    <span class="n">CREATEDB</span>
+    <span class="n">CREATEROLE</span><span class="p">;</span>
+
+
+<span class="n">CREATE</span> <span class="n">DATABASE</span> <span class="n">specatalog</span>
+  <span class="n">OWNER</span> <span class="n">specatalog_admin</span>
+  <span class="n">ENCODING</span> <span class="s1">&#39;UTF8&#39;</span><span class="p">;</span>
+
+\<span class="n">c</span> <span class="n">specatalog</span>
+
+<span class="n">ALTER</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">OWNER</span> <span class="n">TO</span> <span class="n">specatalog_admin</span><span class="p">;</span>
+<span class="n">GRANT</span> <span class="n">USAGE</span><span class="p">,</span> <span class="n">CREATE</span> <span class="n">ON</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">specatalog_admin</span><span class="p">;</span>
+
+<span class="n">REVOKE</span> <span class="n">ALL</span> <span class="n">ON</span> <span class="n">DATABASE</span> <span class="n">specatalog</span> <span class="n">FROM</span> <span class="n">PUBLIC</span><span class="p">;</span>
+<span class="n">REVOKE</span> <span class="n">CREATE</span> <span class="n">ON</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">FROM</span> <span class="n">PUBLIC</span><span class="p">;</span>
+
+
+<span class="n">CREATE</span> <span class="n">ROLE</span> <span class="n">theresia</span>
+  <span class="n">WITH</span>
+    <span class="n">LOGIN</span>
+    <span class="n">PASSWORD</span> <span class="s1">&#39;th_pwd&#39;</span><span class="p">;</span>
+
+<span class="n">GRANT</span> <span class="n">USAGE</span> <span class="n">ON</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+
+<span class="n">GRANT</span> <span class="n">SELECT</span><span class="p">,</span> <span class="n">INSERT</span><span class="p">,</span> <span class="n">UPDATE</span><span class="p">,</span> <span class="n">DELETE</span>
+<span class="n">ON</span> <span class="n">ALL</span> <span class="n">TABLES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span>
+<span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+
+<span class="n">ALTER</span> <span class="n">DEFAULT</span> <span class="n">PRIVILEGES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span>
+<span class="n">GRANT</span> <span class="n">SELECT</span><span class="p">,</span> <span class="n">INSERT</span><span class="p">,</span> <span class="n">UPDATE</span><span class="p">,</span> <span class="n">DELETE</span>
+<span class="n">ON</span> <span class="n">TABLES</span> <span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+
+<span class="n">GRANT</span> <span class="n">USAGE</span><span class="p">,</span> <span class="n">SELECT</span><span class="p">,</span> <span class="n">UPDATE</span> <span class="n">ON</span> <span class="n">SEQUENCE</span> <span class="n">molecules_id_seq</span> <span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+<span class="n">GRANT</span> <span class="n">USAGE</span><span class="p">,</span> <span class="n">SELECT</span><span class="p">,</span> <span class="n">UPDATE</span> <span class="n">ON</span> <span class="n">SEQUENCE</span> <span class="n">measurements_id_seq</span> <span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+<span class="n">ALTER</span> <span class="n">DEFAULT</span> <span class="n">PRIVILEGES</span> <span class="n">IN</span> <span class="n">SCHEMA</span> <span class="n">public</span> <span class="n">GRANT</span> <span class="n">USAGE</span><span class="p">,</span> <span class="n">SELECT</span><span class="p">,</span> <span class="n">UPDATE</span> <span class="n">ON</span> <span class="n">SEQUENCES</span> <span class="n">TO</span> <span class="n">theresia</span><span class="p">;</span>
+
+\<span class="n">q</span>
+</pre></div>
+</div>
+</section>
+<section id="adapt-in-alembic-ini">
+<h2>adapt in alembic.ini<a class="headerlink" href="#adapt-in-alembic-ini" title="Link to this heading"></a></h2>
+<p>sqlalchemy.url = postgresql+psycopg2://admin:admin&#64;localhost:5432/specatalog</p>
+</section>
+<section id="adapt-in-main">
+<h2>adapt in main<a class="headerlink" href="#adapt-in-main" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>DATABASE_URL = (</dt><dd><p>f”postgresql+psycopg2://{USR_NAME}:{PASSWORD}&#64;localhost:5432/specatalog”
+)</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generated/specatalog.helpers.helper_functions.make_update_model.html" class="btn btn-neutral float-left" title="make_update_model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="admin_new_models.html" class="btn btn-neutral float-right" title="Adding new models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

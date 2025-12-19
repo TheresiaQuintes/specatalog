@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allowed values &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_allowed_values.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="main" href="main.html" />
+    <link rel="prev" title="Measurement.h5 file" href="tutorial_hdf5object.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Allowed values</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_allowed_values.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="tutorial_hdf5object.html" class="btn btn-neutral float-left" title="Measurement.h5 file" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="allowed-values">
+<h1>Allowed values<a class="headerlink" href="#allowed-values" title="Link to this heading"></a></h1>
+<p>In the root folder of the archive directory the file <code class="docutils literal notranslate"><span class="pre">allowed_values.py</span></code> is created. This file creates classes that generate the permitted values for specific columns in the database in order to keep them consistent and enable searchability for specific terms.
+For example, uniform abbreviations should always be used for chromophores, or water as a solvent should always be referred to as “water” and not “H20”.</p>
+<p>This file is placed in the root of the archive directory in order to make it available to all users. The file should be adapted once by the admin in the beginning to set the initial values. Later all members of the team may add allowed values to the classes (if this shall be not allowed change the os-writing permissions so that only the admin has the permission an the rest of the team can only read the file) . For example, a new chormophore is measured or a new solvent is used.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Existing values should never be deleted or changed, as this would result in inconsistencies in the database!</p>
+</div>
+<p>The syntax of a class is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ClassName</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+        <span class="n">allowed_value_1</span> <span class="o">=</span> <span class="s2">&quot;allowed_value_1&quot;</span>
+        <span class="n">allowed_value_2</span> <span class="o">=</span> <span class="s2">&quot;allowed_value_2&quot;</span>
+        <span class="n">allowed_value_n</span> <span class="o">=</span> <span class="s2">&quot;allowed_value_n&quot;</span>
+</pre></div>
+</div>
+<p>The string name is the value that can be added to the database as an attribute.</p>
+<p>The following classes exist:</p>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Allowed values classes</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 23.1%" />
+<col style="width: 76.9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class</p></th>
+<th class="head"><p>Used for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Names</p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">measured_by</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">Measurement</span></code> class.</dt><dd><p>Add the names of your team.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Solvents</p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">solvent</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">Measurement</span></code> class.</dt><dd><p>Add all solvents used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p>Devices</p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">device</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">Measurement</span></code> class.</dt><dd><p>Add abbreviations for your measuring devices.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p>FrequencBands</p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">frequency_band</span></code> attribute in all <code class="docutils literal notranslate"><span class="pre">EPR</span></code> classes.</dt><dd><p>Add the letter of the frequency band used.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p>PulseExperiments</p></td>
+<td><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">pulse_experiment</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">PulseEPR</span></code> class.</dt><dd><p>Add abbreviations for the names of pulse experiments.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Chromophores</p></td>
+<td><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">chromophore</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">TDP</span></code> and <code class="docutils literal notranslate"><span class="pre">TTP</span></code> classes.</dt><dd><p>Add a systematic nomenclature for the chromophores of the molecules</p>
+<p>in your measurements.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p>Doublets</p></td>
+<td><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">doublet</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">TDP</span></code> class.</dt><dd><p>Add a systematic nomenclature for the doublets of the molecules</p>
+<p>in your measurements.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Linker</p></td>
+<td><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">linker</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">TDP</span></code>, <code class="docutils literal notranslate"><span class="pre">TTP</span></code> and <code class="docutils literal notranslate"><span class="pre">RP</span></code> classes.</dt><dd><p>Add a systematic nomenclature for the linkers of the molecules</p>
+<p>in your measurements. You may also define “linker” names for</p>
+<p>molecules that are covalently linked without a linker,</p>
+<p>or that are linked by supramolecular interactions.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td><p>Radicals</p></td>
+<td><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">radical</span></code> attribute in the <code class="docutils literal notranslate"><span class="pre">RP</span></code> class.</dt><dd><p>Add a systematic nomenclature for the radicals of the molecules</p>
+<p>in your measurements.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_hdf5object.html" class="btn btn-neutral float-left" title="Measurement.h5 file" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

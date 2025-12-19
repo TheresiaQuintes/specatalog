@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Measurement.h5 file &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_hdf5object.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Allowed values" href="tutorial_allowed_values.html" />
+    <link rel="prev" title="Measurements" href="tutorial_measurements.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Measurement.h5 file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hdf5object">HDF5Object</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#open">open</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update">update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#delete">delete</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sync-and-close">sync and close</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Measurement.h5 file</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_hdf5object.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="tutorial_measurements.html" class="btn btn-neutral float-left" title="Measurements" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-right" title="Allowed values" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="measurement-h5-file">
+<h1>Measurement.h5 file<a class="headerlink" href="#measurement-h5-file" title="Link to this heading"></a></h1>
+<p>To enable clean archiving of the processing and analysis of raw data, a measurement_{ms_id}.h5 file is created for each measurement. The file has the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>measurement_{ms_id}.h5
+├── raw_data
+│   ├── data
+│   ├── data_imag
+│   ├── data_real
+│   └── xaxis
+├── corrected_data
+│   └── &lt;can be added&gt;
+└── evaluations
+    └── &lt;can be added&gt;
+</pre></div>
+</div>
+<p>When a new measurement is created using the <code class="docutils literal notranslate"><span class="pre">data_management</span></code>-package, the file is automatically created and the raw data are added to the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code>-group. When you work with the data and correct them or do analysis, like fitting, it is advised to add the results to the groups of the measurement.h5-file, so that they are systematically archived.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>As the file is a HDF5-file, it can be inspected by any reader for HDF5-files e.g. the online tool <a class="reference external" href="https://myhdf5.hdfgroup.org/">myHDF5</a>. The data can be loaded to python by the <a class="reference external" href="https://docs.h5py.org/en/stable/">h5py package</a> and to matlab using the <a class="reference external" href="https://de.mathworks.com/help/matlab/import_export/import-hdf5-files.html">HDF5 Functions</a>.</p>
+</div>
+<p>For easy interactions with the HDF5-file in python specatalog provides the <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a>. In the following, the usage of this class is explained.</p>
+<section id="hdf5object">
+<h2>HDF5Object<a class="headerlink" href="#hdf5object" title="Link to this heading"></a></h2>
+<section id="open">
+<h3>open<a class="headerlink" href="#open" title="Link to this heading"></a></h3>
+<p>It is possible to load the data to an HDF5Object by using the function <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id" title="specatalog.data_management.hdf5_reader.load_from_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_from_id</span></code></a>. All datasets are attributes to the data-object and can be easilly called as shown in the example below. Set the optional argument <code class="docutils literal notranslate"><span class="pre">mode</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> if you want to change the contens of the file and to <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> if you only want to read the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.data_management.hdf5_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_id</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">dat</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
+<span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">data</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">intensity</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="update">
+<h3>update<a class="headerlink" href="#update" title="Link to this heading"></a></h3>
+<p>If you have new data and want to add them or want to update existing attributes you can use the <code class="docutils literal notranslate"><span class="pre">set_attr</span></code> method for attributes (= numbers / strings) and the <code class="docutils literal notranslate"><span class="pre">set_dataset</span></code> method for datasets (= arrays):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">offset</span> <span class="o">=</span> <span class="mf">2.3</span>
+<span class="n">corrected</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span>
+<span class="n">fit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">12000</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2500</span>
+
+<span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s2">&quot;x-offset&quot;</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span>
+<span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;xaxis&quot;</span><span class="p">,</span> <span class="n">corrected</span><span class="p">)</span>
+<span class="n">dat</span><span class="o">.</span><span class="n">evaluations</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;fit1&quot;</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="delete">
+<h3>delete<a class="headerlink" href="#delete" title="Link to this heading"></a></h3>
+<p>If you want to delete attributes you can use the <code class="docutils literal notranslate"><span class="pre">delete_attr</span></code> method, for datasets you can use the <code class="docutils literal notranslate"><span class="pre">delete_dataset</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="s2">&quot;data_imag&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sync-and-close">
+<h3>sync and close<a class="headerlink" href="#sync-and-close" title="Link to this heading"></a></h3>
+<p>All changes are written to the file using the <code class="docutils literal notranslate"><span class="pre">sync</span></code> method. Call this method ath the end of your script and close the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+<span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_measurements.html" class="btn btn-neutral float-left" title="Measurements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-right" title="Allowed values" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

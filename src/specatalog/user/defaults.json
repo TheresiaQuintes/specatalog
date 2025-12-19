@@ -1,6 +1,0 @@
-{
-  "base_path": "/home/quintes/Dokumente/archive_test",
-  "usr_name": "theresia",
-  "password": "th_pwd",
-  "database_url": "localhost:5432/specatalog"
-}

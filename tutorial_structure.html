@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The organisation of the archive &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_structure.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Molecules" href="tutorial_molecules.html" />
+    <link rel="prev" title="Update" href="update.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The organisation of the archive</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-archive-directory">The archive directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-dir">base_dir/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data">data/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#molecules">molecules/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allowed-values-py">allowed_values.py</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#the-database">The database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#molecules-table">molecules table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#measurements-table">measurements table</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The organisation of the archive</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_structure.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="update.html" class="btn btn-neutral float-left" title="Update" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_molecules.html" class="btn btn-neutral float-right" title="Molecules" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-organisation-of-the-archive">
+<h1>The organisation of the archive<a class="headerlink" href="#the-organisation-of-the-archive" title="Link to this heading"></a></h1>
+<section id="the-archive-directory">
+<h2>The archive directory<a class="headerlink" href="#the-archive-directory" title="Link to this heading"></a></h2>
+<p>When using specatalog, your data are organised systematically in an archive directory. It hast the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>base_dir/
+├── data/
+│   ├── M1/
+│   ├── M2/
+│   ├── M3/
+│   ├── ...
+│   └── M{ms_id}/
+│       ├── additional_info/
+│       ├── figures/
+│       ├── literature/
+│       ├── raw/
+│       ├── scripts/
+│       └── measurement_M{ms_id}.h5
+├── molecules/
+│   ├── MOL1/
+│   ├── MOL2/
+│   ├── MOL3/
+│   ├── ...
+│   └── MOL{mol_id}/
+│       ├── file_with_structure.cdxml
+│       └── file_with_structure.pdf
+└── allowed_values.py
+</pre></div>
+</div>
+<section id="base-dir">
+<h3>base_dir/<a class="headerlink" href="#base-dir" title="Link to this heading"></a></h3>
+<p>This is the basis folder in which all data are stored. The absolute path to the folder can be set by the user in <code class="docutils literal notranslate"><span class="pre">~/.specatalog/defaults.json</span></code>. The whole directory can be created by <code class="docutils literal notranslate"><span class="pre">specatalog-init-db</span></code>.</p>
+</section>
+<section id="data">
+<h3>data/<a class="headerlink" href="#data" title="Link to this heading"></a></h3>
+<p>The data-directory contains all files that are related to measurements. The measurements are organised in subdirectories (one directory for each measurement) and are allocated to a number. The subdirectory is named M{ms_id}, where ms_id is the number of the measurement.</p>
+<p>In the directory of a measurement the files are organised:</p>
+<ul class="simple">
+<li><p><strong>raw/ :</strong> save files with raw data as returned by the spectrometer here</p></li>
+<li><p><strong>scripts/ :</strong> save important scripts for data correction and evaluation here</p></li>
+<li><p><strong>figures/ :</strong> save figures of your data here</p></li>
+<li><p><strong>additional_info/ :</strong> save additional information like metadata</p></li>
+<li><p><strong>literature/ :</strong> save literature concerning the measurement here</p></li>
+</ul>
+<p>In each Folder you will find an automatically generated hdf5-file: <strong>measurement_M{ms_id}.h5</strong>. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a> and in the Tutorial for the <a class="reference internal" href="tutorial_hdf5object.html"><span class="doc">Measurement.h5 file</span></a>.</p>
+</section>
+<section id="molecules">
+<h3>molecules/<a class="headerlink" href="#molecules" title="Link to this heading"></a></h3>
+<p>The molecules-directory contains a folder for each molecule named MOL{mol_id} where mol_id is a unique number, which references the molecule. You should place an image of the structural formula of the molecule inside this folder.</p>
+</section>
+<section id="allowed-values-py">
+<h3>allowed_values.py<a class="headerlink" href="#allowed-values-py" title="Link to this heading"></a></h3>
+<p>This file is created, when the archive-directory is set up by specatalog for the first time. It contains allowed values for several metadata, that are stored in the database. If it is necessary these lists of allowed values can be adapted. This is explained in detail in <a class="reference internal" href="tutorial_allowed_values.html"><span class="doc">Allowed values</span></a>.</p>
+</section>
+</section>
+<section id="the-database">
+<h2>The database<a class="headerlink" href="#the-database" title="Link to this heading"></a></h2>
+<p>The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin and referenced in the code. After setup the database consists of two main tables <em>molecules</em> and <em>measurements</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The database can be queried using the <a class="reference internal" href="crud_db.html#crud-db-read"><span class="std std-ref">read</span></a> module. Additionally the database can be opened by any programm that is able to read PostgreSQL databases (e.g. <a class="reference external" href="https://dbeaver.com/docs/dbeaver/">DBeaver</a>). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.</p>
+</div>
+<section id="molecules-table">
+<h3>molecules table<a class="headerlink" href="#molecules-table" title="Link to this heading"></a></h3>
+<p>The table contains the main information on the molecules. Each molecule belongs to a subgroup with specific additional information included. For the fields of the molecule table see the documentation of the <a class="reference internal" href="models.html#models-molecules"><span class="std std-ref">molecules</span></a> module. Each molecule gets an unique ID which references the molecule folder in the archive.</p>
+</section>
+<section id="measurements-table">
+<h3>measurements table<a class="headerlink" href="#measurements-table" title="Link to this heading"></a></h3>
+<p>Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= epxerimental method, e.g. TREPR). In this addtional table metatdata that are specific to the method are stored. For detaild information on the fields of the table have a look at the documentation of the <a class="reference internal" href="models.html#models-measurements"><span class="std std-ref">measurements</span></a> module. Each measurement getas an unique ID which references the measurement directory in the archive (at <cite>/data/M{ms_id}</cite>).</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="update.html" class="btn btn-neutral float-left" title="Update" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_molecules.html" class="btn btn-neutral float-right" title="Molecules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

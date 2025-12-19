@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Measurements &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_measurements.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Measurement.h5 file" href="tutorial_hdf5object.html" />
+    <link rel="prev" title="Molecules" href="tutorial_molecules.html" />
+<base href="/specatalog/">
+ 
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Measurements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creation-of-a-new-entry">Creation of a new entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#query-the-database">Query the database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#update-measurements">Update measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#delete-measurements">Delete measurements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Measurements</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_measurements.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="tutorial_molecules.html" class="btn btn-neutral float-left" title="Molecules" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_hdf5object.html" class="btn btn-neutral float-right" title="Measurement.h5 file" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="measurements">
+<h1>Measurements<a class="headerlink" href="#measurements" title="Link to this heading"></a></h1>
+<p>The measurements table contains a row for each measurement, which shows the relevant metadata. All measurements are referenced by an unique ID (ms_id) and are correlated with a molecule from the molecules table. Further each measurement entry belongs to a subtable which is classified by the method chosen for the measurement (e.g. cwEPR or trEPR…). The subtable contains metadata that is specific for the method and is referenced by the same ms_id as the main table. In the archive folder at <code class="docutils literal notranslate"><span class="pre">/data/M{ms_id}</span></code> a directory with all files concerning the measurement (e.g. raw data, scripts…) are saved. In the following you will learn how to set up a new measurement in the database and how to create the correlated directory, how to find and work with a specific measurement, update it or delete an existing measurement.</p>
+<section id="creation-of-a-new-entry">
+<h2>Creation of a new entry<a class="headerlink" href="#creation-of-a-new-entry" title="Link to this heading"></a></h2>
+<p>First of all a new entry shall be added to the measurements table and the data-archive. As an example we will add a transient EPR spectra of our example molecule <a class="reference internal" href="tutorial_molecules.html#tutorial-molecules-new-entry"><span class="std std-ref">PER-TEMPO</span></a>.</p>
+<ol class="arabic">
+<li><p>Store your raw data at any folder. Save the path without suffix to a variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/folder/trEPR_PER_TEMPO</span>
+</pre></div>
+</div>
+</li>
+<li><p>Find the ID of the corresponding molecule:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">read</span> <span class="k">as</span> <span class="n">r</span>
+
+<span class="n">per_tempo_filter</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">TDPFilter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;PER-co-NO1&quot;</span><span class="p">)</span>
+<span class="n">per_tempo_molecule</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">per_tempo_filter</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">per_tempo_molecule</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</li>
+<li><p>Set up the MeasurementModel dependent on the method.</p>
+<blockquote>
+<div><p>The required fields for each method can be found in the documentation of the module <a class="reference internal" href="models.html#models-creation-pydantic-measurements"><span class="std std-ref">creation_pydantic_measurements</span></a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">creation_pydantic_measurements</span> <span class="k">as</span> <span class="n">ms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+
+<span class="n">new_measurement</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">TREPRModel</span><span class="p">(</span><span class="n">molecular_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="n">temperature</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+                                <span class="n">solvent</span><span class="o">=</span><span class="s2">&quot;toluene&quot;</span><span class="p">,</span>
+                                <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2025</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+                                <span class="n">measured_by</span><span class="o">=</span><span class="s2">&quot;your_name&quot;</span><span class="p">,</span>
+                                <span class="n">device</span><span class="o">=</span><span class="s2">&quot;ELEXSYS&quot;</span><span class="p">,</span>
+                                <span class="n">frequenc_band</span><span class="o">=</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span>
+                                <span class="n">attenuation</span><span class="o">=</span><span class="s2">&quot;20dB&quot;</span><span class="p">,</span>
+                                <span class="n">exciation_wl</span><span class="o">=</span><span class="mi">530</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some of the fields have a special type which is neiter a number nor a string but a class from <code class="docutils literal notranslate"><span class="pre">allowed_values.py</span></code>. For example the parameter <code class="docutils literal notranslate"><span class="pre">solvent</span></code> needs to be from the class <code class="docutils literal notranslate"><span class="pre">Solvents</span></code>. In that case only the values that are specified in <code class="docutils literal notranslate"><span class="pre">allowed_values.py</span></code> will be accepted. For more details see the documentation about <a class="reference internal" href="tutorial_allowed_values.html"><span class="doc">Allowed values</span></a>.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>Use the function <a class="reference internal" href="generated/specatalog.crud_db.create.create_new_measurement.html#specatalog.crud_db.create.create_new_measurement" title="specatalog.crud_db.create.create_new_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_new_measurement</span></code></a> to add the entry to the table of the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">create</span>
+
+<span class="n">measurement</span> <span class="o">=</span> <span class="n">create</span><span class="o">.</span><span class="n">create_new_measurement</span><span class="p">(</span><span class="n">new_measurement</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Use the information from the variable <code class="docutils literal notranslate"><span class="pre">measurement</span></code> to set up the directory in the database.</p>
+<blockquote>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">measurement</span></code> object contains the attribute <code class="docutils literal notranslate"><span class="pre">measurement.id</span></code>. The ID of the measurement can be used to name the directory correctly. It is recommended to use the functions from the module <a class="reference internal" href="data_management.html#data-management-measurement-management"><span class="std std-ref">measurement_management</span></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.data_management.measurement_management</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
+
+<span class="n">mm</span><span class="o">.</span><span class="n">create_measurement_dir</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># create new directory with subfolders</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span> <span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># raw data are copied to /data/M{ms_id}/raw</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># The raw spectra are added to the measurement.h5-file as arrays</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The functions <code class="docutils literal notranslate"><span class="pre">raw_data_to_foler</span></code> and <code class="docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code> can be used only to specific formats. At the moment the following formats are supported:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;bruker_bes3t&quot;</span></code>: for sets of Bruker files with the suffixes <code class="docutils literal notranslate"><span class="pre">.DSC</span></code> and <code class="docutils literal notranslate"><span class="pre">.DTA</span></code> and optional <code class="docutils literal notranslate"><span class="pre">.YGF</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p>For all other formats the functions will not work. The files for the measurement have to be copied manually to <code class="docutils literal notranslate"><span class="pre">/data/M{ms_id}/raw</span></code> and have to be loaded and stored in the <code class="docutils literal notranslate"><span class="pre">measurement.h5</span></code>-file (for more information see the documentation about <a class="reference internal" href="tutorial_hdf5object.html"><span class="doc">Measurement.h5 file</span></a>).</p>
+</div>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="query-the-database">
+<h2>Query the database<a class="headerlink" href="#query-the-database" title="Link to this heading"></a></h2>
+<p>It is possible to filter the database for measurements with specific properties. This may become necessary in order to get an overview over the measurements that have been done or for finding out the ms_id of a specific measurement to work with. As an example we want to query the database for all trEPR measurements that have been done so far in frozen solution for the molecule with mol_id = 1 by you.</p>
+<ol class="arabic">
+<li><p>Set up a filter model</p>
+<blockquote>
+<div><p>An empty filter model includes all possible fields. You can fill the model with your desired properties. All possible FilterModels and an explanation of their fields can be found <a class="reference internal" href="crud_db.html#crud-db-filtermodels"><span class="std std-ref">here</span></a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">read</span> <span class="k">as</span> <span class="n">r</span>
+
+<span class="n">filter_model</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">TREPRFilter</span><span class="p">(</span><span class="n">molecular_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">temperature__le</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">measured_by</span><span class="o">=</span><span class="s2">&quot;your name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>(Optional) Set up an ordering model</p>
+<blockquote>
+<div><p>If you want to sort your results you can construct an <a class="reference internal" href="crud_db.html#crud-db-orderingmodels"><span class="std std-ref">ordering model</span></a>, where you can choose for each parameter if the list of results shall be ordered ascending (<code class="docutils literal notranslate"><span class="pre">&quot;asc&quot;</span></code>) or descending (<code class="docutils literal notranslate"><span class="pre">&quot;descending&quot;`</span></code>). An OrderingModel is not required but in our example we sort the results with respect to the measurement data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ordering_model</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">TREPROrdering</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="s2">&quot;asc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Run the query using the function <a class="reference internal" href="generated/specatalog.crud_db.read.run_query.html#specatalog.crud_db.read.run_query" title="specatalog.crud_db.read.run_query"><code class="xref py py-func docutils literal notranslate"><span class="pre">run_query</span></code></a>.</p>
+<blockquote>
+<div><p>Now you can run the query and print the results. The printed results have the structure: (name of the data folder: method, name of the molecule):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">filter_model</span><span class="p">,</span> <span class="n">ordering_model</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>  <span class="c1"># print the list with all results</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">M2</span><span class="p">:</span> <span class="n">TREPR</span><span class="p">;</span> <span class="n">PDI4</span><span class="o">-</span><span class="n">co</span><span class="o">-</span><span class="n">NO4</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">name</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">PER</span><span class="o">-</span><span class="n">co</span><span class="o">-</span><span class="n">NO1</span>
+</pre></div>
+</div>
+<p>The function returns a list of measurement objects. You cann call the values of the attributes like the ID or the molecule. The molecule is again an object where you can call all attributes.</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="update-measurements">
+<h2>Update measurements<a class="headerlink" href="#update-measurements" title="Link to this heading"></a></h2>
+<p>If you have to change information on a measurement it is possible to update the database entries. As an example you have done some some analysis on your spectral data of the measurement with the ms_id=1 that you have saved in the archive folder. Now you can set the entry for evaluated to true in order to mark the dataset as evaluated.</p>
+<ol class="arabic">
+<li><p>Load the measurement.</p>
+<blockquote>
+<div><p>We will load the entry with the ID=1 by querying the database for the measurement with id=1 and choosing the first (and only) result from the list.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">read</span> <span class="k">as</span> <span class="n">r</span>
+<span class="n">ms_1</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">MeasurementFilter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Build an update filter</p>
+<blockquote>
+<div><p>Analoguos to the models for filtering <a class="reference internal" href="crud_db.html#crud-db-updatemodels"><span class="std std-ref">UpdateModels</span></a> exist. Each attribute of an object of the class UpdateModel can be set to a new attribute (of the correct type):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">update</span> <span class="k">as</span> <span class="n">up</span>
+<span class="n">update_evaluated</span> <span class="o">=</span> <span class="n">up</span><span class="o">.</span><span class="n">MeasurementUpdate</span><span class="p">(</span><span class="n">evaluated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Update the database entry by using the function <a class="reference internal" href="generated/specatalog.crud_db.update.update_model.html#specatalog.crud_db.update.update_model" title="specatalog.crud_db.update.update_model"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_model</span></code></a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">up</span><span class="o">.</span><span class="n">update_model</span><span class="p">(</span><span class="n">ms_1</span><span class="p">,</span> <span class="n">update_evaluated</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="delete-measurements">
+<h2>Delete measurements<a class="headerlink" href="#delete-measurements" title="Link to this heading"></a></h2>
+<p>A measurement with the ID ms_id, can be easily deleted. Make sure to delete the database entry <strong>and</strong> the corresponding folder in the archive directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.crud_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">delete</span> <span class="k">as</span> <span class="n">de</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.data_management</span><span class="w"> </span><span class="kn">import</span> <span class="n">measurement_management</span> <span class="k">as</span> <span class="n">mm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
+
+<span class="c1"># deletion from database</span>
+<span class="n">de</span><span class="o">.</span><span class="n">delete_measurement</span><span class="p">(</span><span class="n">ms_id</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="c1"># deletion from directory</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">delete_measurement</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_molecules.html" class="btn btn-neutral float-left" title="Molecules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_hdf5object.html" class="btn btn-neutral float-right" title="Measurement.h5 file" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
