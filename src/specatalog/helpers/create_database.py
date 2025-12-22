@@ -47,6 +47,7 @@ def run_alembic_upgrade():
     """
     alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
     alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
+    alembic_cfg.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
     command.upgrade(alembic_cfg, "head")
     print("Database is up to date.")
     return
