@@ -46,6 +46,7 @@ FilterModels
    TREPRFilter
    PulseEPRFilter
    UVVisFilter
+   FluorescenceFilter
    MoleculeFilter
    SingleMoleculeFilter
    RPFilter
@@ -69,6 +70,7 @@ OrderingModels
    TREPROrdering
    PulseEPROrdering
    UVVisOrdering
+   FluorescenceOrdering
    MoleculeOrdering
    SingleMoleculeOrdering
    RPOrdering
@@ -104,6 +106,7 @@ UpdateModels
    TREPRUpdate
    PulseEPRUpdate
    UVVisUpdate
+   FluorescenceUpdate
    MoleculeUpdate
    SingleMoleculeUpdate
    RPUpdate

@@ -1,7 +1,7 @@
 Adding new loaders
 ==================
 
-If your group uses a new file format that is not implemented to specatalog you can contribute to the code and adding a new loader function.
+If your group uses a new file format that is not implemented to specatalog you can contribute to the code and add a new loader function.
 
 1. Write a function, that loads your data::
 

@@ -229,3 +229,44 @@ class UVVisModel(MeasurementModel):
         return v
 
     dim_cuvette: str
+
+
+class FluorescenceModel(MeasurementModel):
+    """
+    Pydantic model for creating new :class:`ms.Fluorescence` measurements.
+
+    This subclass of :class:`MeasurementModel` adds Fluorescence-specific fields
+    required to create a Fluorescence-measurement in the database.
+    The ``measurement_class`` attribute is fixed to :class:`ms.Fluorescence` and
+    cannot be changed.
+
+    Attributes
+    ----------
+    measurement_class : Type
+        Always set to :class:`ms.Fluorescence`. Attempting to assign a different
+        class raises a validation error.
+    excitation : boolean
+        Indicate whether the spectrum is recorded in exitation (True) or
+        emission (False).
+    excitation_wl : str
+        Excitation wavelength and unit.
+    od : str
+        Optical density / absorbance.
+
+    Notes
+    -----
+    * Additional fields are forbidden (``extra='forbid'``).
+    * Assignment is validated on set (``validate_assignment=True``).
+    * All further attributes are inherited from :class:`MeasurementModel`.
+
+    """
+    measurement_class: Type=ms.Fluorescence
+    @field_validator("measurement_class")
+    def check_grp(cls, v):
+        if v is not ms.Fluorescence:
+            raise ValueError("measurement_class must not be changed.")
+        return v
+
+    excitation: bool
+    excitation_wl: str
+    od: Optional[str]=None

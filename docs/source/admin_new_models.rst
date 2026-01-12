@@ -1,7 +1,7 @@
 Adding new models
 =================
 
-If your group uses a new method that is not implemented to specatalog you can contribute to the code and adding a new Modelclass for the database.
+If your group uses a new method that is not implemented to specatalog you can contribute to the code and add a new Modelclass for the database.
 
 1. Add the new Model classes to ``specatalog.models.creation_pydantic_measurements`` and ``specatalog.models.measurements``. Orient yourself at the existing models.
 2. Add the new class to the mapping-dictionaries ``specatalog.crud_db.read.model_mapping_filters``, ``specatalog.crud_db.read.model_mapping_ordering`` and ``specatalog.crud_db.update.model_mapping_update``.
