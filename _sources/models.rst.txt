@@ -34,6 +34,7 @@ measurements
    PulseEPR
    UVVis
    Fluorescence
+   TA
    
 
 .. _models-creation-pydantic-measurements:
@@ -54,6 +55,7 @@ creation_pydantic_measurements
    PulseEPRModel
    UVVisModel
    FluorescenceModel
+   TAModel
 
 
 .. _models-molecules:
