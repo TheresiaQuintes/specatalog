@@ -270,3 +270,48 @@ class FluorescenceModel(MeasurementModel):
     excitation: bool
     excitation_wl: str
     od: Optional[str]=None
+
+
+class TAModel(MeasurementModel):
+    """
+    Pydantic model for creating new :class:`ms.TA` (transient absorption)
+    measurements.
+
+    This subclass of :class:`MeasurementModel` adds TA-specific fields
+    required to create a TA-measurement in the database.
+    The ``measurement_class`` attribute is fixed to :class:`ms.TA` and
+    cannot be changed.
+
+    Attributes
+    ----------
+    measurement_class :
+        Always set to :class:`ms.TA`. Attempting to assign a different
+        class raises a validation error.
+    timedomain : av.Timedomains
+        Indicate in which timedomain (e.g. nano-second TA (ns)/
+        femto-second TA (fs)) the exeperiment is run.
+    excitation_energy : str or None
+        Excitation energy incl. unit.
+    excitation_wl : str
+        Excitation wavelength incl. unit.
+    od : str or None
+        Optical density / absorbance.
+
+    Notes
+    -----
+    * Additional fields are forbidden (``extra='forbid'``).
+    * Assignment is validated on set (``validate_assignment=True``).
+    * All further attributes are inherited from :class:`MeasurementModel`.
+
+    """
+    measurement_class: Type=ms.TA
+    @field_validator("measurement_class")
+    def check_grp(cls, v):
+        if v is not ms.TA:
+            raise ValueError("measurement_class must not be changed.")
+        return v
+
+    timedomain: av.Timedomains
+    excitation_energy: Optional[str]=None
+    excitation_wl: str
+    od: Optional[str]=None

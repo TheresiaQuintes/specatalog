@@ -462,7 +462,7 @@ class Fluorescence(Measurement):
     """
     Fluorescence measurement.
 
-    This subclass of :class:`Measurement` represents an Fluorescence experiment.
+    This subclass of :class:`Measurement` represents a Fluorescence experiment.
     This model adds the Fluorescence-specific parameters excitation,
     excitation_wl and od.
 
@@ -531,5 +531,85 @@ class Fluorescence(Measurement):
     __mapper_args__ = {"polymorphic_identity": "fluorescence",}
 
     excitation = Column(Boolean, nullable=False)
+    excitation_wl = Column(String(64), nullable=False)
+    od = Column(String(64))
+
+
+class TA(Measurement):
+    """
+    Transient absorption measurement.
+
+    This subclass of :class:`Measurement` represents a TA experiment.
+    This model adds the TA-specific parameters timedomain, excitation_energy,
+    excitation_wl and od.
+
+    The model participates in SQLAlchemy polymorphism using the
+    ``"ta"`` ``polymorphic_identity``. Any row in ``measurements``
+    where ``method='ta'`` is therefore automatically loaded as a
+    :class:`TransientAbsorption` instance.
+
+    Attributes
+    ----------
+    id : int
+        Primary key linked to ``measurements.id`` with cascading delete.
+    timedomain : Timedomains
+        Indicate in which timedomain (e.g. nano-second TA (ns)/
+        femto-second TA (fs)) the exeperiment is run.
+    excitation_energy : str or None
+        Excitation energy incl. unit.
+    excitation_wl : str
+        Excitation wavelength incl. unit.
+    od : str or None
+        Optical density / absorbance.
+
+
+    Notes
+    -----
+    * The tablename is ``ta``.
+    * All shared measurement metadata (temperature, solvent, operator,
+      timestamps, file path, etc.) are inherited from :class:`Measurement`.
+    * The ``id`` corresponds directly to the entry in the main
+      ``measurements`` table via single-table inheritance.
+
+    Examples
+    --------
+    Creating a TA measurement:
+
+    >>> from measurements import TA
+    >>> from molecules import Molecule
+    >>> mol = Molecule(name="PDI-TEMPO")
+    >>> m = TA(
+    ...     molecule=mol,
+    ...     method="uvvis",
+    ...     temperature=298,
+    ...     solvent="Toluene",
+    ...     date=date(2025, 4, 12),
+    ...     measured_by="Bob",
+    ...     path="/data/M21/measurement_M21.h5",
+    ...     corrected=False,
+    ...     evaluated=False,
+    ...     timedomain="ns"
+    ...     excitation_wl="560nm"
+    ... )
+    >>> session.add(m)
+    >>> session.commit()
+
+    Loading via polymorphism:
+
+    >>> m = session.query(Measurement).filter_by(id=21).one()
+    >>> type(m)
+    <class 'models.TransientAbsorption'>
+    """
+
+
+    __tablename__ = "ta"
+
+    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
+                primary_key=True)
+
+    __mapper_args__ = {"polymorphic_identity": "ta",}
+
+    timedomain = Column(SAEnum(av.Timedomains), nullable=False)
+    excitation_energy = Column(String(64), nullable=False)
     excitation_wl = Column(String(64), nullable=False)
     od = Column(String(64))

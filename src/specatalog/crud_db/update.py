@@ -24,6 +24,7 @@ model_mapping_update = {
     "PulseEPRUpdate": ms.PulseEPR,
     "UVVisUpdate": ms.UVVis,
     "FluorescenceUpdate": ms.Fluorescence,
+    "TAUpdate": ms.TA,
     "MoleculeUpdate": mol.Molecule,
     "SingleMoleculeUpdate": mol.SingleMolecule,
     "RPUpdate": mol.RP,

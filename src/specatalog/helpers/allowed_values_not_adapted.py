@@ -33,6 +33,9 @@ class PulseExperiments(str, Enum):
     saturation_recovery = "SR"
     esenut = "esenut"
 
+class Timedomains(str, Enum):
+    ns = "ns"
+    fs = "fs"
 
 class Chromophores(str, Enum):
     bdp0 = "BDP0"

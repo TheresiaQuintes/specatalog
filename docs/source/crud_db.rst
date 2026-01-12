@@ -47,6 +47,7 @@ FilterModels
    PulseEPRFilter
    UVVisFilter
    FluorescenceFilter
+   TAFilter
    MoleculeFilter
    SingleMoleculeFilter
    RPFilter
@@ -71,6 +72,7 @@ OrderingModels
    PulseEPROrdering
    UVVisOrdering
    FluorescenceOrdering
+   TAOrdering
    MoleculeOrdering
    SingleMoleculeOrdering
    RPOrdering
@@ -107,6 +109,7 @@ UpdateModels
    PulseEPRUpdate
    UVVisUpdate
    FluorescenceUpdate
+   TAUpdate
    MoleculeUpdate
    SingleMoleculeUpdate
    RPUpdate
