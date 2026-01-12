@@ -5,14 +5,6 @@ import specatalog.data_management.data_loader as l
 import numpy as np
 
 
-SUPPORTED_FORMATS = {
-    "bruker_bes3t": {".dsc", ".dta"},
-    "uvvis_ulm": {".txt"},
-    "uvvis_freiburg": {".txt"}
-} # If new SUPPORTED_FORMATS are added, add them also to the functions
-  # raw_data_to_folder and raw_data_to_hdf5.
-
-
 CATEGORIES = ["raw", "scripts", "figures", "additional_info", "literature"]
 
 
@@ -80,6 +72,7 @@ def create_measurement_dir(base_dir: str, ms_id: int) -> Path:
         f.create_group("corrected_data")
         f.create_group("evaluations")
 
+    print(f"Measurement directrory successfully created at {path}.")
     return path
 
 
@@ -174,6 +167,7 @@ def new_file_to_archive(src: str, base_dir: str, ms_id: int, category: str,
 
     # Copy or update file
     shutil.copy2(src, target_file)
+    print(f"Copied {src} to {target_file}")
     return
 
 
@@ -265,33 +259,7 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
     return
 
 
-def detect_supported_format(folder: Path):
-    """
-    Extract the format of a set of files from the suffixes of these files.
-
-    Parameters
-    ----------
-    folder : Path
-        Folder with the files to check for the format.
-
-    Returns
-    -------
-    format_name : str
-        Format string (from SUPPORTED_FORMATS). If the group of suffixes does
-        not match a suppuroted format None is returned.
-
-    """
-    suffixes = {f.suffix.lower() for f in folder.iterdir() if f.is_file()}
-
-    for format_name, required_suffixes in SUPPORTED_FORMATS.items():
-        # All necessary suffixes need to be in the folder
-        if required_suffixes.issubset(suffixes):
-            return format_name
-
-    return None
-
-
-def raw_data_to_hdf5(base_dir: str, ms_id: str):
+def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     """
     Write the data from the raw data datafiles in the archive at
     <base_dir>/data/M<ms_id>/raw/
@@ -306,6 +274,9 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
         Path to the root-folder of the archive.
     ms_id : str or int
         Number of the measurement.
+    fmt : str
+        Format of the raw_data. One of the supported formats ["bruker_bes3t"
+        "uvvis_ulm", "uvvis_freiburg"].
 
     Raises
     ------
@@ -322,13 +293,10 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
     path = measurement_path(base_dir, ms_id)
     raw_path = path/"raw"
     hdf5_path = path / f"measurement_M{ms_id}.h5"
-    fmt = detect_supported_format(raw_path)
 
-    if fmt == None:
-        raise ValueError("Fileformat not known.")
 
     # load and save data from Bruker bes3t format
-    elif fmt == "bruker_bes3t":
+    if fmt == "bruker_bes3t":
         dsc = [p for p in raw_path.iterdir() if p.suffix == ".DSC"]
         dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
 
@@ -362,7 +330,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
                 grp.attrs[key] = value
 
     elif fmt == "uvvis_ulm":
-        txt = [p for p in raw_path.interdir() if p.suffix == ".txt"]
+        txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
 
         if not txt:
             raise ValueError(f"No .txt file is available. Make sure your raw\
@@ -379,7 +347,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
                 grp.attrs[key] = value
 
     elif fmt == "uvvis_freiburg":
-        txt = [p for p in raw_path.interdir() if p.suffix == ".txt"]
+        txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
 
         if not txt:
             raise ValueError(f"No .txt file is available. Make sure your raw\
@@ -395,6 +363,10 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
             for key, value in meta.items():
                 grp.attrs[key] = value
 
+    else:
+        raise ValueError(f"Data type: {fmt} unknown!")
+
+    print("Raw data were successfully added to hdf5.")
     return
 
 

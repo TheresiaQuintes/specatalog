@@ -22,7 +22,6 @@ measurement_management
    delete_measurement
    list_files
    measurement_path
-   detect_supported_format
 
 hdf5_reader
 -----------
