@@ -76,7 +76,6 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html">delete_measurement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html">list_files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html">measurement_path</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.detect_supported_format.html">detect_supported_format</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#hdf5-reader">hdf5_reader</a><ul>
@@ -142,7 +141,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_folder.html#specatalog.data_management.measurement_management.raw_data_to_folder" title="specatalog.data_management.measurement_management.raw_data_to_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_folder</span></code></a>(raw_data_path, fmt, ...)</p></td>
 <td><p>Copy raw datafiles to the archive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5" title="specatalog.data_management.measurement_management.raw_data_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code></a>(base_dir, ms_id)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5" title="specatalog.data_management.measurement_management.raw_data_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code></a>(base_dir, ms_id, fmt)</p></td>
 <td><p>Write the data from the raw data datafiles in the archive at &lt;base_dir&gt;/data/M&lt;ms_id&gt;/raw/ to the hdf5-file &lt;base_dir&gt;/data/M&lt;ms_id&gt;/measurement.h5</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element" title="specatalog.data_management.measurement_management.delete_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_element</span></code></a>(base_dir, ms_id, category, ...)</p></td>
@@ -156,9 +155,6 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html#specatalog.data_management.measurement_management.measurement_path" title="specatalog.data_management.measurement_management.measurement_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurement_path</span></code></a>(base_dir, ms_id)</p></td>
 <td><p>Create the absolute path to a measurement folder with the ID ms_id.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.detect_supported_format.html#specatalog.data_management.measurement_management.detect_supported_format" title="specatalog.data_management.measurement_management.detect_supported_format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">detect_supported_format</span></code></a>(folder)</p></td>
-<td><p>Extract the format of a set of files from the suffixes of these files.</p></td>
 </tr>
 </tbody>
 </table>

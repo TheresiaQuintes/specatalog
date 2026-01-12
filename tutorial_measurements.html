@@ -168,7 +168,7 @@
 
 <span class="n">mm</span><span class="o">.</span><span class="n">create_measurement_dir</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># create new directory with subfolders</span>
 <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span> <span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># raw data are copied to /data/M{ms_id}/raw</span>
-<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># The raw spectra are added to the measurement.h5-file as arrays</span>
+<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">)</span>  <span class="c1"># The raw spectra are added to the measurement.h5-file as arrays</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -177,8 +177,8 @@
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;bruker_bes3t&quot;</span></code>: for sets of Bruker files with the suffixes <code class="docutils literal notranslate"><span class="pre">.DSC</span></code> and <code class="docutils literal notranslate"><span class="pre">.DTA</span></code> and optional <code class="docutils literal notranslate"><span class="pre">.YGF</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;uvvis_ulm</span></code>: for UVvis files measured at the spectrometer located at Ulm with the suffix <code class="docutils literal notranslate"><span class="pre">.txt</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;uvvis_freiburg</span></code>: for UVvis files measured at the spectrometer located at Freiburg with the suffix <code class="docutils literal notranslate"><span class="pre">.txt</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;uvvis_ulm&quot;</span></code>: for UVvis files measured at the spectrometer located at Ulm with the suffix <code class="docutils literal notranslate"><span class="pre">.txt</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;uvvis_freiburg&quot;</span></code>: for UVvis files measured at the spectrometer located at Freiburg with the suffix <code class="docutils literal notranslate"><span class="pre">.txt</span></code>.</p></li>
 </ul>
 </div></blockquote>
 <p>For all other formats the functions will not work. The files for the measurement have to be copied manually to <code class="docutils literal notranslate"><span class="pre">/data/M{ms_id}/raw</span></code> and have to be loaded and stored in the <code class="docutils literal notranslate"><span class="pre">measurement.h5</span></code>-file (for more information see the documentation about <a class="reference internal" href="tutorial_hdf5object.html"><span class="doc">Measurement.h5 file</span></a>).</p>
