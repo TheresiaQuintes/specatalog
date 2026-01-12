@@ -1,14 +1,16 @@
 from pathlib import Path
 import h5py
 import shutil
-from specatalog.data_management.data_loader import load
+import specatalog.data_management.data_loader as l
 import numpy as np
 
 
 SUPPORTED_FORMATS = {
     "bruker_bes3t": {".dsc", ".dta"},
-} # If new SUPPORTED_FORMATS are added, ad them also to the functions
-  # new_raw_data_to_folder and new_raw_data_to_hdf5.
+    "uvvis_ulm": {".txt"},
+    "uvvis_freiburg": {".txt"}
+} # If new SUPPORTED_FORMATS are added, add them also to the functions
+  # raw_data_to_folder and raw_data_to_hdf5.
 
 
 CATEGORIES = ["raw", "scripts", "figures", "additional_info", "literature"]
@@ -215,7 +217,8 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
     raw_data_path : str
         Path to the raw data file without suffix.
     fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t"].
+        Format of the raw_data. One of the supported formats ["bruker_bes3t"
+        "uvvis_ulm", "uvvis_freiburg"].
     base_dir : str or Path
         Path to the root-folder of the archive.
     ms_id : str or int
@@ -247,6 +250,14 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
         new_file_to_archive(raw_data_2, base_dir, ms_id, "raw", update=True)
         if raw_data_3.exists():
             new_file_to_archive(raw_data_3, base_dir, ms_id, "raw", update=True)
+
+    # copy all UVvis files
+    elif fmt == "uvvis_ulm" or fmt == "uvvis_freiburg":
+        raw_data = Path(raw_data_path).with_suffix(".txt")
+        if not raw_data.exists():
+            raise FileNotFoundError(f"Raw data not found at {raw_data}!")
+
+        new_file_to_archive(raw_data, base_dir, ms_id, "raw", update=True)
 
     else:
         raise ValueError(f"Data type: {fmt} unknown!")
@@ -329,7 +340,8 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
                              basenames.")
 
         # load data to arrays using the loader function
-        data, x, params = load(dsc[0].with_suffix(""), "DSC", "n")
+        data, x, params = l.load_bruker_bes3t(dsc[0].with_suffix(""),
+                                              "DSC", "n")
 
         # write intensities to dataset
         new_dataset_to_hdf5(data, hdf5_path, "raw_data", "data")
@@ -347,6 +359,40 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str):
         with h5py.File(hdf5_path, "a") as f:
             grp = f.require_group("raw_data")
             for key, value in params.items():
+                grp.attrs[key] = value
+
+    elif fmt == "uvvis_ulm":
+        txt = [p for p in raw_path.interdir() if p.suffix == ".txt"]
+
+        if not txt:
+            raise ValueError(f"No .txt file is available. Make sure your raw\
+                             data are stored at {raw_path} in the right format.")
+
+        wavelength, intensity, meta = l.load_uvvis_ulm(txt[0])
+
+        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
+        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")
+
+        with h5py.File(hdf5_path, "a") as f:
+            grp = f.require_group("raw_data")
+            for key, value in meta.items():
+                grp.attrs[key] = value
+
+    elif fmt == "uvvis_freiburg":
+        txt = [p for p in raw_path.interdir() if p.suffix == ".txt"]
+
+        if not txt:
+            raise ValueError(f"No .txt file is available. Make sure your raw\
+                             data are stored at {raw_path} in the right format.")
+
+        wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0])
+
+        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
+        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")
+
+        with h5py.File(hdf5_path, "a") as f:
+            grp = f.require_group("raw_data")
+            for key, value in meta.items():
                 grp.attrs[key] = value
 
     return

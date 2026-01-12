@@ -38,3 +38,4 @@ This is a package to organise an archive of experimental data.
 
    admin_database
    admin_new_models
+   admin_new_data_loader.rst

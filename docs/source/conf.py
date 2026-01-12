@@ -78,6 +78,7 @@ html_theme_options = {
     "prev_next_buttons_location": "both",
     "navigation_with_keys": True,
 }
+html_logo = "logo.png"
 
 
 # Autosummary-Einstellungen

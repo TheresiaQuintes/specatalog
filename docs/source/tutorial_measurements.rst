@@ -65,6 +65,8 @@ First of all a new entry shall be added to the measurements table and the data-a
 		The functions ``raw_data_to_foler`` and ``raw_data_to_hdf5`` can be used only to specific formats. At the moment the following formats are supported:
 			
 			- ``"bruker_bes3t"``: for sets of Bruker files with the suffixes ``.DSC`` and ``.DTA`` and optional ``.YGF``.
+			- ``"uvvis_ulm``: for UVvis files measured at the spectrometer located at Ulm with the suffix ``.txt``.
+			- ``"uvvis_freiburg``: for UVvis files measured at the spectrometer located at Freiburg with the suffix ``.txt``.
 		
 		For all other formats the functions will not work. The files for the measurement have to be copied manually to ``/data/M{ms_id}/raw`` and have to be loaded and stored in the ``measurement.h5``-file (for more information see the documentation about :doc:`tutorial_hdf5object`).
 		

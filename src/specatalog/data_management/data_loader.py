@@ -8,6 +8,7 @@ import numpy as np
 from pathlib import Path
 import warnings
 import re
+import pandas as pd
 
 from typing import List, Union
 
@@ -289,7 +290,8 @@ def BrukerListFiles(path, recursive=False):
 
 
 
-def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
+def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
+                      ) -> tuple:
     """
     Loads Bruker BES3T data (.DTA, .DSC).
 
@@ -607,3 +609,103 @@ def load(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     parameters = parse_field_params(parameters)
 
     return data, abscissa, parameters
+
+
+
+def load_uvvis_ulm(path:str):
+    """
+    Load UVvis-data from the spectrometer located at Ulm.
+
+    Parameters
+    ----------
+    path : str
+        Absolute path to the data file.
+
+    Returns
+    -------
+    wavelength : np.ndarray
+        Array with the wavelength numbers.
+    intensity : np.ndarray
+        ARRAY with the intensites.
+    meta : dict
+        Dictionary with metadata.
+
+    """
+    meta = {}
+    current_section = "header"
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        for line_number, line in enumerate(f):
+            line = line.strip()
+
+            # Leere Zeilen ignorieren
+            if not line:
+                continue
+            if line.startswith("XYDATA"):
+                data_start = line_number + 1
+                current_section = "data"
+
+            if current_section == "header":
+                kv_pair = line.split("\t")
+                meta[kv_pair[0]] = " ".join(kv_pair[1:])
+
+            if current_section == "footer":
+                if line.startswith("["):
+                    continue
+                else:
+                    kv_pair = line.split("\t")
+                    meta[kv_pair[0]] = " ".join(kv_pair[1:])
+
+            if line.startswith("###"):
+                data_stop = line_number -1
+                current_section = "footer"
+
+    data = pd.read_csv(path, usecols=[0,1],
+                       names=['lambda','int'],
+                       skiprows=(data_start),
+                       skipfooter=(line_number-data_stop),
+                       sep="\s+", engine="python")
+    wavelength = data['lambda'].to_numpy()
+    intensity = data['int'].to_numpy()
+    return wavelength, intensity, meta
+
+
+def load_uvvis_freiburg(path: str):
+    """
+    Load UVvis-data from the spectrometer located at Freiburg.
+
+    Parameters
+    ----------
+    path : str
+        Absolute path to the data file.
+
+    Returns
+    -------
+    wavelength : np.ndarray
+        Array with the wavelength numbers.
+    intensity : np.ndarray
+        ARRAY with the intensites.
+    meta : dict
+        Dictionary with metadata.
+
+    """
+    data = pd.read_csv(path, usecols=[0,1], names=['lambda','int'], skiprows=(2), sep="\s+", engine="python")
+    wavelength = data['lambda']
+    intensity = data['int']
+
+    meta = {}
+    meta["wavestart"] = float(wavelength.iloc[-1])
+    meta["waveend"] = float(wavelength.iloc[0])
+    meta["npoints"] = int(len(wavelength))
+    meta["interval"] = round(float(wavelength.iloc[1]-wavelength.iloc[0]),2)
+
+    with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        row1 = f.readline().strip()
+        row2 = f.readline().strip()
+        row2 = row2.split("\t")
+
+    meta["name"] = row1
+    meta["x name"] = row1[0]
+    meta["y name"] = row2[1]
+
+    return wavelength.to_numpy(), intensity.to_numpy(), meta
