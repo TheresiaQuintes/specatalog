@@ -37,3 +37,8 @@ git checkout master
 
 echo "✅ Documentation deployed!"
 
+cd docs
+make clean
+make html
+cd ..
+echo "🚀 Sphinx documentation built."
