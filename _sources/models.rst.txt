@@ -33,6 +33,7 @@ measurements
    TREPR
    PulseEPR
    UVVis
+   Fluorescence
    
 
 .. _models-creation-pydantic-measurements:
@@ -52,6 +53,7 @@ creation_pydantic_measurements
    TREPRModel
    PulseEPRModel
    UVVisModel
+   FluorescenceModel
 
 
 .. _models-molecules:
