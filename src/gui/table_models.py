@@ -1,17 +1,29 @@
 from PyQt6.QtCore import QAbstractTableModel, Qt
-from specatalog.models.measurements import Measurement
+import specatalog.models.measurements as ms
 from sqlalchemy.inspection import inspect
 import enum
 import datetime
 
-mapper = inspect(Measurement)
-HEADERS_MEASUREMENT = [column.key for column in mapper.columns]
+MODEL_MODEL_MAPPER = {"Measurements": ms.Measurement,
+                       "trEPR": ms.TREPR,
+                       "cwEPR": ms.CWEPR,
+                       "pulseEPR": ms.PulseEPR,
+                       "UVvis": ms.UVVis,
+                       "Fluorescence": ms.Fluorescence,
+                       "TA": ms.TA}
+
+
 
 class MeasurementsTableModel(QAbstractTableModel):
-    def __init__(self, measurements):
+    def __init__(self, measurements, model):
         super().__init__()
         self._measurements = measurements
-        self._headers = HEADERS_MEASUREMENT
+        mapper = inspect(MODEL_MODEL_MAPPER[model])
+        self._headers = [
+            column.key
+            for column in mapper.columns
+            if not (column.primary_key and column.foreign_keys)]
+        self._headers.insert(2, "molecule_name")
 
     def rowCount(self, parent=None):
         return len(self._measurements)
@@ -27,7 +39,11 @@ class MeasurementsTableModel(QAbstractTableModel):
 
         measurement = self._measurements[index.row()]
         attr = self._headers[index.column()]
-        value = getattr(measurement, attr)
+
+        if attr == "molecule_name":
+            value = measurement.molecule.name
+        else:
+            value = getattr(measurement, attr)
 
         if value is None:
             return ""

@@ -6,60 +6,111 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1086</width>
-    <height>811</height>
+    <width>1011</width>
+    <height>698</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>specatalog</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="Knopf_1">
-    <property name="geometry">
-     <rect>
-      <x>950</x>
-      <y>470</y>
-      <width>88</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Knopf 1</string>
-    </property>
-   </widget>
-   <widget class="QTableView" name="MeasurementsView">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>20</y>
-      <width>1031</width>
-      <height>391</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="ComboModelChoice">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>450</y>
-      <width>151</width>
-      <height>25</height>
-     </rect>
-    </property>
-   </widget>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_1">
+       <attribute name="title">
+        <string>Query</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0" colspan="2">
+         <widget class="QTableView" name="MeasurementsView"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="ButtonQuery">
+          <property name="text">
+           <string>Run Query</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" rowspan="4">
+         <layout class="QFormLayout" name="FormFilter"/>
+        </item>
+        <item row="4" column="1">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="1">
+         <widget class="QComboBox" name="ComboModelChoice"/>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="ButtonClearQuery">
+          <property name="text">
+           <string>Clear Query</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>New Entry</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0" colspan="2">
+         <layout class="QFormLayout" name="FormNewEntry"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QComboBox" name="ComboModelChoiceNewEntry"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="ButtonNewEntry">
+          <property name="text">
+           <string>Submit new Entry</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1086</width>
+     <width>1011</width>
      <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMainWindow">
     <property name="title">
-     <string>MainWindow</string>
+     <string>specatalog</string>
     </property>
    </widget>
    <addaction name="menuMainWindow"/>

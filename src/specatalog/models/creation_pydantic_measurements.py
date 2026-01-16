@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict, field_validator
-from typing import Type, Optional
+from typing import Type, Optional, ClassVar
 import specatalog.models.measurements as ms
 import datetime
 
@@ -91,12 +91,7 @@ class CWEPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.CWEPR
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.CWEPR:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.CWEPR
 
     frequency_band: av.FrequencyBands
     attenuation: str
@@ -138,12 +133,7 @@ class TREPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.TREPR
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.TREPR:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TREPR
 
     frequency_band: av.FrequencyBands
     excitation_wl: float
@@ -184,12 +174,7 @@ class PulseEPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.PulseEPR
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.PulseEPR:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.PulseEPR
 
     frequency_band: Optional[av.FrequencyBands]=None
     attenuation: Optional[str]=None
@@ -221,12 +206,7 @@ class UVVisModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.UVVis
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.UVVis:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.UVVis
 
     dim_cuvette: str
 
@@ -260,12 +240,7 @@ class FluorescenceModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.Fluorescence
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.Fluorescence:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.Fluorescence
 
     excitation: bool
     excitation_wl: str
@@ -304,12 +279,7 @@ class TAModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
-    measurement_class: Type=ms.TA
-    @field_validator("measurement_class")
-    def check_grp(cls, v):
-        if v is not ms.TA:
-            raise ValueError("measurement_class must not be changed.")
-        return v
+    measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TA
 
     timedomain: av.Timedomains
     excitation_energy: Optional[str]=None
