@@ -8,6 +8,7 @@ from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
 import specatalog.crud_db.create as c
 from pydantic_core._pydantic_core import ValidationError
+from PyQt6 import QtWidgets
 
 MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
                        "trEPR": r.TREPRFilter,
@@ -38,6 +39,8 @@ def run_query(self):
 
 def submit_new_entry(self):
     data = get_values(self, self.new_fields)
+    raw_data = self.LineRawDataInput.text()
+    print("raw_data: ", raw_data)
 
     if data["corrected"] == None:
         data["corrected"] = False
@@ -56,6 +59,12 @@ def submit_new_entry(self):
         msg.exec()
         return
 
+
+
+def open_file_dialog(self):
+    file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Datei auswählen")
+    if file_path:
+        self.LineRawDataInput.setText(file_path)
 
 
 

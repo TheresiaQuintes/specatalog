@@ -83,13 +83,30 @@
         <item row="0" column="0" colspan="2">
          <layout class="QFormLayout" name="FormNewEntry"/>
         </item>
-        <item row="1" column="0">
+        <item row="3" column="0">
          <widget class="QComboBox" name="ComboModelChoiceNewEntry"/>
         </item>
-        <item row="1" column="1">
+        <item row="3" column="1">
          <widget class="QPushButton" name="ButtonNewEntry">
           <property name="text">
            <string>Submit new Entry</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLineEdit" name="LineRawDataInput">
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="placeholderText">
+           <string>Drag raw data file here</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="ButtonRawDataInput">
+          <property name="text">
+           <string>Choose raw data file</string>
           </property>
          </widget>
         </item>

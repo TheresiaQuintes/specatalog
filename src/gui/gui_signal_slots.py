@@ -6,6 +6,7 @@ def connect_signal_slot(self) -> None:
     self.ButtonQuery.clicked.connect(lambda: gf.run_query(self))
     self.ButtonClearQuery.clicked.connect(lambda: gf.filter_model_changed(self, self.ComboModelChoice.currentText()))
     self.ButtonNewEntry.clicked.connect(lambda: gf.submit_new_entry(self))
+    self.ButtonRawDataInput.clicked.connect(lambda: gf.open_file_dialog(self))
 
     self.ComboModelChoice.currentTextChanged.connect(lambda model: gf.filter_model_changed(self, model))
     self.ComboModelChoiceNewEntry.currentTextChanged.connect(lambda model: gf.new_entry_model_changed(self, model))

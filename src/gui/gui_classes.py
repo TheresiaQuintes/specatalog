@@ -7,11 +7,27 @@ from specatalog.crud_db import read as r
 from specatalog.models import creation_pydantic_measurements as cpm
 
 
+class DragDropLineEdit(QtWidgets.QLineEdit):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setAcceptDrops(True)
+
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls():
+            event.acceptProposedAction()
+
+    def dropEvent(self, event):
+        urls = event.mimeData().urls()
+        if urls:
+            self.setText(urls[0].toLocalFile())
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
+
+
 
         # combobox
         self.ComboModelChoice.addItems(["Measurements", "trEPR", "cwEPR",
@@ -44,6 +60,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         gf.build_form(self, self.FormNewEntry, self.new_fields,
                       cpm.TREPRModel.model_fields)
         self.tab_index = 0
+
+        # Raw data field
+        # Ersetze das normale QLineEdit durch unser DragDropLineEdit
+        layout = self.LineRawDataInput.parent().layout()
+        # Position des alten Widgets finden
+        for row in range(layout.rowCount()):
+            for col in range(layout.columnCount()):
+                item = layout.itemAtPosition(row, col)
+                if item and item.widget() == self.LineRawDataInput:
+                    # alte Widget entfernen
+                    layout.removeWidget(self.LineRawDataInput)
+                    self.LineRawDataInput.deleteLater()
+                    # neues DragDropLineEdit an gleicher Position einfügen
+                    self.LineRawDataInput = DragDropLineEdit()
+                    layout.addWidget(self.LineRawDataInput, row, col)
+                    break
+
 
         # connections
         gss.connect_signal_slot(self)
