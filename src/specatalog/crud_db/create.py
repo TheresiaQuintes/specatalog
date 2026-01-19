@@ -19,7 +19,7 @@ molecule_model_pyd = TypeVar(
     "models.creation_pydantic_molecules.MoleculeModel", bound=MoleculeModel)
 molecule_model_alc = TypeVar("models.molecules.Measurement", bound=Molecule)
 
-def create_new_measurement(data: measurement_model_pyd
+def create_new_measurement(data: measurement_model_pyd, transaction: bool=False
                            ) -> measurement_model_alc:
     """
     Create a new database entry for the measurement table.
@@ -62,7 +62,8 @@ def create_new_measurement(data: measurement_model_pyd
     safe_flush(session)
     measurement.path = f"{MEASUREMENTS_PATH}/M{measurement.id}"
 
-    safe_commit(session)
+    if not transaction:
+        safe_commit(session)
 
     return measurement
 

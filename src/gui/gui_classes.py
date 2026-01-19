@@ -5,6 +5,7 @@ import gui_functions as gf
 from PyQt6.QtCore import Qt
 from specatalog.crud_db import read as r
 from specatalog.models import creation_pydantic_measurements as cpm
+from pathlib import Path
 
 
 class DragDropLineEdit(QtWidgets.QLineEdit):
@@ -19,7 +20,8 @@ class DragDropLineEdit(QtWidgets.QLineEdit):
     def dropEvent(self, event):
         urls = event.mimeData().urls()
         if urls:
-            self.setText(urls[0].toLocalFile())
+            path = Path(urls[0].toLocalFile())
+            self.setText(str(path.with_suffix("")))
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -36,6 +38,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ComboModelChoiceNewEntry.addItems(["trEPR",
                                                 "cwEPR", "pulseEPR", "UVvis",
                                                 "Fluorescence", "TA"])
+        self.ComboRawFormat.addItems(["bruker_bes3t", "uvvis_ulm",
+                                      "uvvis_freiburg"])
 
         # models
         self.filter_model = r.MeasurementFilter()
@@ -60,6 +64,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         gf.build_form(self, self.FormNewEntry, self.new_fields,
                       cpm.TREPRModel.model_fields)
         self.tab_index = 0
+
+        self.raw_format = "bruker_bes3t"
 
         # Raw data field
         # Ersetze das normale QLineEdit durch unser DragDropLineEdit

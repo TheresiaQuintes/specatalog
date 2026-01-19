@@ -6,9 +6,11 @@ import datetime
 import enum
 from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
-import specatalog.crud_db.create as c
+from specatalog.helpers.full_measurement import create_full_measurement
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
+from pathlib import Path
+from specatalog.main import BASE_PATH
 
 MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
                        "trEPR": r.TREPRFilter,
@@ -39,9 +41,6 @@ def run_query(self):
 
 def submit_new_entry(self):
     data = get_values(self, self.new_fields)
-    raw_data = self.LineRawDataInput.text()
-    print("raw_data: ", raw_data)
-
     if data["corrected"] == None:
         data["corrected"] = False
     if data["evaluated"] == None:
@@ -49,7 +48,7 @@ def submit_new_entry(self):
 
     try:
         new_entry_model = MODEL_NEW_MODEL_MAPPER[self.ComboModelChoiceNewEntry.currentText()](**data)
-        print(new_entry_model)
+
     except ValidationError as e:
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Warning)
@@ -59,12 +58,34 @@ def submit_new_entry(self):
         msg.exec()
         return
 
+    raw_data = self.LineRawDataInput.text()
+
+    output = create_full_measurement(new_entry_model, BASE_PATH, raw_data,
+                                     self.ComboRawFormat.currentText())
+
+    if output.success:
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success")
+        msg.setText(f"Measurement M{output.measurement_id} has been created successfully!")
+        msg.exec()
+        return
+
+    else:
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Critical)
+        msg.setWindowTitle("An error occured.")
+        msg.setText("The creation has not been completed.")
+        msg.setDetailedText(str(output.error))
+        msg.exec()
+
 
 
 def open_file_dialog(self):
-    file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Datei auswählen")
+    file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a file")
     if file_path:
-        self.LineRawDataInput.setText(file_path)
+        path = Path(file_path)
+        self.LineRawDataInput.setText(str(path.with_suffix("")))
 
 
 
