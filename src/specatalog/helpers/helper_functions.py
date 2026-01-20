@@ -1,6 +1,4 @@
 from sqlalchemy import inspect
-from sqlalchemy.orm.session import Session
-from sqlalchemy.exc import SQLAlchemyError
 import sqlalchemy.sql.sqltypes as Sqltypes
 from sqlalchemy.sql.sqltypes import String, Integer, Float, Boolean, Date, DateTime, Text
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
@@ -9,58 +7,6 @@ from typing import Any, Optional, Literal, get_origin, get_args, Union
 from specatalog.models.base import TimeStampedModel
 import datetime
 import textwrap
-
-def safe_commit(session: Session) -> bool:
-    """
-    Commit database session. In case the commit is not successful return False
-    and rollback the session.
-
-    Parameters
-    ----------
-    session : Session
-        A sqlalchemy-session. This session is to be commited.
-
-    Returns
-    -------
-    success : bool
-        True if the commit was successful. False if an SQLAlchemyError was
-        raised during the commit.
-
-    """
-    try:
-        session.commit()
-        return True
-
-    except SQLAlchemyError as e:
-        session.rollback()
-        print(f"Error during commit: {e}")
-        return False
-
-def safe_flush(session: Session) -> bool:
-    """
-    Flush database session. In case the flush is not successful return False
-    and rollback the session.
-
-    Parameters
-    ----------
-    session : Session
-        A sqlalchemy-session. This session is to be flushed.
-
-    Returns
-    -------
-    success : bool
-        True if the flush was successful. False if an SQLAlchemyError was
-        raised during the flush.
-
-    """
-    try:
-        session.flush()
-        return True
-
-    except SQLAlchemyError as e:
-        session.rollback()
-        print(f"Error during flush: {e}")
-        return False
 
 
 

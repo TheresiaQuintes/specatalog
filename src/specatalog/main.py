@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 from importlib.resources import files
+from contextlib import contextmanager
 
 home_defaults = Path.home() / ".specatalog" / "defaults.json"
 if not home_defaults.exists():
@@ -44,6 +45,20 @@ Session = orm.scoped_session(
     orm.sessionmaker(
         autoflush=False,
         autocommit=False,
-        bind=engine
+        bind=engine,
+        expire_on_commit=False
         )
     )
+
+
+@contextmanager
+def db_session():
+    session = Session()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        Session.remove()

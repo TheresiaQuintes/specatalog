@@ -2,10 +2,29 @@ from specatalog.models.measurements import Measurement
 from specatalog.models.molecules import Molecule
 from specatalog.models.base import TimeStampedModel
 
-import specatalog.helpers.helper_functions as hf
-from specatalog.main import Session
-session = Session()
+from specatalog.main import db_session
 
+
+
+def _delete_object(obj: TimeStampedModel, session: db_session):
+    """
+    Delete an entry from the database.
+
+    Parameters
+    ----------
+    obj : TimeStampedModel
+        Any object from the models.base.TimeStampedModel (=sqlalchemy model)
+        class or from a subclass. The object is deleted from the database.
+    session: db_session
+        Object of the class db_session.
+
+    Returns
+    -------
+    None.
+
+    """
+    session.delete(obj)
+    return
 
 def delete_object(obj: TimeStampedModel):
     """
@@ -22,9 +41,8 @@ def delete_object(obj: TimeStampedModel):
     None.
 
     """
-    session.delete(obj)
-    hf.safe_commit(session)
-    return
+    with db_session() as session:
+        session.delete(obj)
 
 def delete_molecule(mol_id: int):
     """

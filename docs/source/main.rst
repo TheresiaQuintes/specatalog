@@ -31,10 +31,6 @@ Session
 -------
 The SQLAlchemy-session is started in main and can be imported and used by::
 
-   from specatalog.main import Session
-   session = Session()
+   from specatalog.main import db_session
+   session = db_session()
 
-
-.. hint::
-   The session is necessary for adding and commiting new or updated entries to the database.
-   It is recommended to use the function ``safe_commit`` from :doc:`helpers`.

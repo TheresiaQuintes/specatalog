@@ -1,12 +1,11 @@
 import specatalog.models.measurements as ms
 import specatalog.models.molecules as mol
 from specatalog.models.base import TimeStampedModel
+from specatalog.main import db_session
 
 import specatalog.helpers.helper_functions as hf
 from typing import Union
 
-from specatalog.main import Session
-session = Session()
 
 # %%
 """
@@ -51,6 +50,53 @@ update_model_type = Union[tuple(updates.values())]
 
 """
 
+def _update_model(entry: TimeStampedModel, update_data: update_model_type,
+                 session: db_session):
+    """
+    Update a database entry using an update model.
+    The entry is updated and commited. In case of multicomponent molecules
+    the name is updated automatically using the components.
+
+    Parameters
+    ----------
+    entry : TimeStampedModel
+        Any object from the models.base.TimeStampedModel (=sqlalchemy model)
+        class or from a subclass. The entry is updated.
+    update_data : update_model_type
+        Update model. The fields that are set determine which fields of the
+        entry are updated. The type of the update_data model should fit the
+        type of the entry. E.g. if the entry is an object of the class TREPR,
+        the update_data should be an object of the class TREPRUpdate.
+    session: db_session
+        Object of the class db_session.
+
+    Raises
+    ------
+    ValueError
+        An error is raised if the update model contains attributes that are not
+        part of the database entry.
+
+    Returns
+    -------
+    None.
+
+    """
+    entry = session.merge(entry)
+    data = update_data.model_dump(exclude_none=True)
+
+    for field, value in data.items():
+        if hasattr(entry, field):
+            setattr(entry, field, value)
+        else:
+            raise ValueError(f"{field} not valid.")
+
+
+    _automatic_name_update(entry, data)
+
+    session.add(entry)
+
+    return
+
 def update_model(entry: TimeStampedModel, update_data: update_model_type):
     """
     Update a database entry using an update model.
@@ -79,26 +125,11 @@ def update_model(entry: TimeStampedModel, update_data: update_model_type):
     None.
 
     """
-
-    data = update_data.model_dump(exclude_none=True)
-
-    for field, value in data.items():
-        if hasattr(entry, field):
-            setattr(entry, field, value)
-        else:
-            raise ValueError(f"{field} not valid.")
+    with db_session() as session:
+        _update_model(entry, update_data, session)
 
 
-    automatic_name_update(entry, data)
-
-    session.add(entry)
-    hf.safe_commit(session)
-
-    return
-
-
-
-def automatic_name_update(entry: TimeStampedModel,
+def _automatic_name_update(entry: TimeStampedModel,
                           update_data: update_model_type):
     """
     Automatic update of the name of a multi-component molecule in a database

@@ -1,11 +1,11 @@
 import specatalog.helpers.helper_functions as hf
 import specatalog.models.measurements as ms
 import specatalog.models.molecules as mol
+from specatalog.main import db_session
 
+from sqlalchemy.orm import selectinload
 from typing import Union
 
-from specatalog.main import Session
-session = Session()
 
 #%%
 
@@ -76,8 +76,8 @@ ordering_model_type = Union[tuple(ordering.values())]
 """
 
 
-def run_query(filters: filter_model_type, ordering: ordering_model_type=None
-              ) -> list:
+def _run_query(filters: filter_model_type, ordering: ordering_model_type,
+               session: db_session) -> list:
     """
     Query the database. The table is chosen from the filter model. All
     filters and the ordering is organised in filter and ordering models.
@@ -94,6 +94,8 @@ def run_query(filters: filter_model_type, ordering: ordering_model_type=None
         "asc" (ascending) or "desc" (descending) order can (but does not have
         to) be chosen. The default is None, which means that no ordering of the
         results is applied.
+    session: db_session
+        Object of the class db_session.
 
     Raises
     ------
@@ -111,7 +113,10 @@ def run_query(filters: filter_model_type, ordering: ordering_model_type=None
 
     # get query instance
     model = filters.model
-    query = session.query(model)
+    query = (
+    session.query(model)
+    .options(selectinload(model.molecule))
+)
 
     # process filters
     filter_dict = filters.model_dump(exclude_none=True, exclude={"model"})
@@ -162,3 +167,39 @@ def run_query(filters: filter_model_type, ordering: ordering_model_type=None
     # run query
     results = query.all()
     return results
+
+
+def run_query(filters: filter_model_type, ordering: ordering_model_type=None
+              ) -> list:
+    """
+    Query the database. The table is chosen from the filter model. All
+    filters and the ordering is organised in filter and ordering models.
+
+    Parameters
+    ----------
+    filters : filter_model
+        Pydantic model from one of the Filter-classes. The class that is
+        chosen determines which table is searched. If e.g. an object of the
+        class TREPRFilter is used only trEPR-measurements are searched.
+    ordering : ordering_model, optional
+        The list of results may be ordered depending on one or muliple ordering
+        parameters that are organised in an ordering model. For each parameter
+        "asc" (ascending) or "desc" (descending) order can (but does not have
+        to) be chosen. The default is None, which means that no ordering of the
+        results is applied.
+
+    Raises
+    ------
+    ValueError
+        An error is raised if the filter or the ordering model contains
+        attributes that are not part of the queried table.
+
+    Returns
+    -------
+    list
+        Results of the query. The lists contains objects of the sqlalchemy
+        model type.
+    """
+
+    with db_session() as session:
+        return _run_query(filters, ordering, session)
