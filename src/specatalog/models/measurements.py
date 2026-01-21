@@ -1,14 +1,11 @@
+print("IMPORT measurement.py", __name__)
 from specatalog.models.base import TimeStampedModel
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean
 from sqlalchemy.orm import Relationship
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
 
-from specatalog.main import BASE_PATH
-import importlib.util
-spec = importlib.util.spec_from_file_location("allowed_values", BASE_PATH / "allowed_values.py")
-av = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(av)
+from specatalog.main import ALLOWED_VALUES as av
 
 
 

@@ -5,6 +5,8 @@ from pathlib import Path
 import shutil
 from importlib.resources import files
 from contextlib import contextmanager
+import importlib.util
+import sys
 
 home_defaults = Path.home() / ".specatalog" / "defaults.json"
 if not home_defaults.exists():
@@ -62,3 +64,30 @@ def db_session():
         raise
     finally:
         Session.remove()
+
+
+
+# Import external allowed_values
+_ALLOWED_VALUES_MODULE = None
+
+def load_allowed_values(path: Path):
+    global _ALLOWED_VALUES_MODULE
+
+    if _ALLOWED_VALUES_MODULE is not None:
+        return _ALLOWED_VALUES_MODULE
+
+    spec = importlib.util.spec_from_file_location(
+        "allowed_values",
+        path
+    )
+    module = importlib.util.module_from_spec(spec)
+
+    # 🔐 extrem wichtig
+    sys.modules[spec.name] = module
+
+    spec.loader.exec_module(module)
+
+    _ALLOWED_VALUES_MODULE = module
+    return module
+
+ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")

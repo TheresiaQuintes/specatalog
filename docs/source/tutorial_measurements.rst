@@ -158,3 +158,15 @@ A measurement with the ID ms_id, can be easily deleted. Make sure to delete the 
 	
 	# deletion from directory
 	mm.delete_measurement(BASE_PATH, 14)
+	
+
+.. tip::
+
+	To ensure consistency between the archive folder and the database you can also use the function :func:`delete_full_measurement <specatalog.helpers.full_measurement.delete_full_measurement>`  from the ``helpers`` package ::
+	
+		from specatalog.helpers.full_measurement import delete_full_measurement
+		
+		# deletes the database entry and the measurement-directory
+		result = delete_full_measurement(BASE_PATH, 1)
+		print(result.success)
+		>>> True

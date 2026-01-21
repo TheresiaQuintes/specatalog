@@ -6,11 +6,12 @@ import datetime
 import enum
 from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
-from specatalog.helpers.full_measurement import create_full_measurement
+from specatalog.helpers.full_measurement import create_full_measurement, delete_full_measurement
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
 from specatalog.main import BASE_PATH
+import table_models as tm
 
 MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
                        "trEPR": r.TREPRFilter,
@@ -80,6 +81,34 @@ def submit_new_entry(self):
         msg.exec()
 
 
+def delete_entry(self):
+    ms_id = self.SpinBoxDelete.value()
+    sure = QMessageBox.question(
+        self, "Sure?",
+        f"Do you really want to delete the measurement with the ID {ms_id} from the archive?")
+    if sure == QMessageBox.StandardButton.Yes:
+        output = delete_full_measurement(BASE_PATH, ms_id)
+
+        if output.success:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Information)
+            msg.setWindowTitle("Success")
+            msg.setText(f"Measurement M{output.measurement_id} has been deleted from the archive.")
+            msg.exec()
+            load_measurements(self)
+            return
+
+        else:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Icon.Critical)
+            msg.setWindowTitle("An error occured.")
+            msg.setText("Deletion has not been not possible.")
+            msg.setDetailedText(str(output.error))
+            msg.exec()
+            return
+
+    else:
+        return
 
 def open_file_dialog(self):
     file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a file")
@@ -98,7 +127,12 @@ def on_header_clicked(self):
     header_number = self.header.sortIndicatorSection()
     model = MODEL_ORDERING_MAPPER[self.ComboModelChoice.currentText()]
     fields = list(model.model_fields)
+    fields.insert(2, "molecule_name")
     field_name = fields[header_number]
+    print(field_name)
+    if field_name == "molecule_name":
+        field_name = "molecular_id"
+    print(field_name)
 
     sort_order = self.header.sortIndicatorOrder()
     if sort_order == Qt.SortOrder.DescendingOrder:
@@ -112,6 +146,26 @@ def load_measurements(self):
     results = r.run_query(self.filter_model, self.ordering_model)
     model = MeasurementsTableModel(results, self.ComboModelChoice.currentText())
     self.MeasurementsView.setModel(model)
+    _setup_delegates(self, model, results)
+
+def _setup_delegates(self, model, measurements):
+    if not measurements:
+        return
+
+    sample = measurements[0]
+    UpdateClass = tm.MODEL_UPDATE_MAPPER[sample.method]
+
+    for col, attr in enumerate(model._headers):
+        if attr == "molecule_name":
+            continue
+
+        field = UpdateClass.model_fields.get(attr)
+        if not field:
+            continue
+
+        delegate = tm.TypedItemDelegate(get_field_type(field.annotation), self.MeasurementsView)
+        self.MeasurementsView.setItemDelegateForColumn(col, delegate)
+
 
 def filter_model_changed(self, model):
     self.filter_model = MODEL_FILTER_MAPPER[model]()

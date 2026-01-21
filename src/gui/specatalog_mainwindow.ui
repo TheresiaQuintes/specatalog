@@ -34,11 +34,18 @@
       </property>
       <widget class="QWidget" name="tab_1">
        <attribute name="title">
-        <string>Query</string>
+        <string>Database</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0" colspan="2">
-         <widget class="QTableView" name="MeasurementsView"/>
+        <item row="1" column="0" rowspan="8">
+         <layout class="QFormLayout" name="FormFilter"/>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="ButtonDelete">
+          <property name="text">
+           <string>Delete Entry</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1">
          <widget class="QPushButton" name="ButtonQuery">
@@ -46,9 +53,6 @@
            <string>Run Query</string>
           </property>
          </widget>
-        </item>
-        <item row="1" column="0" rowspan="4">
-         <layout class="QFormLayout" name="FormFilter"/>
         </item>
         <item row="4" column="1">
          <spacer name="verticalSpacer">
@@ -66,12 +70,18 @@
         <item row="1" column="1">
          <widget class="QComboBox" name="ComboModelChoice"/>
         </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QTableView" name="MeasurementsView"/>
+        </item>
         <item row="3" column="1">
          <widget class="QPushButton" name="ButtonClearQuery">
           <property name="text">
            <string>Clear Query</string>
           </property>
          </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QSpinBox" name="SpinBoxDelete"/>
         </item>
        </layout>
       </widget>

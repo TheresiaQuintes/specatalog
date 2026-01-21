@@ -10,6 +10,7 @@ import textwrap
 
 
 
+
 def _type_name_for_doc(typ: type) -> str:
     """
     Get the string of a type for automatic documentation. If typ is a

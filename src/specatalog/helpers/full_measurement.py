@@ -6,6 +6,8 @@ from typing import Optional
 import specatalog.data_management.measurement_management as mm
 import specatalog.crud_db.create as cr
 from specatalog.main import db_session
+from specatalog.models.measurements import Measurement
+from specatalog.crud_db.delete import _delete_object
 
 
 
@@ -135,5 +137,52 @@ def create_full_measurement(data: cr.measurement_model_pyd, base_dir: Path,
         if temp_dir and temp_dir.exists():
             shutil.rmtree(temp_dir)
 
+        return CreateMeasurementResult(success=False,
+                                       error=e)
+
+
+def delete_full_measurement(base_dir: Path, ms_id: int
+                            ) -> CreateMeasurementResult:
+    """
+    Delete a complete measurement entry (with the id ms_id) including database
+    and file system operations.
+
+    The deletion process is performed in an atomic manner with respect to
+    the database. Only if the database and the file deletion can be carried
+    out without errors the changes are committed to the database.
+
+    The following steps are executed:
+    1) Deletion of the database entry
+    2) Deletion of the measurement directory
+
+    Parameters
+    ----------
+    base_dir : Path
+        Base directory of the measurement archive.
+    ms_id : int
+        ID of the measurement.
+
+    Returns
+    -------
+    CreateMeasurementResult
+        Result object indicating success or failure of the creation process.
+        In case of success, the former measurement ID is provided.
+        In case of failure, the raised exception is included.
+    """
+    try:
+        with db_session() as session:
+            measurement = Measurement.query.filter(Measurement.id==ms_id).first()
+            if measurement is None:
+                raise ValueError(f"No measurement with the ID M{ms_id} found.")
+            _delete_object(measurement, session)
+
+
+
+            mm.delete_measurement(base_dir, ms_id, save_delete=False)
+
+        return CreateMeasurementResult(success=True,
+                                       measurement_id=ms_id)
+
+    except Exception as e:
         return CreateMeasurementResult(success=False,
                                        error=e)
