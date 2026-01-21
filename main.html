@@ -131,14 +131,9 @@
 <section id="session">
 <h2>Session<a class="headerlink" href="#session" title="Link to this heading"></a></h2>
 <p>The SQLAlchemy-session is started in main and can be imported and used by:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">Session</span>
-<span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_session</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">db_session</span><span class="p">()</span>
 </pre></div>
-</div>
-<div class="admonition hint">
-<p class="admonition-title">Hint</p>
-<p>The session is necessary for adding and commiting new or updated entries to the database.
-It is recommended to use the function <code class="docutils literal notranslate"><span class="pre">safe_commit</span></code> from <a class="reference internal" href="helpers.html"><span class="doc">helpers</span></a>.</p>
 </div>
 </section>
 </section>

@@ -186,6 +186,21 @@
 </div></blockquote>
 </li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To ensure consistency it is important to make sure all of the steps 1-5 have ben run so that a measurement directory exists for for each database entry with the same ID. To make this workflow easier the function <a class="reference internal" href="generated/specatalog.helpers.full_measurement.create_full_measurement.html#specatalog.helpers.full_measurement.create_full_measurement" title="specatalog.helpers.full_measurement.create_full_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_full_measurement</span></code></a>  from the <code class="docutils literal notranslate"><span class="pre">helpers</span></code> package can be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.helpers.full_measurement</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_full_measurement</span>
+
+<span class="c1"># creates the database entry and creates/ fills the measurement-directory</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">create_full_measurement</span><span class="p">(</span><span class="n">new_measurement</span><span class="p">,</span> <span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">raw_data</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">success</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kc">True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">measurement_id</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">ms_id</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="query-the-database">
 <h2>Query the database<a class="headerlink" href="#query-the-database" title="Link to this heading"></a></h2>
@@ -271,6 +286,18 @@
 <span class="c1"># deletion from directory</span>
 <span class="n">mm</span><span class="o">.</span><span class="n">delete_measurement</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To ensure consistency between the archive folder and the database you can also use the function <a class="reference internal" href="generated/specatalog.helpers.full_measurement.delete_full_measurement.html#specatalog.helpers.full_measurement.delete_full_measurement" title="specatalog.helpers.full_measurement.delete_full_measurement"><code class="xref py py-func docutils literal notranslate"><span class="pre">delete_full_measurement</span></code></a>  from the <code class="docutils literal notranslate"><span class="pre">helpers</span></code> package</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.helpers.full_measurement</span><span class="w"> </span><span class="kn">import</span> <span class="n">delete_full_measurement</span>
+
+<span class="c1"># deletes the database entry and the measurement-directory</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">delete_full_measurement</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kc">True</span>
+</pre></div>
+</div>
 </div>
 </section>
 </section>
