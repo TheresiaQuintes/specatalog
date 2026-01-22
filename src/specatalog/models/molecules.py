@@ -1,9 +1,6 @@
 from specatalog.models.base import TimeStampedModel
 from sqlalchemy import Column, Integer, ForeignKey, String, Text
 from sqlalchemy.orm import Relationship
-from sqlalchemy.sql.sqltypes import Enum as SAEnum
-
-from specatalog.main import ALLOWED_VALUES as av
 
 
 class Molecule(TimeStampedModel):
@@ -219,9 +216,9 @@ class RP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "rp",}
 
-    radical_1 = Column(SAEnum(av.Radicals), nullable=False)
-    linker = Column(SAEnum(av.Linker), nullable=False)
-    radical_2 = Column(SAEnum(av.Radicals), nullable=False)
+    radical_1 = Column(String(64), nullable=False)
+    linker = Column(String(64), nullable=False)
+    radical_2 = Column(String(64), nullable=False)
 
 
 class TDP(Molecule):
@@ -286,9 +283,9 @@ class TDP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "tdp",}
 
-    doublet = Column(SAEnum(av.Doublets), nullable=False)
-    linker = Column(SAEnum(av.Linker), nullable=False)
-    chromophore = Column(SAEnum(av.Chromophores), nullable=False)
+    doublet = Column(String(64), nullable=False)
+    linker = Column(String(64), nullable=False)
+    chromophore = Column(String(64), nullable=False)
 
 
 
@@ -354,6 +351,6 @@ class TTP(Molecule):
 
     __mapper_args__ = {"polymorphic_identity": "ttp",}
 
-    triplet_1= Column(SAEnum(av.Chromophores), nullable=False)
-    linker = Column(SAEnum(av.Linker), nullable=False)
-    triplet_2 = Column(SAEnum(av.Chromophores), nullable=False)
+    triplet_1= Column(String(64), nullable=False)
+    linker = Column(String(64), nullable=False)
+    triplet_2 = Column(String(64), nullable=False)

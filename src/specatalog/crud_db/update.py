@@ -2,6 +2,8 @@ import specatalog.models.measurements as ms
 import specatalog.models.molecules as mol
 from specatalog.models.base import TimeStampedModel
 from specatalog.main import db_session
+import specatalog.models.creation_pydantic_measurements as cpm
+import specatalog.models.creation_pydantic_molecules as cpmol
 
 import specatalog.helpers.helper_functions as hf
 from typing import Union
@@ -17,23 +19,23 @@ model_mapping-dictionariy.
 """
 
 model_mapping_update = {
-    "MeasurementUpdate": ms.Measurement,
-    "TREPRUpdate": ms.TREPR,
-    "CWEPRUpdate": ms.CWEPR,
-    "PulseEPRUpdate": ms.PulseEPR,
-    "UVVisUpdate": ms.UVVis,
-    "FluorescenceUpdate": ms.Fluorescence,
-    "TAUpdate": ms.TA,
-    "MoleculeUpdate": mol.Molecule,
-    "SingleMoleculeUpdate": mol.SingleMolecule,
-    "RPUpdate": mol.RP,
-    "TDPUpdate": mol.TDP,
-    "TTPUpdate": mol.TTP,
+    "MeasurementUpdate": [ms.Measurement, cpm.MeasurementModel],
+    "TREPRUpdate": [ms.TREPR, cpm.TREPRModel],
+    "CWEPRUpdate": [ms.CWEPR, cpm.CWEPRModel],
+    "PulseEPRUpdate": [ms.PulseEPR, cpm.PulseEPRModel],
+    "UVVisUpdate": [ms.UVVis, cpm.UVVisModel],
+    "FluorescenceUpdate": [ms.Fluorescence, cpm.FluorescenceModel],
+    "TAUpdate": [ms.TA, cpm.TAModel],
+    "MoleculeUpdate": [mol.Molecule, cpmol.MoleculeModel],
+    "SingleMoleculeUpdate": [mol.SingleMolecule, cpmol.SingleMoleculeModel],
+    "RPUpdate": [mol.RP, cpmol.RPModel],
+    "TDPUpdate": [mol.TDP, cpmol.TDPModel],
+    "TTPUpdate": [mol.TTP, cpmol.TTPModel]
 }
 
 updates = {}
 for name, model in model_mapping_update.items():
-    f = hf.make_update_model(model)
+    f = hf.make_update_model(model[0], model[1])
     f.__module__ = __name__
     f.__name__ = name
     updates[name] = f
@@ -82,7 +84,8 @@ def _update_model(entry: TimeStampedModel, update_data: update_model_type,
 
     """
     entry = session.merge(entry)
-    data = update_data.model_dump(exclude_none=True)
+    data_raw = update_data.model_dump(exclude_none=True)
+    data = {k: hf._enum_to_value(v) for k, v in data_raw.items()}
 
     for field, value in data.items():
         if hasattr(entry, field):

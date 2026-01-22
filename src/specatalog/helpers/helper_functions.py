@@ -7,6 +7,7 @@ from typing import Any, Optional, Literal, get_origin, get_args, Union
 from specatalog.models.base import TimeStampedModel
 import datetime
 import textwrap
+from enum import Enum
 
 
 
@@ -76,7 +77,7 @@ def _map_sqla_type(sqlatype: Sqltypes) -> type:
         return Any
 
 
-def make_filter_model(model: TimeStampedModel) -> BaseModel:
+def make_filter_model(model: TimeStampedModel, pyd_model) -> BaseModel:
     """
     Create dynamically a pydantic-class for filtering based on an SQLAlchemy-
     model.
@@ -96,13 +97,19 @@ def make_filter_model(model: TimeStampedModel) -> BaseModel:
         created. When using the model no addtional fields are allowed.
 
     """
+    pyd_fields = {name: field.annotation for name, field in pyd_model.model_fields.items()}
+
     mapper = inspect(model)  # get all columns of the SQLA-model
 
     # fill fields-dictionary
     fields: dict[str, tuple[Any, None]] = {}
     for column in mapper.columns:
         field_name = column.name
-        py_type = _map_sqla_type(column.type)
+
+        if field_name in pyd_fields:
+            py_type = pyd_fields[field_name]
+        else:
+            py_type = _map_sqla_type(column.type)
 
         # add basisfield (equality) for all columns
         fields[field_name] = (Optional[py_type], None)
@@ -231,7 +238,7 @@ def make_ordering_model(model: TimeStampedModel) -> BaseModel:
 
 
 
-def make_update_model(model: TimeStampedModel) -> BaseModel:
+def make_update_model(model: TimeStampedModel, pyd_model) -> BaseModel:
     """
     Create dynamically a pydantic-class for updating based on an SQLAlchemy
     model.
@@ -266,6 +273,8 @@ def make_update_model(model: TimeStampedModel) -> BaseModel:
     else:
         raise ValueError("Unknown model class")
 
+    pyd_fields = {name: field.annotation for name, field in pyd_model.model_fields.items()}
+
     mapper = inspect(model)  # get all columns of the SQLA-model
 
     # fill fields-dictionary
@@ -276,7 +285,11 @@ def make_update_model(model: TimeStampedModel) -> BaseModel:
         if field_name in exclude_fields:
             continue
 
-        py_type = _map_sqla_type(column.type)
+        if field_name in pyd_fields:
+            py_type = pyd_fields[field_name]
+        else:
+            py_type = _map_sqla_type(column.type)
+
         fields[field_name] = (Optional[py_type], None)
 
     # create pydantic model from fields-dictionary
@@ -308,3 +321,9 @@ def make_update_model(model: TimeStampedModel) -> BaseModel:
 
     UpdateModel.model = model  # reference SQLA-model
     return UpdateModel
+
+
+def _enum_to_value(v):
+    if isinstance(v, Enum):
+        return v.value
+    return v

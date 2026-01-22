@@ -3,9 +3,6 @@ from specatalog.models.base import TimeStampedModel
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean
 from sqlalchemy.orm import Relationship
-from sqlalchemy.sql.sqltypes import Enum as SAEnum
-
-from specatalog.main import ALLOWED_VALUES as av
 
 
 
@@ -119,12 +116,12 @@ class Measurement(TimeStampedModel):
 
     # metadata
     temperature = Column(Float, nullable=False)
-    solvent = Column(SAEnum(av.Solvents), nullable=False)
+    solvent = Column(String(512), nullable=False)
     concentration = Column(String(512))
     date = Column(Date, nullable=False)
-    measured_by = Column(SAEnum(av.Names), nullable=False)
+    measured_by = Column(String(512), nullable=False)
     location = Column(String(512))
-    device = Column(SAEnum(av.Devices))
+    device = Column(String(512))
     series = Column(String(512))
     path = Column(Text, nullable=False, unique=True)
     corrected = Column(Boolean, nullable=False)
@@ -216,7 +213,7 @@ class TREPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "trepr",}
 
-    frequency_band = Column(SAEnum(av.FrequencyBands), nullable=False)
+    frequency_band = Column(String(16), nullable=False)
     excitation_wl = Column(Float, nullable=False)
     excitation_energy = Column(Float)
     attenuation = Column(String(32), nullable=False)
@@ -294,7 +291,7 @@ class CWEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "cwepr",}
 
-    frequency_band = Column(SAEnum(av.FrequencyBands), nullable=False)
+    frequency_band = Column(String(16), nullable=False)
     attenuation = Column(String(32), nullable=False)
 
 
@@ -381,8 +378,8 @@ class PulseEPR(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "pulse_epr",}
 
-    pulse_experiment = Column(SAEnum(av.PulseExperiments), nullable=False)
-    frequency_band = Column(SAEnum(av.FrequencyBands))
+    pulse_experiment = Column(String(32), nullable=False)
+    frequency_band = Column(String(16))
     attenuation = Column(String(32))
     excitation_wl = Column(Float)
 
@@ -606,7 +603,7 @@ class TA(Measurement):
 
     __mapper_args__ = {"polymorphic_identity": "ta",}
 
-    timedomain = Column(SAEnum(av.Timedomains), nullable=False)
+    timedomain = Column(String(16), nullable=False)
     excitation_energy = Column(String(64), nullable=False)
     excitation_wl = Column(String(64), nullable=False)
     od = Column(String(64))

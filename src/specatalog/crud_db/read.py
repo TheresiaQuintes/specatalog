@@ -1,6 +1,8 @@
 import specatalog.helpers.helper_functions as hf
 import specatalog.models.measurements as ms
 import specatalog.models.molecules as mol
+import specatalog.models.creation_pydantic_measurements as cpm
+import specatalog.models.creation_pydantic_molecules as cpmol
 from specatalog.main import db_session
 
 from sqlalchemy.orm import selectinload
@@ -18,23 +20,23 @@ model_mapping-dictionaries.
 """
 
 model_mapping_filters = {
-    "MeasurementFilter": ms.Measurement,
-    "TREPRFilter": ms.TREPR,
-    "CWEPRFilter": ms.CWEPR,
-    "PulseEPRFilter": ms.PulseEPR,
-    "UVVisFilter": ms.UVVis,
-    "FluorescenceFilter": ms.Fluorescence,
-    "TAFilter": ms.TA,
-    "MoleculeFilter": mol.Molecule,
-    "SingleMoleculeFilter": mol.SingleMolecule,
-    "RPFilter": mol.RP,
-    "TDPFilter": mol.TDP,
-    "TTPFilter": mol.TTP,
+    "MeasurementFilter": [ms.Measurement, cpm.MeasurementModel],
+    "TREPRFilter": [ms.TREPR, cpm.TREPRModel],
+    "CWEPRFilter": [ms.CWEPR, cpm.CWEPRModel],
+    "PulseEPRFilter": [ms.PulseEPR, cpm.PulseEPRModel],
+    "UVVisFilter": [ms.UVVis, cpm.UVVisModel],
+    "FluorescenceFilter": [ms.Fluorescence, cpm.FluorescenceModel],
+    "TAFilter": [ms.TA, cpm.TAModel],
+    "MoleculeFilter": [mol.Molecule, cpmol.MoleculeModel],
+    "SingleMoleculeFilter": [mol.SingleMolecule, cpmol.SingleMoleculeModel],
+    "RPFilter": [mol.RP, cpmol.RPModel],
+    "TDPFilter": [mol.TDP, cpmol.TDPModel],
+    "TTPFilter": [mol.TTP, cpmol.TTPModel]
 }
 
 filters = {}
 for name, model in model_mapping_filters.items():
-    f = hf.make_filter_model(model)
+    f = hf.make_filter_model(model[0], model[1])
     f.__module__ = __name__
     filters[name] = f
 
@@ -119,7 +121,8 @@ def _run_query(filters: filter_model_type, ordering: ordering_model_type,
 )
 
     # process filters
-    filter_dict = filters.model_dump(exclude_none=True, exclude={"model"})
+    filter_dict_raw = filters.model_dump(exclude_none=True, exclude={"model"})
+    filter_dict = {k: hf._enum_to_value(v) for k, v in filter_dict_raw.items()}
     for key, value in filter_dict.items():
         if "__" in key:
             field_name, op = key.split("__", 1)

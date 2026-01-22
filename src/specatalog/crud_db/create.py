@@ -5,6 +5,7 @@ from specatalog.models.creation_pydantic_measurements import MeasurementModel
 from specatalog.models.measurements import Measurement
 from specatalog.models.creation_pydantic_molecules import MoleculeModel
 from specatalog.models.molecules import Molecule
+from specatalog.helpers.helper_functions import _enum_to_value
 
 from specatalog.main import MOLECULES_PATH, MEASUREMENTS_PATH, db_session
 
@@ -56,7 +57,8 @@ def _create_new_measurement(data: measurement_model_pyd, session: db_session
         raise ValueError(f"No molecule with the ID \
                          MOL{data.molecular_id} found.")
 
-    metadata = data.model_dump(exclude={"measurement_class"})
+    metadata_raw = data.model_dump(exclude={"measurement_class"})
+    metadata = {k: _enum_to_value(v) for k, v in metadata_raw.items()}
     measurement_class = data.measurement_class
     measurement = measurement_class(molecule=molecule, **metadata, path="")
 
