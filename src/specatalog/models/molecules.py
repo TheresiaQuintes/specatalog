@@ -168,12 +168,12 @@ class RP(Molecule):
     ----------
     id : int
         Primary key referencing ``molecules.id``; cascades on deletion.
-    radical_1 : av.Radicals
-        Enumeration value describing the first radical centre.
-    linker : av.Linker
-        Enumeration defining the chemical linker bridging the two radicals.
-    radical_2 : av.Radicals
-        Enumeration value describing the second radical centre.
+    radical_1 : str
+        Short string describing the first radical centre.
+    linker : str
+        Short string defining the chemical linker bridging the two radicals.
+    radical_2 : str
+        Short string describing the second radical centre.
 
     Notes
     -----
@@ -238,13 +238,13 @@ class TDP(Molecule):
     ----------
     id : int
         Primary key referencing ``molecules.id``; cascades on deletion.
-    doublet : av.Doublets
-        Enumeration describing the radical (doublet) centre in the TDP system.
-    linker : av.Linker
-        Enumeration specifying the chemical linker connecting doublet and
+    doublet : str
+        Short string describing the radical (doublet) centre in the TDP system.
+    linker : str
+        Short string specifying the chemical linker connecting doublet and
         chromophoric units.
-    chromophore : av.Chromophores
-        Enumeration defining the chromophoric unit capable of forming a triplet
+    chromophore : str
+        Short string defining the chromophoric unit capable of forming a triplet
         excited state.
 
     Notes
@@ -306,14 +306,14 @@ class TTP(Molecule):
     ----------
     id : int
         Primary key referencing ``molecules.id``; cascades on deletion.
-    triplet_1 : av.Chromophores
-        Enumeration identifying the first chromophoric unit capable of forming
+    triplet_1 : str
+        Short string identifying the first chromophoric unit capable of forming
         a triplet excited state.
-    linker : av.Linker
-        Enumeration specifying the chemical linker that connects the two
+    linker : str
+        Short string specifying the chemical linker that connects the two
         chromophores.
-    triplet_2 : av.Chromophores
-        Enumeration identifying the second chromophoric unit capable of forming
+    triplet_2 : str
+        Short string identifying the second chromophoric unit capable of forming
         a triplet excited state.
 
     Notes

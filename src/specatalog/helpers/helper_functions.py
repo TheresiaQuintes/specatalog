@@ -77,7 +77,7 @@ def _map_sqla_type(sqlatype: Sqltypes) -> type:
         return Any
 
 
-def make_filter_model(model: TimeStampedModel, pyd_model) -> BaseModel:
+def make_filter_model(model: TimeStampedModel, creation_model: BaseModel) -> BaseModel:
     """
     Create dynamically a pydantic-class for filtering based on an SQLAlchemy-
     model.
@@ -86,6 +86,10 @@ def make_filter_model(model: TimeStampedModel, pyd_model) -> BaseModel:
     ----------
     model : TimeStampedModel
         An SQLAlchemy model of the type TimeStampedModel or any subclass.
+    creation_model : BaseModel
+        The creation_model from models.creation_pydantic_measurements/molecules
+        that corresponds to the class of model. E.g. model = ms.TREPR ->
+        creation_model = cpm.TREPRModel.
 
     Returns
     -------
@@ -97,7 +101,8 @@ def make_filter_model(model: TimeStampedModel, pyd_model) -> BaseModel:
         created. When using the model no addtional fields are allowed.
 
     """
-    pyd_fields = {name: field.annotation for name, field in pyd_model.model_fields.items()}
+    pyd_fields = {name: field.annotation
+                  for name, field in creation_model.model_fields.items()}
 
     mapper = inspect(model)  # get all columns of the SQLA-model
 
@@ -238,7 +243,8 @@ def make_ordering_model(model: TimeStampedModel) -> BaseModel:
 
 
 
-def make_update_model(model: TimeStampedModel, pyd_model) -> BaseModel:
+def make_update_model(model: TimeStampedModel, creation_model: BaseModel
+                      ) -> BaseModel:
     """
     Create dynamically a pydantic-class for updating based on an SQLAlchemy
     model.
@@ -248,6 +254,10 @@ def make_update_model(model: TimeStampedModel, pyd_model) -> BaseModel:
     model : TimeStampedModel
         An SQLAlchemy model of the type TimeStampedModel. Has to be of the
         class Molecule or Measurement (or a subclass).
+    creation_model : BaseModel
+        The creation_model from models.creation_pydantic_measurements/molecules
+        that corresponds to the class of model. E.g. model = ms.TREPR ->
+        creation_model = cpm.TREPRModel.
 
     Raises
     ------
@@ -273,7 +283,8 @@ def make_update_model(model: TimeStampedModel, pyd_model) -> BaseModel:
     else:
         raise ValueError("Unknown model class")
 
-    pyd_fields = {name: field.annotation for name, field in pyd_model.model_fields.items()}
+    pyd_fields = {name: field.annotation
+                  for name, field in creation_model.model_fields.items()}
 
     mapper = inspect(model)  # get all columns of the SQLA-model
 
@@ -324,6 +335,10 @@ def make_update_model(model: TimeStampedModel, pyd_model) -> BaseModel:
 
 
 def _enum_to_value(v):
+    """
+    Change the enum instance to the value of the enum-instance. In case the
+    value is not of enum instance return the value.
+    """
     if isinstance(v, Enum):
         return v.value
     return v

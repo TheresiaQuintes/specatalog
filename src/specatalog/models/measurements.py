@@ -46,19 +46,18 @@ class Measurement(TimeStampedModel):
         ``"trepr"``, ``"cwepr"``, ``"pulse_epr"``).
     temperature : float
         Measurement temperature in Kelvin (or laboratory-specific units).
-    solvent : Solvents
-        Solvent used in the experiment. Enum from ``allowed_values.Solvents``.
+    solvent : str
+        Solvent used in the experiment.
     concentration : str or None
         Concentration of the sample, if provided.
     date : datetime.date
         Date on which the measurement was performed.
-    measured_by : Names
-        The operator who performed the measurement. Enum from
-        ``allowed_values.Names``.
+    measured_by : str
+        The operator who performed the measurement.
     location : str or None
         Laboratory or instrument location of the measurement.
-    device : Devices or None
-        Device/instrument identifier. Enum from ``allowed_values.Devices``.
+    device : str or None
+        Device/instrument identifier.
     series : str or None
         Optional series identifier grouping related measurements.
     path : str
@@ -150,9 +149,9 @@ class TREPR(Measurement):
     ----------
     id : int
         Primary key bound to the underlying entry in ``measurements``.
-    frequency_band : FrequencyBands
-        Microwave frequency band used for detection (e.g., X-band, Q-band).
-        Enum provided by ``allowed_values.FrequencyBands`` e.g. ``X`` or ``Q``.
+    frequency_band : str
+        Microwave frequency band used for detection (X-band, Q-band...),
+        e.g. ``X`` or ``Q``.
     excitation_wl : float
         Laser excitation wavelength in nanometres.
     excitation_energy : float or None
@@ -242,8 +241,8 @@ class CWEPR(Measurement):
     id : int
         Primary key linked to ``measurements.id`` with cascading delete.
     frequency_band : FrequencyBands
-        Microwave frequency band used for the CW-EPR measurement (e.g. X-band).
-        Enum defined in ``allowed_values.FrequencyBands``, e.g. ``X``.
+        Microwave frequency band used for the cw-EPR experiment.
+        (X-band, Q-band...), e.g. ``X`` or ``Q``.
     attenuation : str
         Microwave attenuation setting applied during signal acquisition.
 
@@ -315,10 +314,9 @@ class PulseEPR(Measurement):
     ----------
     id : int
         Primary key linked to ``measurements.id`` with cascading delete.
-    pulse_experiment : PulseExperiments
+    pulse_experiment : str
         Type of pulsed EPR sequence used (e.g. Hahn Echo, Rabi, ESEEM).
-        Enum defined in ``allowed_values.PulseExperiments``.
-    frequency_band : FrequencyBands or None
+    frequency_band : str or None
         Microwave frequency band of the experiment (e.g. X, Q, W-band).
         Optional because certain pulsed setups define frequency elsewhere.
     attenuation : str or None
@@ -546,7 +544,7 @@ class TA(Measurement):
     ----------
     id : int
         Primary key linked to ``measurements.id`` with cascading delete.
-    timedomain : Timedomains
+    timedomain : str
         Indicate in which timedomain (e.g. nano-second TA (ns)/
         femto-second TA (fs)) the exeperiment is run.
     excitation_energy : str or None
