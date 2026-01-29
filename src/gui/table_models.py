@@ -1,5 +1,6 @@
 from PyQt6.QtCore import QAbstractTableModel, Qt, QDate, QDateTime
 import specatalog.models.measurements as ms
+import specatalog.models.molecules as mol
 import specatalog.crud_db.update as up
 from sqlalchemy.inspection import inspect
 import enum
@@ -12,14 +13,23 @@ MODEL_MODEL_MAPPER = {"Measurements": ms.Measurement,
                        "pulseEPR": ms.PulseEPR,
                        "UVvis": ms.UVVis,
                        "Fluorescence": ms.Fluorescence,
-                       "TA": ms.TA}
+                       "TA": ms.TA,
+                       "Molecules": mol.Molecule,
+                       "SingleMolecule": mol.SingleMolecule,
+                       "RP": mol.RP,
+                       "TDP": mol.TDP,
+                       "TTP": mol.TTP}
 
 MODEL_UPDATE_MAPPER = {"trepr": up.TREPRUpdate,
                        "cwepr": up.CWEPRUpdate,
                        "pulse_epr": up.PulseEPRUpdate,
                        "uvvis": up.UVVisUpdate,
                        "fluorescence": up.FluorescenceUpdate,
-                       "ta": up.TAUpdate
+                       "ta": up.TAUpdate,
+                       "single": up.SingleMoleculeUpdate,
+                       "rp": up.RPUpdate,
+                       "tdp": up.TDPUpdate,
+                       "ttp": up.TTPUpdate
                        }
 
 
@@ -117,6 +127,91 @@ class MeasurementsTableModel(QAbstractTableModel):
         return True
 
 
+class MoleculesTableModel(QAbstractTableModel):
+    def __init__(self, molecules, model):
+        super().__init__()
+        self._molecules = molecules
+        mapper = inspect(MODEL_MODEL_MAPPER[model])
+        self._headers = [
+            column.key
+            for column in mapper.columns
+            if not (column.primary_key and column.foreign_keys)]
+
+    def rowCount(self, parent=None):
+        return len(self._molecules)
+
+    def columnCount(self, parent=None):
+        return len(self._headers)
+
+    def data(self, index, role=Qt.ItemDataRole.DisplayRole):
+        if not index.isValid():
+            return None
+
+        molecule = self._molecules[index.row()]
+        attr = self._headers[index.column()]
+
+
+        value = getattr(molecule, attr)
+
+        if role == Qt.ItemDataRole.EditRole:
+            return value
+
+        if role == Qt.ItemDataRole.DisplayRole:
+            if value is None:
+                return ""
+
+            if isinstance(value, enum.Enum):
+                return value.name
+
+            if isinstance(value, (datetime.date, datetime.datetime)):
+                return value.strftime("%Y-%m-%d")
+
+            return value
+
+        return None
+
+    def headerData(self, section, orientation, role):
+        if role != Qt.ItemDataRole.DisplayRole:
+            return None
+        if orientation == Qt.Orientation.Horizontal:
+            return self._headers[section]
+
+    def flags(self, index):
+        if not index.isValid():
+            return Qt.ItemFlag.NoItemFlags
+
+        attr = self._headers[index.column()]
+
+        if attr in ("id", "molecular_id", "method", "path", "created_at",
+                    "updated_at", "molecule_name"):
+            return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+
+        return (
+            Qt.ItemFlag.ItemIsSelectable
+            | Qt.ItemFlag.ItemIsEnabled
+            | Qt.ItemFlag.ItemIsEditable
+        )
+
+    def setData(self, index, value, role=Qt.ItemDataRole.EditRole):
+        if role != Qt.ItemDataRole.EditRole:
+            return False
+
+        molecule = self._molecules[index.row()]
+        attr = self._headers[index.column()]
+
+        try:
+            UpdateClass = MODEL_UPDATE_MAPPER[molecule.group]
+            update_model = UpdateClass(**{attr: value})
+            up.update_model(molecule, update_model)
+            setattr(molecule, attr, value)
+
+        except Exception as e:
+            print(f"Update failed: {e}")
+            return False
+
+        # GUI aktualisieren
+        self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
+        return True
 
 def create_editor_for_type(field_type, parent):
     if field_type == str:

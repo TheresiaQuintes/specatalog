@@ -115,10 +115,10 @@ def _run_query(filters: filter_model_type, ordering: ordering_model_type,
 
     # get query instance
     model = filters.model
-    query = (
-    session.query(model)
-    .options(selectinload(model.molecule))
-)
+    query = session.query(model)
+    if hasattr(model, "molecule"):
+        query = query.options(selectinload(model.molecule))
+
 
     # process filters
     filter_dict_raw = filters.model_dump(exclude_none=True, exclude={"model"})

@@ -13,6 +13,7 @@ def connect_signal_slot(self) -> None:
     self.ComboModelChoiceNewEntry.currentTextChanged.connect(lambda model: gf.new_entry_model_changed(self, model))
 
     self.tabWidget.currentChanged.connect(lambda index: gf.on_tab_changed(self, index))
+    self.RadioMeasurements.toggled.connect(lambda: gf.change_ms_mol(self))
 
 def connections_db_tables(self):
     # ordering

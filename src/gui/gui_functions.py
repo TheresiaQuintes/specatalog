@@ -1,11 +1,12 @@
 from specatalog.crud_db import read as r
-from table_models import MeasurementsTableModel
+from table_models import MeasurementsTableModel, MoleculesTableModel
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QComboBox,  QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit, QMessageBox
 import datetime
 import enum
 from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
+import specatalog.models.creation_pydantic_molecules as cpmol
 from specatalog.helpers.full_measurement import create_full_measurement, delete_full_measurement
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
@@ -19,7 +20,12 @@ MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
                        "pulseEPR": r.PulseEPRFilter,
                        "UVvis": r.UVVisFilter,
                        "Fluorescence": r.FluorescenceFilter,
-                       "TA": r.TAFilter}
+                       "TA": r.TAFilter,
+                       "Molecules": r.MoleculeFilter,
+                       "SingleMolecule": r.SingleMoleculeFilter,
+                       "RP": r.RPFilter,
+                       "TDP": r.TDPFilter,
+                       "TTP": r.TTPFilter}
 
 MODEL_ORDERING_MAPPER = {"Measurements": r.MeasurementOrdering,
                        "trEPR": r.TREPROrdering,
@@ -27,14 +33,23 @@ MODEL_ORDERING_MAPPER = {"Measurements": r.MeasurementOrdering,
                        "pulseEPR": r.PulseEPROrdering,
                        "UVvis": r.UVVisOrdering,
                        "Fluorescence": r.FluorescenceOrdering,
-                       "TA": r.TAOrdering}
+                       "TA": r.TAOrdering,
+                       "Molecules": r.MoleculeOrdering,
+                       "SingleMolecule": r.SingleMoleculeOrdering,
+                       "RP": r.RPOrdering,
+                       "TDP": r.TDPOrdering,
+                       "TTP": r.TTPOrdering}
 
 MODEL_NEW_MODEL_MAPPER = {"trEPR": cpm.TREPRModel,
                           "cwEPR": cpm.CWEPRModel,
                           "pulseEPR": cpm.PulseEPRModel,
                           "UVvis": cpm.UVVisModel,
                           "Fluorescence": cpm.FluorescenceModel,
-                          "TA": cpm.TAModel}
+                          "TA": cpm.TAModel,
+                          "SingleMolecule": cpmol.SingleMoleculeModel,
+                          "RP": cpmol.RPModel,
+                          "TDP": cpmol.TDPModel,
+                          "TTP": cpmol.TTPModel}
 def run_query(self):
     data = get_values(self, self.filter_fields)
     self.filter_model = self.filter_model.copy(update=data)
@@ -129,10 +144,8 @@ def on_header_clicked(self):
     fields = list(model.model_fields)
     fields.insert(2, "molecule_name")
     field_name = fields[header_number]
-    print(field_name)
     if field_name == "molecule_name":
         field_name = "molecular_id"
-    print(field_name)
 
     sort_order = self.header.sortIndicatorOrder()
     if sort_order == Qt.SortOrder.DescendingOrder:
@@ -143,8 +156,14 @@ def on_header_clicked(self):
 
 
 def load_measurements(self):
+
     results = r.run_query(self.filter_model, self.ordering_model)
-    model = MeasurementsTableModel(results, self.ComboModelChoice.currentText())
+
+    if self.RadioMeasurements.isChecked():
+        model = MeasurementsTableModel(results, self.ComboModelChoice.currentText())
+    else:
+        model = MoleculesTableModel(results, self.ComboModelChoice.currentText())
+
     self.MeasurementsView.setModel(model)
     _setup_delegates(self, model, results)
 
@@ -153,7 +172,10 @@ def _setup_delegates(self, model, measurements):
         return
 
     sample = measurements[0]
-    UpdateClass = tm.MODEL_UPDATE_MAPPER[sample.method]
+    if self.RadioMeasurements.isChecked():
+        UpdateClass = tm.MODEL_UPDATE_MAPPER[sample.method]
+    else:
+        UpdateClass = tm.MODEL_UPDATE_MAPPER[sample.group]
 
     for col, attr in enumerate(model._headers):
         if attr == "molecule_name":
@@ -290,3 +312,37 @@ def show_error(self, text: str):
     msg.setWindowTitle("Error")
     msg.setText(text)
     msg.exec()
+
+def change_ms_mol(self):
+    if self.RadioMeasurements.isChecked():
+        # combobox
+        self.ComboModelChoice.blockSignals(True)
+        self.ComboModelChoice.clear()
+        self.ComboModelChoice.blockSignals(False)
+        self.ComboModelChoice.addItems(["Measurements", "trEPR", "cwEPR",
+                                        "pulseEPR", "UVvis", "Fluorescence",
+                                        "TA"])
+        self.ComboModelChoiceNewEntry.blockSignals(True)
+        self.ComboModelChoiceNewEntry.clear()
+        self.ComboModelChoiceNewEntry.blockSignals(False)
+        self.ComboModelChoiceNewEntry.addItems(["trEPR",
+                                                "cwEPR", "pulseEPR", "UVvis",
+                                                "Fluorescence", "TA"])
+        self.ComboRawFormat.addItems(["bruker_bes3t", "uvvis_ulm",
+                                      "uvvis_freiburg"])
+
+    if self.RadioMolecules.isChecked():
+        # combobox
+        self.ComboModelChoice.blockSignals(True)
+        self.ComboModelChoice.clear()
+        self.ComboModelChoice.blockSignals(False)
+        self.ComboModelChoice.addItems(["Molecules", "SingleMolecule", "RP",
+                                        "TDP", "TTP"])
+        self.ComboModelChoiceNewEntry.blockSignals(True)
+        self.ComboModelChoiceNewEntry.clear()
+        self.ComboModelChoiceNewEntry.blockSignals(False)
+        self.ComboModelChoiceNewEntry.addItems(["SingleMolecule", "RP",
+                                                "TDP", "TTP"])
+        self.ComboRawFormat.blockSignals(True)
+        self.ComboRawFormat.clear()
+        self.ComboRawFormat.blockSignals(False)

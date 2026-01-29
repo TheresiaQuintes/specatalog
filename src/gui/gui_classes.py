@@ -29,17 +29,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
 
-
-
-        # combobox
-        self.ComboModelChoice.addItems(["Measurements", "trEPR", "cwEPR",
-                                        "pulseEPR", "UVvis", "Fluorescence",
-                                        "TA"])
-        self.ComboModelChoiceNewEntry.addItems(["trEPR",
-                                                "cwEPR", "pulseEPR", "UVvis",
-                                                "Fluorescence", "TA"])
-        self.ComboRawFormat.addItems(["bruker_bes3t", "uvvis_ulm",
-                                      "uvvis_freiburg"])
+        gf.change_ms_mol(self)
 
         # models
         self.filter_model = r.MeasurementFilter()
