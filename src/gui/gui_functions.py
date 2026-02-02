@@ -278,7 +278,7 @@ def create_widget_for_type(self, field_type):
     if isinstance(field_type, type) and issubclass(field_type, enum.Enum):
         combo = QComboBox()
         combo.addItem("", userData=None)
-        combo.addItems([e.value for e in field_type])
+        combo.addItems([e.name for e in field_type])  # !!!
         return combo
     return QLineEdit()
 
