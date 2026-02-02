@@ -315,16 +315,9 @@ def get_values(self, fields):
             data[key] = widget.dateTime().toPython()
     return data
 
-def show_error(self, text: str):
-    msg = QMessageBox(self)
-    msg.setIcon(QMessageBox.Icon.Critical)
-    msg.setWindowTitle("Error")
-    msg.setText(text)
-    msg.exec()
 
 def change_ms_mol(self):
     if self.RadioMeasurements.isChecked():
-        # combobox
         self.ComboModelChoice.blockSignals(True)
         self.ComboModelChoice.clear()
         self.ComboModelChoice.blockSignals(False)
@@ -348,7 +341,6 @@ def change_ms_mol(self):
         self.ButtonDelete.setEnabled(True)
 
     if self.RadioMolecules.isChecked():
-        # combobox
         self.ComboModelChoice.blockSignals(True)
         self.ComboModelChoice.clear()
         self.ComboModelChoice.blockSignals(False)

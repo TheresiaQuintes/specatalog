@@ -181,10 +181,21 @@ class MoleculesTableModel(QAbstractTableModel):
             return Qt.ItemFlag.NoItemFlags
 
         attr = self._headers[index.column()]
+        molecule = self._molecules[index.row()]
 
-        if attr in ("id", "molecular_id", "method", "path", "created_at",
-                    "updated_at", "molecule_name"):
+        if attr in ("id", "group", "structural_formula", "created_at",
+                    "updated_at"):
             return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
+
+        if attr == "name":
+            if molecule.group == "single":
+                return (
+                    Qt.ItemFlag.ItemIsSelectable
+                    | Qt.ItemFlag.ItemIsEnabled
+                    | Qt.ItemFlag.ItemIsEditable
+                )
+            else:
+                return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
 
         return (
             Qt.ItemFlag.ItemIsSelectable

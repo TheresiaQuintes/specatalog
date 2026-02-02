@@ -172,9 +172,9 @@ def _automatic_name_update(entry: TimeStampedModel,
     def get_value(field):
         val = update_data.get(field)
         if val is not None:
-            return val.value
+            return val
         else:
-            return getattr(entry, field).value
+            return getattr(entry, field)
 
     # build name
     entry.name = "-".join(get_value(k) for k in group_keys[entry.group])
