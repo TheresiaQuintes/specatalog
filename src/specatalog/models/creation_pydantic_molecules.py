@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict, field_validator, computed_field
-from typing import Type, Optional
+from typing import Type, Optional, ClassVar
 import specatalog.models.molecules as mol
 
 from specatalog.main import ALLOWED_VALUES as av
@@ -42,12 +42,7 @@ class SingleMoleculeModel(MoleculeModel):
         Optional free-text field with supplementary information.
 
     """
-    model_class: Type=mol.SingleMolecule
-    @field_validator("model_class")
-    def check_grp(cls, v):
-        if v is not mol.SingleMolecule:
-            raise ValueError("model_class darf nicht geändert werden")
-        return v
+    model_class: ClassVar[mol.SingleMolecule] = mol.SingleMolecule
 
     name: str
     additional_info: Optional[str]=None
@@ -77,12 +72,7 @@ class RPModel(MoleculeModel):
         Computed property combining radicals and linker into a
         name (e.g., "TEMPO1-Ph-TEMPO2").
     """
-    model_class: Type=mol.RP
-    @field_validator("model_class")
-    def check_grp(cls, v):
-        if v is not mol.RP:
-            raise ValueError("model_class darf nicht geändert werden")
-        return v
+    model_class: ClassVar[mol.RP] = mol.RP
 
     radical_1: av.Radicals
     linker: av.Linker
@@ -119,12 +109,7 @@ class TDPModel(MoleculeModel):
         Computed property combining doublet linker and chromophore into a
         name (e.g., "PDI2-co-TEMPO3").
     """
-    model_class: Type=mol.TDP
-    @field_validator("model_class")
-    def check_grp(cls, v):
-        if v is not mol.TDP:
-            raise ValueError("model_class darf nicht geändert werden")
-        return v
+    model_class: ClassVar[mol.TDP] = mol.TDP
 
     doublet: av.Doublets
     linker: av.Linker
@@ -161,12 +146,7 @@ class TTPModel(MoleculeModel):
         Computed property combining triplet and linker values into a
         name (e.g., "Perylene-ph-Perylene").
     """
-    model_class: Type=mol.TTP
-    @field_validator("model_class")
-    def check_grp(cls, v):
-        if v is not mol.TTP:
-            raise ValueError("model_class darf nicht geändert werden")
-        return v
+    model_class: ClassVar[mol.TTP] = mol.TTP
 
     triplet_1: av.Chromophores
     linker: av.Linker

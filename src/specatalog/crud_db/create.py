@@ -134,7 +134,7 @@ def _create_new_molecule(data: molecule_model_pyd, session: db_session
     molecule = model_class(**metadata, structural_formula="")
 
     session.add(molecule)
-    session.flush
+    session.flush()
     molecule.structural_formula = f"{MOLECULES_PATH}/MOL{molecule.id}"
 
     return molecule

@@ -57,6 +57,24 @@ As an example we will add anthracene and a covalently bonded pair of perylene an
 		target_per_tempo.parent.mkdir(parents=Ture, exist_ok=True) 
 		shutil.copy2(struct_per_tempo, target_per_tempo)
 		
+.. tip::
+
+	To ensure consistency it is important to make sure all of the steps 1-5 have been run so that a molecule directory including the structural formula file exists for for each database entry with the same ID. To make this workflow easier the function :func:`create_full_molecule <specatalog.helpers.full_entry.create_full_molecule>`  from the ``helpers`` package can be used::
+	
+		from specatalog.helpers.full_entry import create_full_molecule
+		from specatalog.main import BASE_PATH
+		
+		struct_path = <path/to/your/image/anthracene>
+		fmt = ".cdxml"
+		
+		# creates the database entry and creates/ fills the molecule-directory
+		fm = create_full_molecule(anthracene, BASE_PATH, struct_path, ".cdxml")
+		
+		print(fm.success)
+		>>> True
+		print(fm.molecular_id)
+		>>> {mol_id}
+		
 
 Query molecules
 ---------------

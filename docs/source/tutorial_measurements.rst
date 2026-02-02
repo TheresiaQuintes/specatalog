@@ -72,9 +72,9 @@ First of all a new entry shall be added to the measurements table and the data-a
 
 .. tip::
 
-	To ensure consistency it is important to make sure all of the steps 1-5 have ben run so that a measurement directory exists for for each database entry with the same ID. To make this workflow easier the function :func:`create_full_measurement <specatalog.helpers.full_measurement.create_full_measurement>`  from the ``helpers`` package can be used::
+	To ensure consistency it is important to make sure all of the steps 1-5 have been run so that a measurement directory exists for for each database entry with the same ID. To make this workflow easier the function :func:`create_full_measurement <specatalog.helpers.full_entry.create_full_measurement>`  from the ``helpers`` package can be used::
 	
-		from specatalog.helpers.full_measurement import create_full_measurement
+		from specatalog.helpers.full_entry import create_full_measurement
 		
 		# creates the database entry and creates/ fills the measurement-directory
 		fm = create_full_measurement(new_measurement, BASE_PATH, raw_data, "bruker_bes3t")
@@ -162,9 +162,9 @@ A measurement with the ID ms_id, can be easily deleted. Make sure to delete the 
 
 .. tip::
 
-	To ensure consistency between the archive folder and the database you can also use the function :func:`delete_full_measurement <specatalog.helpers.full_measurement.delete_full_measurement>`  from the ``helpers`` package ::
+	To ensure consistency between the archive folder and the database you can also use the function :func:`delete_full_measurement <specatalog.helpers.full_entry.delete_full_measurement>`  from the ``helpers`` package ::
 	
-		from specatalog.helpers.full_measurement import delete_full_measurement
+		from specatalog.helpers.full_entry import delete_full_measurement
 		
 		# deletes the database entry and the measurement-directory
 		result = delete_full_measurement(BASE_PATH, 1)

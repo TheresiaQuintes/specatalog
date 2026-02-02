@@ -7,7 +7,7 @@ import enum
 from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
 import specatalog.models.creation_pydantic_molecules as cpmol
-from specatalog.helpers.full_measurement import create_full_measurement, delete_full_measurement
+from specatalog.helpers.full_entry import create_full_measurement, delete_full_measurement, create_full_molecule
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
@@ -57,10 +57,11 @@ def run_query(self):
 
 def submit_new_entry(self):
     data = get_values(self, self.new_fields)
-    if data["corrected"] == None:
-        data["corrected"] = False
-    if data["evaluated"] == None:
-        data["evaluated"] = False
+    if self.RadioMeasurements.isChecked():
+        if data["corrected"] == None:
+            data["corrected"] = False
+        if data["evaluated"] == None:
+            data["evaluated"] = False
 
     try:
         new_entry_model = MODEL_NEW_MODEL_MAPPER[self.ComboModelChoiceNewEntry.currentText()](**data)
@@ -76,15 +77,19 @@ def submit_new_entry(self):
 
     raw_data = self.LineRawDataInput.text()
 
-    output = create_full_measurement(new_entry_model, BASE_PATH, raw_data,
-                                     self.ComboRawFormat.currentText())
+    if self.RadioMeasurements.isChecked():
+        output = create_full_measurement(new_entry_model, BASE_PATH, raw_data,
+                                         self.ComboRawFormat.currentText())
+    else:
+        output = create_full_molecule(new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText())
 
     if output.success:
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Information)
         msg.setWindowTitle("Success")
-        msg.setText(f"Measurement M{output.measurement_id} has been created successfully!")
+        msg.setText("New entry has been created successfully!")
         msg.exec()
+        load_measurements(self)
         return
 
     else:
@@ -303,7 +308,7 @@ def get_values(self, fields):
             data[key] = py_date
 
         elif isinstance(widget, QDateTimeEdit):
-            data[key] = widget.datetime().toPython()
+            data[key] = widget.dateTime().toPython()
     return data
 
 def show_error(self, text: str):
@@ -328,8 +333,15 @@ def change_ms_mol(self):
         self.ComboModelChoiceNewEntry.addItems(["trEPR",
                                                 "cwEPR", "pulseEPR", "UVvis",
                                                 "Fluorescence", "TA"])
+
+        self.ComboRawFormat.blockSignals(True)
+        self.ComboRawFormat.clear()
+        self.ComboRawFormat.blockSignals(False)
         self.ComboRawFormat.addItems(["bruker_bes3t", "uvvis_ulm",
                                       "uvvis_freiburg"])
+
+        self.SpinBoxDelete.setEnabled(True)
+        self.ButtonDelete.setEnabled(True)
 
     if self.RadioMolecules.isChecked():
         # combobox
@@ -346,3 +358,8 @@ def change_ms_mol(self):
         self.ComboRawFormat.blockSignals(True)
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
+        self.ComboRawFormat.addItems([".pdf", ".cdxml", ".png", ".jpg",
+                                      ".jpeg", ".svg"])
+
+        self.SpinBoxDelete.setEnabled(False)
+        self.ButtonDelete.setEnabled(False)
