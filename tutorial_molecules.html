@@ -168,6 +168,25 @@ As an example we will add anthracene and a covalently bonded pair of perylene an
 </div></blockquote>
 </li>
 </ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To ensure consistency it is important to make sure all of the steps 1-5 have been run so that a molecule directory including the structural formula file exists for for each database entry with the same ID. To make this workflow easier the function <a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_molecule.html#specatalog.helpers.full_entry.create_full_molecule" title="specatalog.helpers.full_entry.create_full_molecule"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_full_molecule</span></code></a>  from the <code class="docutils literal notranslate"><span class="pre">helpers</span></code> package can be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.helpers.full_entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_full_molecule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
+
+<span class="n">struct_path</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">image</span><span class="o">/</span><span class="n">anthracene</span><span class="o">&gt;</span>
+<span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;.cdxml&quot;</span>
+
+<span class="c1"># creates the database entry and creates/ fills the molecule-directory</span>
+<span class="n">fm</span> <span class="o">=</span> <span class="n">create_full_molecule</span><span class="p">(</span><span class="n">anthracene</span><span class="p">,</span> <span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">struct_path</span><span class="p">,</span> <span class="s2">&quot;.cdxml&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">success</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kc">True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fm</span><span class="o">.</span><span class="n">molecular_id</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="n">mol_id</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </section>
 <section id="query-molecules">
 <h2>Query molecules<a class="headerlink" href="#query-molecules" title="Link to this heading"></a></h2>

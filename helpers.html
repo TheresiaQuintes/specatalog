@@ -23,7 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="create_full_measurement" href="generated/specatalog.helpers.full_measurement.create_full_measurement.html" />
+    <link rel="next" title="create_full_measurement" href="generated/specatalog.helpers.full_entry.create_full_measurement.html" />
     <link rel="prev" title="H5Object" href="generated/specatalog.data_management.hdf5_reader.H5Object.html" /> 
 </head>
 
@@ -67,9 +67,10 @@
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">helpers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#full-measurement">full_measurement</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_measurement.create_full_measurement.html">create_full_measurement</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_measurement.delete_full_measurement.html">delete_full_measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-entry">full_entry</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_measurement.html">create_full_measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_entry.delete_full_measurement.html">delete_full_measurement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_molecule.html">create_full_molecule</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#helper-functions">helper_functions</a><ul>
@@ -108,7 +109,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
         <a href="generated/specatalog.data_management.hdf5_reader.H5Object.html" class="btn btn-neutral float-left" title="H5Object" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/specatalog.helpers.full_measurement.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/specatalog.helpers.full_entry.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -121,16 +122,19 @@
 - <code class="docutils literal notranslate"><span class="pre">create_database</span></code> can be used for the first setup of a new database.
 - <code class="docutils literal notranslate"><span class="pre">allowed_values_not_adapted.py</span></code> contains the file with allowed values as it is copied to the archive root during the installation process.
 - The functions in <code class="docutils literal notranslate"><span class="pre">helper_functions</span></code> are internally used for the dynamic  cration of models
-- The module <code class="docutils literal notranslate"><span class="pre">full_measurement</span></code> provides functions that combine the workflow for the creation or deletion of a new measurement entry and the creation/deletion of the corresponding directory in the archive folder.</p>
-<section id="full-measurement">
-<h2>full_measurement<a class="headerlink" href="#full-measurement" title="Link to this heading"></a></h2>
+- The module <code class="docutils literal notranslate"><span class="pre">full_entry</span></code> provides functions that combine the workflow for the creation or deletion of a new measurement entry and the creation/deletion of the corresponding directory in the archive folder.</p>
+<section id="full-entry">
+<h2>full_entry<a class="headerlink" href="#full-entry" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_measurement.create_full_measurement.html#specatalog.helpers.full_measurement.create_full_measurement" title="specatalog.helpers.full_measurement.create_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_measurement</span></code></a>(data, base_dir, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_measurement.html#specatalog.helpers.full_entry.create_full_measurement" title="specatalog.helpers.full_entry.create_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_measurement</span></code></a>(data, base_dir, ...)</p></td>
 <td><p>Create a complete measurement entry including database and file system operations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_measurement.delete_full_measurement.html#specatalog.helpers.full_measurement.delete_full_measurement" title="specatalog.helpers.full_measurement.delete_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_full_measurement</span></code></a>(base_dir, ms_id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.delete_full_measurement.html#specatalog.helpers.full_entry.delete_full_measurement" title="specatalog.helpers.full_entry.delete_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_full_measurement</span></code></a>(base_dir, ms_id)</p></td>
 <td><p>Delete a complete measurement entry (with the id ms_id) including database and file system operations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_molecule.html#specatalog.helpers.full_entry.create_full_molecule" title="specatalog.helpers.full_entry.create_full_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_molecule</span></code></a>(data, base_dir, ...)</p></td>
+<td><p>Create a complete molecule entry including database and file system operations.</p></td>
 </tr>
 </tbody>
 </table>
@@ -158,7 +162,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="generated/specatalog.data_management.hdf5_reader.H5Object.html" class="btn btn-neutral float-left" title="H5Object" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/specatalog.helpers.full_measurement.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/specatalog.helpers.full_entry.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
