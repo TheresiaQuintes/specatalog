@@ -147,10 +147,14 @@ def on_header_clicked(self):
     header_number = self.header.sortIndicatorSection()
     model = MODEL_ORDERING_MAPPER[self.ComboModelChoice.currentText()]
     fields = list(model.model_fields)
-    fields.insert(2, "molecule_name")
-    field_name = fields[header_number]
-    if field_name == "molecule_name":
-        field_name = "molecular_id"
+
+    if self.RadioMeasurements.isChecked():
+        fields.insert(2, "molecule_name")
+        field_name = fields[header_number]
+        if field_name == "molecule_name":
+            field_name = "molecular_id"
+    else:
+        field_name = fields[header_number]
 
     sort_order = self.header.sortIndicatorOrder()
     if sort_order == Qt.SortOrder.DescendingOrder:
