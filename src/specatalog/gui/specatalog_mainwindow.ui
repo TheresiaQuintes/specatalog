@@ -37,51 +37,57 @@
         <string>Database</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="1">
-         <widget class="QComboBox" name="ComboModelChoice"/>
+        <item row="1" column="0" rowspan="4">
+         <layout class="QFormLayout" name="FormFilter"/>
         </item>
-        <item row="7" column="1">
-         <widget class="QPushButton" name="ButtonDelete">
-          <property name="text">
-           <string>Delete Entry</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0" colspan="2">
+        <item row="0" column="0" colspan="3">
          <widget class="QTableView" name="MeasurementsView"/>
         </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="ButtonQuery">
-          <property name="text">
-           <string>Run Query</string>
-          </property>
+        <item row="2" column="2">
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="1" column="1">
+            <widget class="QPushButton" name="ButtonClearQuery">
+             <property name="text">
+              <string>Clear Query</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>223</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="4" column="1">
+            <widget class="QPushButton" name="ButtonDelete">
+             <property name="text">
+              <string>Delete Entry</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QSpinBox" name="SpinBoxDelete"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="ButtonQuery">
+             <property name="text">
+              <string>Run Query</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="2">
+            <widget class="QComboBox" name="ComboModelChoice"/>
+           </item>
+          </layout>
          </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QSpinBox" name="SpinBoxDelete"/>
-        </item>
-        <item row="3" column="1">
-         <widget class="QPushButton" name="ButtonClearQuery">
-          <property name="text">
-           <string>Clear Query</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0" rowspan="8">
-         <layout class="QFormLayout" name="FormFilter"/>
         </item>
        </layout>
       </widget>

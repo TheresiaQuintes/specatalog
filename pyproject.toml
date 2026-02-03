@@ -14,7 +14,9 @@ dependencies = [
   "pydantic~=2.12",
   "alembic~=1.17",
   "psycopg2-binary",
-  "pandas~=2.3"
+  "pandas~=2.3",
+  "PyQt6~=6.10",
+  "pyqtdarktheme~=2.1"
 ]
 
 [build-system]
@@ -36,3 +38,4 @@ specatalog-welcome = "specatalog.cli:print_welcome"
 specatalog-configuration = "specatalog.cli:configure_db"
 specatalog-init-db = "specatalog.helpers.create_database:specatalog_init_db"
 specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"
+specatalog-gui = "specatalog.gui.gui_launcher:start_gui"

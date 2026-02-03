@@ -1,7 +1,7 @@
-from SpecatalogMainWindow import Ui_MainWindow
+from specatalog.gui.SpecatalogMainWindow import Ui_MainWindow
 from PyQt6 import QtWidgets
-import gui_signal_slots as gss
-import gui_functions as gf
+import specatalog.gui.gui_signal_slots as gss
+import specatalog.gui.gui_functions as gf
 from PyQt6.QtCore import Qt
 from specatalog.crud_db import read as r
 from specatalog.models import creation_pydantic_measurements as cpm

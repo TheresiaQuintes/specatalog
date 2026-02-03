@@ -6,6 +6,8 @@ Installation and Setup
    - Python 3.11 installation
    - pip
    - Open a terminal
+   
+   - Make sure that your database admin has given you the following information: username, password, a public archive directory (root path) and the url of the database.
 
 1. Clone the repository from GitHub::
 
@@ -38,11 +40,6 @@ Installation and Setup
 6. Configure your database by defining a root-path for your archive folder and a username/password::
 
 	  specatalog-configuration
-
-
-7. Only if the archive directory and the database do **not** exist run::
-
-      specatalog-init-db
 
 
 

@@ -1,4 +1,4 @@
-import gui_functions as gf
+import specatalog.gui.gui_functions as gf
 
 
 def connect_signal_slot(self) -> None:

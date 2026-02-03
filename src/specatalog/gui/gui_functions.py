@@ -1,5 +1,5 @@
 from specatalog.crud_db import read as r
-from table_models import MeasurementsTableModel, MoleculesTableModel
+from specatalog.gui.table_models import MeasurementsTableModel, MoleculesTableModel
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QComboBox,  QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit, QMessageBox
 import datetime
@@ -12,7 +12,7 @@ from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
 from specatalog.main import BASE_PATH
-import table_models as tm
+import specatalog.gui.table_models as tm
 
 MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
                        "trEPR": r.TREPRFilter,
@@ -230,7 +230,7 @@ def build_form(self, layout, fields, schema: dict):
     for key, field in schema.items():
         if "__" in key:
             continue
-        elif (self.tab_index == 0 and (key in["date", "created_at", "updated_at", "method"])):
+        elif (self.tab_index == 0 and (key in["date", "created_at", "updated_at", "method", "group"])):
             continue
         else:
             field_type = get_field_type(field.annotation)
@@ -278,7 +278,7 @@ def create_widget_for_type(self, field_type):
     if isinstance(field_type, type) and issubclass(field_type, enum.Enum):
         combo = QComboBox()
         combo.addItem("", userData=None)
-        combo.addItems([e.name for e in field_type])  # !!!
+        combo.addItems([e.name for e in field_type])
         return combo
     return QLineEdit()
 

@@ -1,12 +1,14 @@
 import sys
 from PyQt6 import QtWidgets
-from gui_classes import MainWindow
+from specatalog.gui.gui_classes import MainWindow
+import qdarktheme
 
 
 # [MAIN LOOP]
 def main():
     """Start PySpin."""
     app = QtWidgets.QApplication(sys.argv)
+    qdarktheme.setup_theme("auto")
     win = MainWindow()
     win.show()
 
