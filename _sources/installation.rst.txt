@@ -7,7 +7,7 @@ Installation and Setup
    - pip
    - Open a terminal
    
-   - Make sure that your database admin has given you the following information: username, password, a public archive directory (root path) and the url of the database.
+   - Make sure that your database admin has given you the following information: username, password and the url of the database.
 
 1. Clone the repository from GitHub::
 
@@ -37,7 +37,7 @@ Installation and Setup
      
       specatalog-welcome
 
-6. Configure your database by defining a root-path for your archive folder and a username/password::
+6. Configure your database by defining a (local) root-path for your archive folder and a username/password::
 
 	  specatalog-configuration
 

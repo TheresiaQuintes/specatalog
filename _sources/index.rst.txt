@@ -9,6 +9,7 @@ This is a package to organise an archive of experimental data.
    :caption: Getting Started
 
    installation
+   working_with_remote_folders
    update
 
 
