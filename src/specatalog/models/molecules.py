@@ -30,6 +30,9 @@ class Molecule(TimeStampedModel):
         Must be unique.
     measurements : list[Measurement]
         All spectroscopic measurements associated with this molecule.
+    additional_info : str or None
+        Optional free-text field containing supplementary information about
+        the molecule.
     group : str
         Polymorphic discriminator used by SQLAlchemy to select the correct
         molecule subclass upon loading.
@@ -70,8 +73,9 @@ class Molecule(TimeStampedModel):
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     name = Column(String(512), nullable=False, unique=True)
-    molecular_formula = Column(String(124), nullable=False)
+    molecular_formula = Column(String(124))
     structural_formula = Column(Text, unique=True, nullable=False)
+    additional_info = Column(Text)
 
     measurements = Relationship("Measurement", back_populates="molecule",
                                     passive_deletes=True)
@@ -106,9 +110,6 @@ class SingleMolecule(Molecule):
     ----------
     id : int
         Primary key linked to ``molecules.id`` with cascading delete.
-    additional_info : str or None
-        Optional free-text field containing supplementary information about
-        the molecule.
 
     Notes
     -----
@@ -147,7 +148,6 @@ class SingleMolecule(Molecule):
     id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
                 primary_key=True)
 
-    additional_info = Column(Text)
 
     __mapper_args__ = {"polymorphic_identity": "single",}
 

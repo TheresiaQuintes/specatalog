@@ -1,5 +1,5 @@
-from pydantic import BaseModel, ConfigDict, field_validator, computed_field
-from typing import Type, Optional, ClassVar
+from pydantic import BaseModel, ConfigDict, computed_field
+from typing import Optional, ClassVar
 import specatalog.models.molecules as mol
 
 from specatalog.main import ALLOWED_VALUES as av
@@ -15,11 +15,14 @@ class MoleculeModel(BaseModel):
 
     Attributes
     ----------
-    molecular_formula : str
+    molecular_formula : str or None
         Standard chemical formula of the molecule (e.g., "C20H12").
+    additional_info : str or None
+        Optional free-text field with supplementary information.
 
     """
-    molecular_formula: str
+    molecular_formula: Optional[str]=None
+    additional_info: Optional[str]=None
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
 
@@ -38,14 +41,11 @@ class SingleMoleculeModel(MoleculeModel):
         class raises a validation error.
     name : str
         Human-readable name of the molecule. Must be unique.
-    additional_info : str or None
-        Optional free-text field with supplementary information.
 
     """
     model_class: ClassVar[mol.SingleMolecule] = mol.SingleMolecule
 
     name: str
-    additional_info: Optional[str]=None
 
 
 class RPModel(MoleculeModel):
