@@ -156,9 +156,9 @@ def _automatic_name_update(entry: TimeStampedModel,
     """
     # map components of the molecules
     group_keys = {
-        "rp": ["radical_1", "linker", "radical_2"],
-        "tdp": ["chromophore", "linker", "doublet"],
-        "ttp": ["triplet_1", "linker", "triplet_2"]
+        "rp": ["radical_1", "linker", "radical_2", "name_suffix"],
+        "tdp": ["chromophore", "linker", "doublet", "name_suffix"],
+        "ttp": ["triplet_1", "linker", "triplet_2", "name_suffix"]
     }
 
     # check if a molecule name is changed by the update_data
@@ -177,6 +177,8 @@ def _automatic_name_update(entry: TimeStampedModel,
             return getattr(entry, field)
 
     # build name
-    entry.name = "-".join(get_value(k) for k in group_keys[entry.group])
+    values = [get_value(k) for k in group_keys[entry.group]]
+    values = values = [v for v in values if v not in (None, "", " ")]
+    entry.name = "-".join(values)
 
     return

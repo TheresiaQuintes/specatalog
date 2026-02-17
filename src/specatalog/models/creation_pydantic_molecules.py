@@ -77,11 +77,15 @@ class RPModel(MoleculeModel):
     radical_1: av.Radicals
     linker: av.Linker
     radical_2: av.Radicals
+    name_suffix: Optional[str]=None
 
     @computed_field
     @property
     def name(self) -> str:
-        return f"{self.radical_1.value}-{self.linker.value}-{self.radical_2.value}"
+        if self.name_suffix == None:
+            return f"{self.radical_1.value}-{self.linker.value}-{self.radical_2.value}"
+        else:
+            return f"{self.radical_1.value}-{self.linker.value}-{self.radical_2.value}-{self.name_suffix}"
 
 
 class TDPModel(MoleculeModel):
@@ -114,11 +118,15 @@ class TDPModel(MoleculeModel):
     doublet: av.Doublets
     linker: av.Linker
     chromophore: av.Chromophores
+    name_suffix: Optional[str]=None
 
     @computed_field
     @property
     def name(self) -> str:
-        return f"{self.chromophore.value}-{self.linker.value}-{self.doublet.value}"
+        if self.name_suffix == None:
+            return f"{self.chromophore.value}-{self.linker.value}-{self.doublet.value}"
+        else:
+            return f"{self.chromophore.value}-{self.linker.value}-{self.doublet.value}-{self.name_suffix}"
 
 
 class TTPModel(MoleculeModel):
@@ -151,8 +159,12 @@ class TTPModel(MoleculeModel):
     triplet_1: av.Chromophores
     linker: av.Linker
     triplet_2: av.Chromophores
+    name_suffix: Optional[str]=None
 
     @computed_field
     @property
     def name(self) -> str:
-        return f"{self.triplet_1.value}-{self.linker.value}-{self.triplet_2.value}"
+        if self.name_suffix == None:
+            return f"{self.triplet_1.value}-{self.linker.value}-{self.triplet_2.value}"
+        else:
+            return f"{self.triplet_1.value}-{self.linker.value}-{self.triplet_2.value}-{self.name_suffix}"

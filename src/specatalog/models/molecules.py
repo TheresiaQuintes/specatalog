@@ -174,6 +174,9 @@ class RP(Molecule):
         Short string defining the chemical linker bridging the two radicals.
     radical_2 : str
         Short string describing the second radical centre.
+    name_suffix : str
+        A suffix for the molecular name giving addtional information on the
+        molecule.
 
     Notes
     -----
@@ -219,6 +222,7 @@ class RP(Molecule):
     radical_1 = Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
     radical_2 = Column(String(64), nullable=False)
+    name_suffix = Column(String(64))
 
 
 class TDP(Molecule):
@@ -246,6 +250,9 @@ class TDP(Molecule):
     chromophore : str
         Short string defining the chromophoric unit capable of forming a triplet
         excited state.
+    name_suffix : str
+        A suffix for the molecular name giving addtional information on the
+        molecule.
 
     Notes
     -----
@@ -286,6 +293,7 @@ class TDP(Molecule):
     doublet = Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
     chromophore = Column(String(64), nullable=False)
+    name_suffix = Column(String(64))
 
 
 
@@ -315,6 +323,9 @@ class TTP(Molecule):
     triplet_2 : str
         Short string identifying the second chromophoric unit capable of forming
         a triplet excited state.
+    name_suffix : str
+        A suffix for the molecular name giving addtional information on the
+        molecule.
 
     Notes
     -----
@@ -354,3 +365,4 @@ class TTP(Molecule):
     triplet_1= Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
     triplet_2 = Column(String(64), nullable=False)
+    name_suffix = Column(String(64))
