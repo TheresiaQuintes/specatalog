@@ -17,5 +17,7 @@ If your group uses a new file format that is not implemented to specatalog you c
 
 4. Add a new ``elif``-statement for the new format to the functions ``raw_data_to_folder`` and ``raw_data_to_hdf5``. Don't forget to adapt the docstrings of the functions and add the new format.
 
-5. Update the documentation ``tutorial_measurements.rst`` and add the new format in the ``..note``  of No.5 in the section *Creation of a new entry*.
+5. Add the new string to ``gui/gut_functions.py`` in the function ``change_ms_mol``.
+
+6. Update the documentation ``tutorial_measurements.rst`` and add the new format in the ``..note``  of No.5 in the section *Creation of a new entry*.
 

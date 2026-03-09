@@ -334,7 +334,7 @@ def change_ms_mol(self):
         self.ComboRawFormat.blockSignals(True)
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
-        self.ComboRawFormat.addItems(["bruker_bes3t", "uvvis_ulm",
+        self.ComboRawFormat.addItems(["bruker_bes3t", "cw_epr", "uvvis_ulm",
                                       "uvvis_freiburg"])
 
         self.SpinBoxDelete.setEnabled(True)

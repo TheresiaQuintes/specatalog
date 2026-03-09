@@ -179,7 +179,7 @@ def new_dataset_to_hdf5(data: np.ndarray, hdf5_path: str, group_name: str,
     Parameters
     ----------
     data : np.ndarray
-        An array of data points.
+        An array of data points. If data = None nothing is written to the file.
     hdf5_path : str
         Path to the hdf5-file.
     group_name : str
@@ -192,6 +192,9 @@ def new_dataset_to_hdf5(data: np.ndarray, hdf5_path: str, group_name: str,
     None.
 
     """
+    if data is None:
+        return
+
     with h5py.File(hdf5_path, "a") as f:
         group = f.require_group(group_name)
         group.create_dataset(dataset_name, data=data)
@@ -211,8 +214,8 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
     raw_data_path : str
         Path to the raw data file without suffix.
     fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t"
-        "uvvis_ulm", "uvvis_freiburg"].
+        Format of the raw_data. One of the supported formats ["bruker_bes3t",
+        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
     base_dir : str or Path
         Path to the root-folder of the archive.
     ms_id : str or int
@@ -231,7 +234,7 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
 
     """
     # copy all relevant files for Bruker bes3t format (DSC/DTA + optional YGF)
-    if fmt == "bruker_bes3t":
+    if fmt == "bruker_bes3t" or fmt == "cw_epr":
         raw_data_1 = Path(raw_data_path).with_suffix(".DSC")
         raw_data_2 = Path(raw_data_path).with_suffix(".DTA")
         raw_data_3 = Path(raw_data_path).with_suffix(".YGF")
@@ -275,8 +278,8 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     ms_id : str or int
         Number of the measurement.
     fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t"
-        "uvvis_ulm", "uvvis_freiburg"].
+        Format of the raw_data. One of the supported formats ["bruker_bes3t",
+        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
 
     Raises
     ------
@@ -329,6 +332,38 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
             for key, value in params.items():
                 grp.attrs[key] = value
 
+
+    elif fmt == "cw_epr":
+        dsc = [p for p in raw_path.iterdir() if p.suffix == ".DSC"]
+        dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
+
+        if not dsc or not dta:
+            raise ValueError("Exactly one .DSC and one .DTA file have to be\
+                             available")
+        if dsc[0].stem != dta[0].stem:
+            raise ValueError("The DSC and the DTA files need to have equal\
+                             basenames.")
+
+        # load data to arrays using the loader function
+
+        spc_real, spc_imag, field, params = l.load_cw_epr(dsc[0].with_suffix(""))
+
+        # write intensities to dataset
+        new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", "data_real")
+        new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", "data_imag")
+        new_dataset_to_hdf5(field, hdf5_path, "raw_data", "field")
+
+
+        # add metadata from DSC-file as attributes
+        with h5py.File(hdf5_path, "a") as f:
+            grp = f.require_group("raw_data")
+            for key, value in params.items():
+                if key is None or value is None:
+                    continue
+                grp.attrs[key] = value
+
+
+
     elif fmt == "uvvis_ulm":
         txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
 
@@ -336,7 +371,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
             raise ValueError(f"No .txt file is available. Make sure your raw\
                              data are stored at {raw_path} in the right format.")
 
-        wavelength, intensity, meta = l.load_uvvis_ulm(txt[0])
+        wavelength, intensity, meta = l.load_uvvis_ulm(txt[0].with_suffix(""))
 
         new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
         new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")
@@ -353,7 +388,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
             raise ValueError(f"No .txt file is available. Make sure your raw\
                              data are stored at {raw_path} in the right format.")
 
-        wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0])
+        wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0].with_suffix(""))
 
         new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
         new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")

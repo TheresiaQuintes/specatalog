@@ -611,6 +611,56 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
     return data, abscissa, parameters
 
 
+def load_cw_epr(path: str):
+
+    path = Path(path)
+
+    dta = path.with_suffix(".DTA")
+    dsc = path.with_suffix(".DSC")
+
+    dsc_file = open(dsc, "r")
+    dsc_lines = dsc_file.readlines()
+    dsc_file.close()
+
+    meta = {}
+    for line in dsc_lines:
+        line = line.strip()
+        if line.startswith("*") or line.startswith("\n") or line.startswith("#"):
+            pass
+        else:
+            if line and line[0].isupper():
+                kv_pair = re.split(r"\t| {4}", line)
+                value = " ".join(kv_pair[1:])
+                value = value.strip()
+                meta[kv_pair[0]] = value
+            else:
+                pass
+
+
+    dta_file = open(dta, 'rb')
+    data_type = np.dtype('>f8')
+    spc_full = np.fromfile(dta_file, data_type).astype(float)
+    dta_file.close()
+
+    if meta["IKKF"] == "CPLX":
+        # take every second value as real or imag part
+        spc_real = spc_full[0:len(spc_full):2]
+        spc_imag = spc_full[1:len(spc_full):2]
+
+    else:
+        spc_real = spc_full
+        spc_imag = None
+
+
+    x_min = float(meta["XMIN"])
+    x_wid = float(meta["XWID"])
+    x_pts = int(meta["XPTS"])
+
+    field = np.linspace(x_min, x_min+x_wid, x_pts)
+
+
+    return spc_real, spc_imag, field, meta
+
 
 def load_uvvis_ulm(path:str):
     """
@@ -689,6 +739,7 @@ def load_uvvis_freiburg(path: str):
         Dictionary with metadata.
 
     """
+    path = Path(path).with_suffix(".txt")
     data = pd.read_csv(path, usecols=[0,1], names=['lambda','int'], skiprows=(2), sep="\s+", engine="python")
     wavelength = data['lambda']
     intensity = data['int']
