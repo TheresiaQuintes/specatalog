@@ -312,7 +312,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
 
         # load data to arrays using the loader function
         data, x, params = l.load_bruker_bes3t(dsc[0].with_suffix(""),
-                                              "DSC", "n")
+                                              "DSC", "")
 
         # write intensities to dataset
         new_dataset_to_hdf5(data, hdf5_path, "raw_data", "data")

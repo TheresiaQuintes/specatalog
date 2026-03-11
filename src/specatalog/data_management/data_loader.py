@@ -303,6 +303,7 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
     Returns:
         tuple: (data, abscissa, parameters)
     """
+    full_base_name = Path(full_base_name)
     # Determine DSC and DTA file extensions, respecting case
     dsc_extension = ".dsc"
     dta_extension = ".dta"
@@ -636,7 +637,7 @@ def load_cw_epr(path: str):
             else:
                 pass
 
-
+    meta = parse_field_params(meta)
     dta_file = open(dta, 'rb')
     data_type = np.dtype('>f8')
     spc_full = np.fromfile(dta_file, data_type).astype(float)

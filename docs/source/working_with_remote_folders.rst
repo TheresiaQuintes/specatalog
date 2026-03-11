@@ -37,6 +37,8 @@ Fill the file with your access data for the remote folder::
 	
 	//sr-nas.pc.intra.uni-freiburg.de/group/archive_specatalog  /home/USER/tmp_archive_mount  cifs  credentials=/home/USER/.smbcredentials_specatalog,vers=3.0,uid=1000,gid=1000,user,noauto,_netdev  0  0
 
+(You can find your uid/gid by typing ``id`` to your terminal)
+
 5. Reload fstab::
 	systemctl daemon-reload
 	
