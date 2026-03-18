@@ -18,7 +18,7 @@ echo "🗑 Removing old HTML files..."
 git rm -rf .
 
 echo "📂 Copying new HTML files..."
-cp docs/build/html/* .
+cp -r docs/build/html/* .
 touch .nojekyll
 # Optional: alte source-Ordner entfernen
 rm -rf docs/ src/
