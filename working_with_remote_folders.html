@@ -156,10 +156,13 @@
 </pre></div>
 </div>
 </li>
-<li><dl class="simple">
-<dt>Reload fstab::</dt><dd><p>systemctl daemon-reload</p>
-</dd>
-</dl>
+</ol>
+<p>(You can find your uid/gid by typing <code class="docutils literal notranslate"><span class="pre">id</span></code> to your terminal)</p>
+<ol class="arabic" start="5">
+<li><p>Reload fstab:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+</pre></div>
+</div>
 </li>
 <li><p>Test mounting the remote folder:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mount</span> <span class="o">~/</span><span class="n">tmp_archive_mount</span>
@@ -167,17 +170,19 @@
 </pre></div>
 </div>
 </li>
-<li><p>Open the defaults-file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nano</span> <span class="o">~/.</span><span class="n">specatalog</span><span class="o">/</span><span class="n">defaults</span><span class="o">.</span><span class="n">json</span>
+<li><p>Open the defaults-file</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nano</span> <span class="o">~/.</span><span class="n">specatalog</span><span class="o">/</span><span class="n">defaults</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-</li>
-</ol>
 <p>and add:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;mount_point&quot;</span> <span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">USER</span><span class="o">/</span><span class="n">tmp_archive_mount</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">base_path</span></code> should be a local folder on your system.</p>
+</div></blockquote>
+</li>
+</ol>
 </section>
 <section id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
@@ -194,17 +199,19 @@
 </pre></div>
 </div>
 </li>
-<li><dl class="simple">
-<dt>Open the defaults-file in an editor::</dt><dd><p>~/.specatalog/defaults.json</p>
-</dd>
-</dl>
-</li>
-</ol>
+<li><p>Open the defaults-file in an editor</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">~/.</span><span class="n">specatalog</span><span class="o">/</span><span class="n">defaults</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
 <p>and add:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;mount_point&quot;</span> <span class="p">:</span>  <span class="s2">&quot;</span><span class="se">\\\\</span><span class="s2">sr-nas.pc.intra.uni-freiburg.de</span><span class="se">\\</span><span class="s2">group</span><span class="se">\\</span><span class="s2">archive_specatalog&quot;</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">base_path</span></code> should be a local folder on your system.</p>
+</div></blockquote>
+</li>
+</ol>
 </section>
 </section>
 <section id="new-commands">
