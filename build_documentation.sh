@@ -15,13 +15,11 @@ echo "📦 Switching to gh-pages branch..."
 git checkout gh-pages
 
 echo "🗑 Removing old HTML files..."
-git rm -rf .
+git rm -rf * .[^.]*
 
 echo "📂 Copying new HTML files..."
-cp -r docs/build/html/_static .
-cp -r docs/build/html/_sources .
-cp docs/build/html/*.html .
-
+cp docs/build/html/* .
+touch .nojekyll
 # Optional: alte source-Ordner entfernen
 rm -rf docs/ src/
 
