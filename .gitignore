@@ -154,3 +154,5 @@ coverage/
 .cache/
 .prof
 
+# My own folders
+loadScripts/

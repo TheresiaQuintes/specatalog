@@ -40,6 +40,7 @@ Fill the file with your access data for the remote folder::
 (You can find your uid/gid by typing ``id`` to your terminal)
 
 5. Reload fstab::
+
 	systemctl daemon-reload
 	
 6. Test mounting the remote folder::
@@ -47,15 +48,17 @@ Fill the file with your access data for the remote folder::
 	mount ~/tmp_archive_mount
 	umount ~/tmp_archive_mount
 
-7. Open the defaults-file::
+7. Open the defaults-file
 
-	nano ~/.specatalog/defaults.json
-
-and add::
-
-	"mount_point" : /home/USER/tmp_archive_mount
+	::
 	
-The ``base_path`` should be a local folder on your system.
+		nano ~/.specatalog/defaults.json
+		
+	and add::
+
+		"mount_point" : /home/USER/tmp_archive_mount
+		
+	The ``base_path`` should be a local folder on your system.
 
 
 Windows
@@ -71,14 +74,18 @@ Windows
 	
 	net use P: /delete
 
-3. Open the defaults-file in an editor::
-	~/.specatalog/defaults.json
-
-and add::
-
-	"mount_point" :  "\\\\sr-nas.pc.intra.uni-freiburg.de\\group\\archive_specatalog"
+3. Open the defaults-file in an editor
 	
-The ``base_path`` should be a local folder on your system.
+	::
+
+		~/.specatalog/defaults.json
+	
+
+	and add::
+
+		"mount_point" :  "\\\\sr-nas.pc.intra.uni-freiburg.de\\group\\archive_specatalog"
+		
+	The ``base_path`` should be a local folder on your system.
 
 
 New commands
