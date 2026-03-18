@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.models.creation_pydantic_measurements &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/models/creation_pydantic_measurements.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.models.creation_pydantic_measurements</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.models.creation_pydantic_measurements</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">ClassVar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.measurements</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALLOWED_VALUES</span> <span class="k">as</span> <span class="n">av</span>
+
+
+<div class="viewcode-block" id="MeasurementModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MeasurementModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic data model for creating new :class:`ms.Measurement` entries.</span>
+
+<span class="sd">    This model defines the validated input structure used by the application</span>
+<span class="sd">    to create SQLAlchemy ``Measurement`` instances. Only the minimal and</span>
+<span class="sd">    user-provided metadata are included here; database-managed fields such as</span>
+<span class="sd">    ``id`` or timestamps are not part of this schema.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molecular_id : int</span>
+<span class="sd">        Foreign key referring to the associated molecule.</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        Measurement temperature in Kelvin; must be strictly positive.</span>
+<span class="sd">    solvent : av.Solvents</span>
+<span class="sd">        Enumeration specifying the solvent used during the measurement.</span>
+<span class="sd">    concentration : str or None</span>
+<span class="sd">        Optional textual concentration information (units or descriptive label).</span>
+<span class="sd">    date : datetime.date</span>
+<span class="sd">        Date on which the measurement was performed.</span>
+<span class="sd">    measured_by : av.Names</span>
+<span class="sd">        Enumeration specifying who performed the experiment.</span>
+<span class="sd">    location : str or None</span>
+<span class="sd">        Optional description of the laboratory or facility.</span>
+<span class="sd">    device : av.Devices or None</span>
+<span class="sd">        Optional enumeration indicating the device used for data acquisition.</span>
+<span class="sd">    series : str or None</span>
+<span class="sd">        Optional series or batch label for grouping related measurements.</span>
+<span class="sd">    corrected : bool</span>
+<span class="sd">        Whether the measurement has been baseline- or artefact-corrected.</span>
+<span class="sd">    evaluated : bool</span>
+<span class="sd">        Whether the measurement has been analysed or processed.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molecular_id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">solvent</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Solvents</span>
+    <span class="n">concentration</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">measured_by</span> <span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Names</span>
+    <span class="n">location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">av</span><span class="o">.</span><span class="n">Devices</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">series</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">corrected</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">evaluated</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="CWEPRModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.CWEPRModel.html#specatalog.models.creation_pydantic_measurements.CWEPRModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWEPRModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.CWEPR` measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds cwEPR-specific fields</span>
+<span class="sd">    required to create a continuous-wave EPR measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.CWEPR` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class : Type</span>
+<span class="sd">        Always set to :class:`ms.CWEPR`. Attempting to assign a different class</span>
+<span class="sd">        raises a validation error.</span>
+<span class="sd">    frequency_band : av.FrequencyBands</span>
+<span class="sd">        Microwave frequency band used for the CW-EPR measurement (e.g. ``X``).</span>
+<span class="sd">    attenuation : str</span>
+<span class="sd">        Microwave attenuation setting applied during acquisition.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span>
+
+    <span class="n">frequency_band</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">FrequencyBands</span>
+    <span class="n">attenuation</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="TREPRModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.TREPRModel.html#specatalog.models.creation_pydantic_measurements.TREPRModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TREPRModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.TREPR` measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds TREPR-specific fields</span>
+<span class="sd">    required to create a time-resolved EPR measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.TREPR` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class : Type</span>
+<span class="sd">        Always set to :class:`ms.TREPR`. Attempting to assign a different class</span>
+<span class="sd">        raises a validation error.</span>
+<span class="sd">    frequency_band : av.FrequencyBands</span>
+<span class="sd">        Microwave frequency band used for the TREPR experiment.</span>
+<span class="sd">    excitation_wl : float</span>
+<span class="sd">        Excitation wavelength in nanometres.</span>
+<span class="sd">    excitation_energy : float or None</span>
+<span class="sd">        Excitation energy in appropriate units; optional.</span>
+<span class="sd">    attenuation : str</span>
+<span class="sd">        Microwave attenuation setting.</span>
+<span class="sd">    number_of_scans : int or None</span>
+<span class="sd">        Number of scans acquired; optional.</span>
+<span class="sd">    repetitionrate : float or None</span>
+<span class="sd">        Repetition rate of the experiment; optional.</span>
+<span class="sd">    mode : str or None</span>
+<span class="sd">        Experimental mode descriptor; optional.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">TREPR</span>
+
+    <span class="n">frequency_band</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">FrequencyBands</span>
+    <span class="n">excitation_wl</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">excitation_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">attenuation</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">number_of_scans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">repetitionrate</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="PulseEPRModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.PulseEPRModel.html#specatalog.models.creation_pydantic_measurements.PulseEPRModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PulseEPRModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.PulseEPR` measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds Pulse-EPR-specific fields</span>
+<span class="sd">    required to create a pulsed EPR measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.PulseEPR` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class : Type</span>
+<span class="sd">        Always set to :class:`ms.PulseEPR`. Attempting to assign a different</span>
+<span class="sd">        class raises a validation error.</span>
+<span class="sd">    pulse_experiment : av.PulseExperiments</span>
+<span class="sd">        Type of pulsed EPR experiment (e.g., PELDOR, TN, ...).</span>
+<span class="sd">    frequency_band : av.FrequencyBands or None</span>
+<span class="sd">        Microwave frequency band used; optional.</span>
+<span class="sd">    attenuation : str or None</span>
+<span class="sd">        Microwave attenuation setting; optional.</span>
+<span class="sd">    excitation_wl : float or None</span>
+<span class="sd">        Excitation wavelength in nanometres; optional.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">PulseEPR</span>
+
+    <span class="n">frequency_band</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">av</span><span class="o">.</span><span class="n">FrequencyBands</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">attenuation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">excitation_wl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">pulse_experiment</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">PulseExperiments</span></div>
+
+
+
+<div class="viewcode-block" id="UVVisModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.UVVisModel.html#specatalog.models.creation_pydantic_measurements.UVVisModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UVVisModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.UVVis` measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds UVvis-specific fields</span>
+<span class="sd">    required to create a UVvis-measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.UVVis` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class : Type</span>
+<span class="sd">        Always set to :class:`ms.UVVis`. Attempting to assign a different</span>
+<span class="sd">        class raises a validation error.</span>
+<span class="sd">    dim_cuvette : str</span>
+<span class="sd">        Dimension of the cuvette.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">UVVis</span>
+
+    <span class="n">dim_cuvette</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="FluorescenceModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.FluorescenceModel.html#specatalog.models.creation_pydantic_measurements.FluorescenceModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FluorescenceModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.Fluorescence` measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds Fluorescence-specific fields</span>
+<span class="sd">    required to create a Fluorescence-measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.Fluorescence` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class : Type</span>
+<span class="sd">        Always set to :class:`ms.Fluorescence`. Attempting to assign a different</span>
+<span class="sd">        class raises a validation error.</span>
+<span class="sd">    excitation : boolean</span>
+<span class="sd">        Indicate whether the spectrum is recorded in exitation (True) or</span>
+<span class="sd">        emission (False).</span>
+<span class="sd">    excitation_wl : str</span>
+<span class="sd">        Excitation wavelength and unit.</span>
+<span class="sd">    od : str</span>
+<span class="sd">        Optical density / absorbance.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">Fluorescence</span>
+
+    <span class="n">excitation</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">excitation_wl</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">od</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="TAModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_measurements.TAModel.html#specatalog.models.creation_pydantic_measurements.TAModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TAModel</span><span class="p">(</span><span class="n">MeasurementModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`ms.TA` (transient absorption)</span>
+<span class="sd">    measurements.</span>
+
+<span class="sd">    This subclass of :class:`MeasurementModel` adds TA-specific fields</span>
+<span class="sd">    required to create a TA-measurement in the database.</span>
+<span class="sd">    The ``measurement_class`` attribute is fixed to :class:`ms.TA` and</span>
+<span class="sd">    cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    measurement_class :</span>
+<span class="sd">        Always set to :class:`ms.TA`. Attempting to assign a different</span>
+<span class="sd">        class raises a validation error.</span>
+<span class="sd">    timedomain : av.Timedomains</span>
+<span class="sd">        Indicate in which timedomain (e.g. nano-second TA (ns)/</span>
+<span class="sd">        femto-second TA (fs)) the exeperiment is run.</span>
+<span class="sd">    excitation_energy : str or None</span>
+<span class="sd">        Excitation energy incl. unit.</span>
+<span class="sd">    excitation_wl : str</span>
+<span class="sd">        Excitation wavelength incl. unit.</span>
+<span class="sd">    od : str or None</span>
+<span class="sd">        Optical density / absorbance.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * Additional fields are forbidden (``extra=&#39;forbid&#39;``).</span>
+<span class="sd">    * Assignment is validated on set (``validate_assignment=True``).</span>
+<span class="sd">    * All further attributes are inherited from :class:`MeasurementModel`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">measurement_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">TA</span>
+
+    <span class="n">timedomain</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Timedomains</span>
+    <span class="n">excitation_energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">excitation_wl</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">od</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

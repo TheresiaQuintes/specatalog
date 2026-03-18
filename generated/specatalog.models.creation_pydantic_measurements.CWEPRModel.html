@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CWEPRModel &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.models.creation_pydantic_measurements.CWEPRModel.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TREPRModel" href="specatalog.models.creation_pydantic_measurements.TREPRModel.html" />
+    <link rel="prev" title="MeasurementModel" href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specatalog
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../models.html">models</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../models.html#base">base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#measurements">measurements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../models.html#creation-pydantic-measurements">creation_pydantic_measurements</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html">MeasurementModel</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CWEPRModel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specatalog.models.creation_pydantic_measurements.CWEPRModel"><code class="docutils literal notranslate"><span class="pre">CWEPRModel</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.TREPRModel.html">TREPRModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.PulseEPRModel.html">PulseEPRModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.UVVisModel.html">UVVisModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.FluorescenceModel.html">FluorescenceModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.models.creation_pydantic_measurements.TAModel.html">TAModel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#molecules">molecules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models.html#creation-pydantic-molecules">creation_pydantic_molecules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../models.html">models</a></li>
+      <li class="breadcrumb-item active">CWEPRModel</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/specatalog.models.creation_pydantic_measurements.CWEPRModel.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html" class="btn btn-neutral float-left" title="MeasurementModel" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.models.creation_pydantic_measurements.TREPRModel.html" class="btn btn-neutral float-right" title="TREPRModel" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cweprmodel">
+<h1>CWEPRModel<a class="headerlink" href="#cweprmodel" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specatalog.models.creation_pydantic_measurements.CWEPRModel">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specatalog.models.creation_pydantic_measurements.</span></span><span class="sig-name descname"><span class="pre">CWEPRModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solvent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concentration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measured_by</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attenuation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/models/creation_pydantic_measurements.html#CWEPRModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.models.creation_pydantic_measurements.CWEPRModel" title="Link to this definition"></a></dt>
+<dd><p>Pydantic model for creating new <code class="xref py py-class docutils literal notranslate"><span class="pre">ms.CWEPR</span></code> measurements.</p>
+<p>This subclass of <a class="reference internal" href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel" title="specatalog.models.creation_pydantic_measurements.MeasurementModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementModel</span></code></a> adds cwEPR-specific fields
+required to create a continuous-wave EPR measurement in the database.
+The <code class="docutils literal notranslate"><span class="pre">measurement_class</span></code> attribute is fixed to <code class="xref py py-class docutils literal notranslate"><span class="pre">ms.CWEPR</span></code> and
+cannot be changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>molecular_id</strong> (<em>int</em>)</p></li>
+<li><p><strong>temperature</strong> (<em>float</em>)</p></li>
+<li><p><strong>solvent</strong> (<em>Solvents</em>)</p></li>
+<li><p><strong>concentration</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>date</strong> (<em>date</em>)</p></li>
+<li><p><strong>measured_by</strong> (<em>Names</em>)</p></li>
+<li><p><strong>location</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>device</strong> (<em>Devices</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>series</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>corrected</strong> (<em>bool</em>)</p></li>
+<li><p><strong>evaluated</strong> (<em>bool</em>)</p></li>
+<li><p><strong>frequency_band</strong> (<em>FrequencyBands</em>)</p></li>
+<li><p><strong>attenuation</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specatalog.models.creation_pydantic_measurements.CWEPRModel.measurement_class">
+<span class="sig-name descname"><span class="pre">measurement_class</span></span><a class="headerlink" href="#specatalog.models.creation_pydantic_measurements.CWEPRModel.measurement_class" title="Link to this definition"></a></dt>
+<dd><p>Always set to <code class="xref py py-class docutils literal notranslate"><span class="pre">ms.CWEPR</span></code>. Attempting to assign a different class
+raises a validation error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Type</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specatalog.models.creation_pydantic_measurements.CWEPRModel.frequency_band">
+<span class="sig-name descname"><span class="pre">frequency_band</span></span><a class="headerlink" href="#specatalog.models.creation_pydantic_measurements.CWEPRModel.frequency_band" title="Link to this definition"></a></dt>
+<dd><p>Microwave frequency band used for the CW-EPR measurement (e.g. <code class="docutils literal notranslate"><span class="pre">X</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>av.FrequencyBands</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="specatalog.models.creation_pydantic_measurements.CWEPRModel.attenuation">
+<span class="sig-name descname"><span class="pre">attenuation</span></span><a class="headerlink" href="#specatalog.models.creation_pydantic_measurements.CWEPRModel.attenuation" title="Link to this definition"></a></dt>
+<dd><p>Microwave attenuation setting applied during acquisition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Additional fields are forbidden (<code class="docutils literal notranslate"><span class="pre">extra='forbid'</span></code>).</p></li>
+<li><p>Assignment is validated on set (<code class="docutils literal notranslate"><span class="pre">validate_assignment=True</span></code>).</p></li>
+<li><p>All further attributes are inherited from <a class="reference internal" href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel" title="specatalog.models.creation_pydantic_measurements.MeasurementModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementModel</span></code></a>.</p></li>
+</ul>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specatalog.models.creation_pydantic_measurements.MeasurementModel.html" class="btn btn-neutral float-left" title="MeasurementModel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.models.creation_pydantic_measurements.TREPRModel.html" class="btn btn-neutral float-right" title="TREPRModel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

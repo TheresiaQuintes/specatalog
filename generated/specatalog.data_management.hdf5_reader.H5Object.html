@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>H5Object &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.data_management.hdf5_reader.H5Object.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="helpers" href="../helpers.html" />
+    <link rel="prev" title="load_from_id" href="specatalog.data_management.hdf5_reader.load_from_id.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specatalog
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../data_management.html">data_management</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../data_management.html#measurement-management">measurement_management</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../data_management.html#hdf5-reader">hdf5_reader</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.hdf5_reader.load_h5.html">load_h5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.hdf5_reader.load_from_id.html">load_from_id</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">H5Object</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#specatalog.data_management.hdf5_reader.H5Object"><code class="docutils literal notranslate"><span class="pre">H5Object</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../data_management.html">data_management</a></li>
+      <li class="breadcrumb-item active">H5Object</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/specatalog.data_management.hdf5_reader.H5Object.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="specatalog.data_management.hdf5_reader.load_from_id.html" class="btn btn-neutral float-left" title="load_from_id" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../helpers.html" class="btn btn-neutral float-right" title="helpers" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="h5object">
+<h1>H5Object<a class="headerlink" href="#h5object" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specatalog.data_management.hdf5_reader.</span></span><span class="sig-name descname"><span class="pre">H5Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_flush</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a hdf5-file with its internal structure and all attributes/
+datasets as a python object.</p>
+<section id="overview-of-the-methods">
+<h2>Overview of the methods<a class="headerlink" href="#overview-of-the-methods" title="Link to this heading"></a></h2>
+<p>Using the set_attr()- / set_dataset()-method new data can be added to the
+object or existing data are updated. Using the delete_attr()- /
+delete_dataset()- method data can be deleted. After all changes are done
+they are wirtten to the hdf5-file using the sync()-method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param h5node<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The object is build from the contents of the hdf5-file.</p>
+</dd>
+<dt class="field-even">type h5node<span class="colon">:</span></dt>
+<dd class="field-even"><p>h5py.File</p>
+</dd>
+<dt class="field-odd">param writable<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The original hdf5-file is only changable if writable=True otherwise
+changes can be only done to the object but not to the file itself.
+The default is False.</p>
+</dd>
+<dt class="field-even">type writable<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool, optional</p>
+</dd>
+<dt class="field-odd">param auto_flush<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If set to True changes are directly written to the filesystem using
+the sync()-method. If set to False the “synced”-changes are only
+written to the file when it is closed manually using f.close().
+The default is True.</p>
+</dd>
+<dt class="field-even">type auto_flush<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool, optional</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">The</span> <span class="pre">attributes</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">object</span> <span class="pre">are</span> <span class="pre">set</span> <span class="pre">recursive</span> <span class="pre">as</span> <span class="pre">the</span> <span class="pre">groups</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">hdf5-</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">file</span> <span class="pre">and</span> <span class="pre">the</span> <span class="pre">attributes</span> <span class="pre">and</span> <span class="pre">datasets</span> <span class="pre">as</span> <span class="pre">stored.</span></span></dt>
+<dd></dd></dl>
+
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># data are stored in the hdf5-file (f) in /data/raw_data/spec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span> <span class="o">=</span> <span class="n">H5Object</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">writable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">spec</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">12000</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">25000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">evaluations</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;fit1&quot;</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object.delete_attr">
+<span class="sig-name descname"><span class="pre">delete_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object.delete_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object.delete_attr" title="Link to this definition"></a></dt>
+<dd><p>Delete an attribute from the object and mark it to be deleted from the
+hdf5-file at the next call of the sync()-method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – Name of the attribute.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object.delete_dataset">
+<span class="sig-name descname"><span class="pre">delete_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object.delete_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object.delete_dataset" title="Link to this definition"></a></dt>
+<dd><p>Delete a dataset from the object and mark it to be deleted from the
+hdf5-file at the next call of the sync()-method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>str</em>) – Name of the dataset.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object.set_attr">
+<span class="sig-name descname"><span class="pre">set_attr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object.set_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object.set_attr" title="Link to this definition"></a></dt>
+<dd><p>Set a new attribute or update an exising attribute of the H5Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Name of the attribute.</p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – The value of the attribute. Should be a number or a string, for
+arrays use set_dataset.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span> <span class="o">=</span> <span class="n">H5Object</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">writable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset name&quot;</span><span class="p">)</span> <span class="c1"># set to main file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s2">&quot;measurement_temperature&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span> <span class="c1"># set to group</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>)</p></li>
+<li><p><strong>value</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object.set_dataset">
+<span class="sig-name descname"><span class="pre">set_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object.set_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object.set_dataset" title="Link to this definition"></a></dt>
+<dd><p>Set a new dataset or update an exising dataset of the H5Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>) – Name of the dataset.</p></li>
+<li><p><strong>value</strong> (<em>np.ndarray</em>) – Array that contains the data. Should be an array of numbers.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span> <span class="o">=</span> <span class="n">H5Object</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">writable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected_data</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">spec</span> <span class="o">-</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;minus_10&quot;</span><span class="p">,</span> <span class="n">corrected_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>key</strong> (<em>str</em>)</p></li>
+<li><p><strong>value</strong> (<em>ndarray</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.H5Object.sync">
+<span class="sig-name descname"><span class="pre">sync</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#H5Object.sync"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.H5Object.sync" title="Link to this definition"></a></dt>
+<dd><p>Write the changes that were done to the H5Object to the corresponding
+h5-file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – An error is raised if the object was generated with the option
+    writable=False.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h5node</strong> (<em>File</em>)</p></li>
+<li><p><strong>writable</strong> (<em>bool</em>)</p></li>
+<li><p><strong>auto_flush</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specatalog.data_management.hdf5_reader.load_from_id.html" class="btn btn-neutral float-left" title="load_from_id" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../helpers.html" class="btn btn-neutral float-right" title="helpers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

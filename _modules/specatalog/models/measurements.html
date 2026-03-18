@@ -1,0 +1,759 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.models.measurements &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/models/measurements.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.models.measurements</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.models.measurements</h1><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMPORT measurement.py&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeStampedModel</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span>  <span class="n">Date</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Boolean</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Relationship</span>
+
+
+
+<div class="viewcode-block" id="Measurement">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Measurement</span><span class="p">(</span><span class="n">TimeStampedModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class representing a single measurement.</span>
+
+<span class="sd">    This model defines the core metadata shared by all measurement types in the</span>
+<span class="sd">    system (e.g., TREPR, CWEPR, PulseEPR). It serves as the root of a</span>
+<span class="sd">    polymorphic SQLAlchemy hierarchy, with ``method`` acting as the</span>
+<span class="sd">    discriminator. Subclasses inherit these fields and may define additional,</span>
+<span class="sd">    technique-specific information.</span>
+
+<span class="sd">    The measurement belongs to exactly one :class:`Molecule` instance, and</span>
+<span class="sd">    contains essential experiment metadata.</span>
+
+<span class="sd">    Polymorphism</span>
+<span class="sd">    ------------</span>
+<span class="sd">    SQLAlchemy polymorphic behaviour is used to distinguish different</span>
+<span class="sd">    measurement techniques:</span>
+
+<span class="sd">    * ``polymorphic_on`` – the ``method`` column</span>
+<span class="sd">    * ``polymorphic_identity`` – ``&quot;base&quot;`` for this class</span>
+
+<span class="sd">    Subclasses should set their own ``polymorphic_identity`` value.</span>
+
+<span class="sd">    Relationships</span>
+<span class="sd">    -------------</span>
+<span class="sd">    molecule : Molecule</span>
+<span class="sd">        The molecule to which the measurement belongs. Configured as a required</span>
+<span class="sd">        foreign key with cascade delete behaviour.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key identifying the measurement.</span>
+<span class="sd">    molecular_id : int</span>
+<span class="sd">        Foreign key referencing ``molecules.id``. Required.</span>
+<span class="sd">    method : str</span>
+<span class="sd">        Polymorphic discriminator describing the measurement technique (e.g.,</span>
+<span class="sd">        ``&quot;trepr&quot;``, ``&quot;cwepr&quot;``, ``&quot;pulse_epr&quot;``).</span>
+<span class="sd">    temperature : float</span>
+<span class="sd">        Measurement temperature in Kelvin (or laboratory-specific units).</span>
+<span class="sd">    solvent : str</span>
+<span class="sd">        Solvent used in the experiment.</span>
+<span class="sd">    concentration : str or None</span>
+<span class="sd">        Concentration of the sample, if provided.</span>
+<span class="sd">    date : datetime.date</span>
+<span class="sd">        Date on which the measurement was performed.</span>
+<span class="sd">    measured_by : str</span>
+<span class="sd">        The operator who performed the measurement.</span>
+<span class="sd">    location : str or None</span>
+<span class="sd">        Laboratory or instrument location of the measurement.</span>
+<span class="sd">    device : str or None</span>
+<span class="sd">        Device/instrument identifier.</span>
+<span class="sd">    series : str or None</span>
+<span class="sd">        Optional series identifier grouping related measurements.</span>
+<span class="sd">    path : str</span>
+<span class="sd">        Absolute path to the associated measurement directory in the archive.</span>
+<span class="sd">        Must be unique.</span>
+<span class="sd">    corrected : bool</span>
+<span class="sd">        ``True`` if the measurement has been corrected.</span>
+<span class="sd">    evaluated : bool</span>
+<span class="sd">        ``True`` if the measurement has been analysed.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``measurements``</span>
+<span class="sd">    * All measurement subclasses inherit timestamps</span>
+<span class="sd">      from :class:`TimeStampedModel`.</span>
+<span class="sd">    * The ``path`` field is unique, ensuring that individual measurements are</span>
+<span class="sd">      not duplicated.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import Measurement</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(...)</span>
+<span class="sd">    &gt;&gt;&gt; m = Measurement(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;TREPR&quot;,</span>
+<span class="sd">    ...     temperature=295.0,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 1, 4),</span>
+<span class="sd">    ...     measured_by=&quot;Alice&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M12/&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;measurements&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># molecule</span>
+    <span class="n">molecular_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;molecules.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                              <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="s2">&quot;Molecule&quot;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;measurements&quot;</span><span class="p">)</span>
+
+    <span class="c1"># method</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_on&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="c1"># metadata</span>
+    <span class="n">temperature</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">solvent</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">concentration</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">))</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Date</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">measured_by</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">))</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">))</span>
+    <span class="n">series</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">512</span><span class="p">))</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">corrected</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">evaluated</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(M</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+
+<div class="viewcode-block" id="TREPR">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.TREPR.html#specatalog.models.measurements.TREPR">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TREPR</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Time-resolved electron paramagnetic resonance (trEPR) measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` describes a trEPR experiment.</span>
+<span class="sd">    The class extends the base measurement metadata by adding method-specific</span>
+<span class="sd">    parameters such as excitation wavelength, microwave frequency band,</span>
+<span class="sd">    and repetition rate.</span>
+
+<span class="sd">    The model participates in the SQLAlchemy polymorphic hierarchy using</span>
+<span class="sd">    ``&quot;trepr&quot;`` as its ``polymorphic_identity``. Database rows with</span>
+<span class="sd">    ``method=&#39;trepr&#39;`` will therefore be loaded as :class:`TREPR` objects.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key bound to the underlying entry in ``measurements``.</span>
+<span class="sd">    frequency_band : str</span>
+<span class="sd">        Microwave frequency band used for detection (X-band, Q-band...),</span>
+<span class="sd">        e.g. ``X`` or ``Q``.</span>
+<span class="sd">    excitation_wl : float</span>
+<span class="sd">        Laser excitation wavelength in nanometres.</span>
+<span class="sd">    excitation_energy : float or None</span>
+<span class="sd">        Pulse energy of the excitation source, typically in microjoules.</span>
+<span class="sd">    attenuation : str</span>
+<span class="sd">        Microwave attenuation setting used during acquisition.</span>
+<span class="sd">    number_of_scans : int or None</span>
+<span class="sd">        Number of accumulated scans used for signal averaging.</span>
+<span class="sd">    repetitionrate : float or None</span>
+<span class="sd">        Laser repetition rate in Hertz.</span>
+<span class="sd">    mode : str or None</span>
+<span class="sd">        Optional acquisition mode or instrument configuration string.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``trepr``</span>
+<span class="sd">    * All generic attributes such as temperature, solvent, operator, path,</span>
+<span class="sd">      and timestamps are inherited from :class:`Measurement`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a TREPR measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import TREPR</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;PDI-Br&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = TREPR(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;trepr&quot;,</span>
+<span class="sd">    ...     temperature=298.0,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 2, 15),</span>
+<span class="sd">    ...     measured_by=&quot;Alice&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M42&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     frequency_band=&quot;X&quot;,</span>
+<span class="sd">    ...     excitation_wl=532.0,</span>
+<span class="sd">    ...     excitation_energy=25.0,</span>
+<span class="sd">    ...     attenuation=&quot;20 dB&quot;,</span>
+<span class="sd">    ...     number_of_scans=100,</span>
+<span class="sd">    ...     repetitionrate=1000.0,</span>
+<span class="sd">    ...     mode=&quot;FID&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Polymorphic loading:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=42).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.TREPR&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;trepr&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;trepr&quot;</span><span class="p">,}</span>
+
+    <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">excitation_energy</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+    <span class="n">attenuation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">number_of_scans</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
+    <span class="n">repetitionrate</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span></div>
+
+
+
+
+<div class="viewcode-block" id="CWEPR">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.CWEPR.html#specatalog.models.measurements.CWEPR">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CWEPR</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Continuous-wave electron paramagnetic resonance (cw-EPR) measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` represents a continuous-wave EPR</span>
+<span class="sd">    experiment. This model adds method-specific parameters such as</span>
+<span class="sd">    microwave frequency band and attenuation, while all general metadata</span>
+<span class="sd">    (temperature, solvent, operator, timestamps, etc.) are inherited from</span>
+<span class="sd">    :class:`Measurement`.</span>
+
+<span class="sd">    The model participates in SQLAlchemy polymorphism using the</span>
+<span class="sd">    ``&quot;cwepr&quot;`` ``polymorphic_identity``. Any row in ``measurements`` where</span>
+<span class="sd">    ``method=&#39;cwepr&#39;`` will therefore be loaded as a :class:`CWEPR` instance.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key linked to ``measurements.id`` with cascading delete.</span>
+<span class="sd">    frequency_band : FrequencyBands</span>
+<span class="sd">        Microwave frequency band used for the cw-EPR experiment.</span>
+<span class="sd">        (X-band, Q-band...), e.g. ``X`` or ``Q``.</span>
+<span class="sd">    attenuation : str</span>
+<span class="sd">        Microwave attenuation setting applied during signal acquisition.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``cwepr``</span>
+<span class="sd">    * All shared metadata fields are inherited and documented in</span>
+<span class="sd">      :class:`Measurement`.</span>
+<span class="sd">    * The ``id`` of a :class:`CWEPR` object corresponds directly to the</span>
+<span class="sd">      associated row in the main ``measurements`` table.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a CW-EPR measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import CWEPR</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;TEMPO1&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = CWEPR(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;cwepr&quot;,</span>
+<span class="sd">    ...     temperature=295.0,</span>
+<span class="sd">    ...     solvent=&quot;Water&quot;,</span>
+<span class="sd">    ...     date=date(2025, 3, 10),</span>
+<span class="sd">    ...     measured_by=&quot;Alice&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M17&quot;,</span>
+<span class="sd">    ...     corrected=True,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     frequency_band=&quot;X&quot;,</span>
+<span class="sd">    ...     attenuation=&quot;10 dB&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Polymorphic loading:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=17).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.CWEPR&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;cwepr&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;cwepr&quot;</span><span class="p">,}</span>
+
+    <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">attenuation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="PulseEPR">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.PulseEPR.html#specatalog.models.measurements.PulseEPR">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PulseEPR</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pulsed electron paramagnetic resonance (pulsed EPR) measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` represents any pulsed EPR experiment,</span>
+<span class="sd">    e.g. transient nutations, PELTOR, saturation recovery...</span>
+<span class="sd">    This model adds pulsed-EPR-specific parameters such as the experiment type</span>
+<span class="sd">    (e.g. Hahn Echo, ESEEM), frequency band, and optional excitation wavelength</span>
+<span class="sd">    for optically triggered sequences.</span>
+
+<span class="sd">    The model participates in SQLAlchemy polymorphism using the</span>
+<span class="sd">    ``&quot;pulse_epr&quot;`` ``polymorphic_identity``. Any row in ``measurements`` where</span>
+<span class="sd">    ``method=&#39;pulse_epr&#39;`` is therefore automatically loaded as a</span>
+<span class="sd">    :class:`PulseEPR` instance.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key linked to ``measurements.id`` with cascading delete.</span>
+<span class="sd">    pulse_experiment : str</span>
+<span class="sd">        Type of pulsed EPR sequence used (e.g. Hahn Echo, Rabi, ESEEM).</span>
+<span class="sd">    frequency_band : str or None</span>
+<span class="sd">        Microwave frequency band of the experiment (e.g. X, Q, W-band).</span>
+<span class="sd">        Optional because certain pulsed setups define frequency elsewhere.</span>
+<span class="sd">    attenuation : str or None</span>
+<span class="sd">        Microwave attenuation setting applied during the pulse sequence.</span>
+<span class="sd">    excitation_wl : float or None</span>
+<span class="sd">        Excitation wavelength in nanometres for optically triggered pulsed EPR</span>
+<span class="sd">        experiments. Optional and only used for light-induced sequences.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``pulse_epr``.</span>
+<span class="sd">    * All shared measurement metadata (temperature, solvent, operator,</span>
+<span class="sd">      timestamps, file path, etc.) are inherited from :class:`Measurement`.</span>
+<span class="sd">    * The ``id`` corresponds directly to the entry in the main</span>
+<span class="sd">      ``measurements`` table via single-table inheritance.</span>
+<span class="sd">    * Pulse-experiments usually have many metadata that are important. A</span>
+<span class="sd">      file containing the metadata (e.g. a .DSC-file) should be saved with</span>
+<span class="sd">      the raw data at ``/data/Mxy/raw``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a pulsed EPR measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import PulseEPR</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;PDI-TEMPO&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = PulseEPR(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;pulse_epr&quot;,</span>
+<span class="sd">    ...     temperature=80.0,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 4, 12),</span>
+<span class="sd">    ...     measured_by=&quot;Bob&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M21/measurement_M21.h5&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     pulse_experiment=&quot;HahnEcho&quot;,</span>
+<span class="sd">    ...     frequency_band=&quot;X&quot;,</span>
+<span class="sd">    ...     attenuation=&quot;20 dB&quot;,</span>
+<span class="sd">    ...     excitation_wl=532.0,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Loading via polymorphism:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=21).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.PulseEPR&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;pulse_epr&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;pulse_epr&quot;</span><span class="p">,}</span>
+
+    <span class="n">pulse_experiment</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
+    <span class="n">attenuation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">))</span>
+    <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="UVVis">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.UVVis.html#specatalog.models.measurements.UVVis">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UVVis</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    UVvis  measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` represents an UVvis experiment.</span>
+<span class="sd">    This model adds the UVvis-specific parameter dim_cuvette.</span>
+
+<span class="sd">    The model participates in SQLAlchemy polymorphism using the</span>
+<span class="sd">    ``&quot;uvvis&quot;`` ``polymorphic_identity``. Any row in ``measurements`` where</span>
+<span class="sd">    ``method=&#39;uvvis&#39;`` is therefore automatically loaded as a</span>
+<span class="sd">    :class:`UVVis` instance.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key linked to ``measurements.id`` with cascading delete.</span>
+<span class="sd">    dim_cuvette: str</span>
+<span class="sd">        Dimension of the cuvette.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``uvvis``.</span>
+<span class="sd">    * All shared measurement metadata (temperature, solvent, operator,</span>
+<span class="sd">      timestamps, file path, etc.) are inherited from :class:`Measurement`.</span>
+<span class="sd">    * The ``id`` corresponds directly to the entry in the main</span>
+<span class="sd">      ``measurements`` table via single-table inheritance.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating an UVvis measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import UVVis</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;PDI-TEMPO&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = UVVis(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;uvvis&quot;,</span>
+<span class="sd">    ...     temperature=298,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 4, 12),</span>
+<span class="sd">    ...     measured_by=&quot;Bob&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M21/measurement_M21.h5&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     dim_cuvette = &quot;1cm&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Loading via polymorphism:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=21).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.UVVis&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;uvvis&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;uvvis&quot;</span><span class="p">,}</span>
+
+
+    <span class="n">dim_cuvette</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Fluorescence">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.Fluorescence.html#specatalog.models.measurements.Fluorescence">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Fluorescence</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fluorescence measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` represents a Fluorescence experiment.</span>
+<span class="sd">    This model adds the Fluorescence-specific parameters excitation,</span>
+<span class="sd">    excitation_wl and od.</span>
+
+<span class="sd">    The model participates in SQLAlchemy polymorphism using the</span>
+<span class="sd">    ``&quot;fluorescence&quot;`` ``polymorphic_identity``. Any row in ``measurements``</span>
+<span class="sd">    where ``method=&#39;fluorescence&#39;`` is therefore automatically loaded as a</span>
+<span class="sd">    :class:`Fluorescence` instance.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key linked to ``measurements.id`` with cascading delete.</span>
+<span class="sd">    excitation: boolean</span>
+<span class="sd">        Indicate wheather the data are an excitation (True) or</span>
+<span class="sd">        emission (False) spectrum.</span>
+<span class="sd">    excitation_wl : str</span>
+<span class="sd">        Excitation wavelength incl. unit.</span>
+<span class="sd">    od : str or None</span>
+<span class="sd">        Optical density / absorbance.</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``fluorescence``.</span>
+<span class="sd">    * All shared measurement metadata (temperature, solvent, operator,</span>
+<span class="sd">      timestamps, file path, etc.) are inherited from :class:`Measurement`.</span>
+<span class="sd">    * The ``id`` corresponds directly to the entry in the main</span>
+<span class="sd">      ``measurements`` table via single-table inheritance.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a Fluorescence measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import Fluorescence</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;PDI-TEMPO&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = Fluorescence(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;uvvis&quot;,</span>
+<span class="sd">    ...     temperature=298,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 4, 12),</span>
+<span class="sd">    ...     measured_by=&quot;Bob&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M21/measurement_M21.h5&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     excitation=True,</span>
+<span class="sd">    ...     excitation_wl=&quot;560nm&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Loading via polymorphism:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=21).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.Fluorescence&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;fluorescence&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;fluorescence&quot;</span><span class="p">,}</span>
+
+    <span class="n">excitation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">od</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="TA">
+<a class="viewcode-back" href="../../../generated/specatalog.models.measurements.TA.html#specatalog.models.measurements.TA">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TA</span><span class="p">(</span><span class="n">Measurement</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transient absorption measurement.</span>
+
+<span class="sd">    This subclass of :class:`Measurement` represents a TA experiment.</span>
+<span class="sd">    This model adds the TA-specific parameters timedomain, excitation_energy,</span>
+<span class="sd">    excitation_wl and od.</span>
+
+<span class="sd">    The model participates in SQLAlchemy polymorphism using the</span>
+<span class="sd">    ``&quot;ta&quot;`` ``polymorphic_identity``. Any row in ``measurements``</span>
+<span class="sd">    where ``method=&#39;ta&#39;`` is therefore automatically loaded as a</span>
+<span class="sd">    :class:`TransientAbsorption` instance.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        Primary key linked to ``measurements.id`` with cascading delete.</span>
+<span class="sd">    timedomain : str</span>
+<span class="sd">        Indicate in which timedomain (e.g. nano-second TA (ns)/</span>
+<span class="sd">        femto-second TA (fs)) the exeperiment is run.</span>
+<span class="sd">    excitation_energy : str or None</span>
+<span class="sd">        Excitation energy incl. unit.</span>
+<span class="sd">    excitation_wl : str</span>
+<span class="sd">        Excitation wavelength incl. unit.</span>
+<span class="sd">    od : str or None</span>
+<span class="sd">        Optical density / absorbance.</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    * The tablename is ``ta``.</span>
+<span class="sd">    * All shared measurement metadata (temperature, solvent, operator,</span>
+<span class="sd">      timestamps, file path, etc.) are inherited from :class:`Measurement`.</span>
+<span class="sd">    * The ``id`` corresponds directly to the entry in the main</span>
+<span class="sd">      ``measurements`` table via single-table inheritance.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Creating a TA measurement:</span>
+
+<span class="sd">    &gt;&gt;&gt; from measurements import TA</span>
+<span class="sd">    &gt;&gt;&gt; from molecules import Molecule</span>
+<span class="sd">    &gt;&gt;&gt; mol = Molecule(name=&quot;PDI-TEMPO&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; m = TA(</span>
+<span class="sd">    ...     molecule=mol,</span>
+<span class="sd">    ...     method=&quot;uvvis&quot;,</span>
+<span class="sd">    ...     temperature=298,</span>
+<span class="sd">    ...     solvent=&quot;Toluene&quot;,</span>
+<span class="sd">    ...     date=date(2025, 4, 12),</span>
+<span class="sd">    ...     measured_by=&quot;Bob&quot;,</span>
+<span class="sd">    ...     path=&quot;/data/M21/measurement_M21.h5&quot;,</span>
+<span class="sd">    ...     corrected=False,</span>
+<span class="sd">    ...     evaluated=False,</span>
+<span class="sd">    ...     timedomain=&quot;ns&quot;</span>
+<span class="sd">    ...     excitation_wl=&quot;560nm&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; session.add(m)</span>
+<span class="sd">    &gt;&gt;&gt; session.commit()</span>
+
+<span class="sd">    Loading via polymorphism:</span>
+
+<span class="sd">    &gt;&gt;&gt; m = session.query(Measurement).filter_by(id=21).one()</span>
+<span class="sd">    &gt;&gt;&gt; type(m)</span>
+<span class="sd">    &lt;class &#39;models.TransientAbsorption&#39;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;ta&quot;</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;ta&quot;</span><span class="p">,}</span>
+
+    <span class="n">timedomain</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">excitation_energy</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">od</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">))</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

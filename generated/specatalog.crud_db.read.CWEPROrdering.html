@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CWEPROrdering &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.crud_db.read.CWEPROrdering.html" />
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TREPROrdering" href="specatalog.crud_db.read.TREPROrdering.html" />
+    <link rel="prev" title="MeasurementOrdering" href="specatalog.crud_db.read.MeasurementOrdering.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            specatalog
+              <img src="../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../crud_db.html">crud_db</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../crud_db.html#create">create</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../crud_db.html#read">read</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="specatalog.crud_db.read.run_query.html">run_query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../crud_db.html#filtermodels">FilterModels</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../crud_db.html#orderingmodels">OrderingModels</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.MeasurementOrdering.html">MeasurementOrdering</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">CWEPROrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.TREPROrdering.html">TREPROrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.PulseEPROrdering.html">PulseEPROrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.UVVisOrdering.html">UVVisOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.FluorescenceOrdering.html">FluorescenceOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.TAOrdering.html">TAOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.MoleculeOrdering.html">MoleculeOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.SingleMoleculeOrdering.html">SingleMoleculeOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.RPOrdering.html">RPOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.TDPOrdering.html">TDPOrdering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="specatalog.crud_db.read.TTPOrdering.html">TTPOrdering</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../crud_db.html#update">update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../crud_db.html#delete">delete</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../crud_db.html">crud_db</a></li>
+      <li class="breadcrumb-item active">CWEPROrdering</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/specatalog.crud_db.read.CWEPROrdering.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="specatalog.crud_db.read.MeasurementOrdering.html" class="btn btn-neutral float-left" title="MeasurementOrdering" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.crud_db.read.TREPROrdering.html" class="btn btn-neutral float-right" title="TREPROrdering" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cweprordering">
+<h1>CWEPROrdering<a class="headerlink" href="#cweprordering" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="specatalog.crud_db.read.CWEPROrdering">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">specatalog.crud_db.read.</span></span><span class="sig-name descname"><span class="pre">CWEPROrdering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temperature</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solvent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concentration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measured_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corrected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updated_at</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attenuation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#specatalog.crud_db.read.CWEPROrdering" title="Link to this definition"></a></dt>
+<dd><p>Pydantic ordering model for CWEPR.</p>
+<p>Choose “asc” (for ascending ordering) or “desc” (for descending ordering)
+for each attribute that shall be included in the ordering of the results.</p>
+<p>The following fields can be selected:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>id: Literal</p></li>
+<li><p>molecular_id: Literal</p></li>
+<li><p>method: Literal</p></li>
+<li><p>temperature: Literal</p></li>
+<li><p>solvent: Literal</p></li>
+<li><p>concentration: Literal</p></li>
+<li><p>date: Literal</p></li>
+<li><p>measured_by: Literal</p></li>
+<li><p>location: Literal</p></li>
+<li><p>device: Literal</p></li>
+<li><p>series: Literal</p></li>
+<li><p>path: Literal</p></li>
+<li><p>corrected: Literal</p></li>
+<li><p>evaluated: Literal</p></li>
+<li><p>created_at: Literal</p></li>
+<li><p>updated_at: Literal</p></li>
+<li><p>frequency_band: Literal</p></li>
+<li><p>attenuation: Literal</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>molecular_id</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>method</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>temperature</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>solvent</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>concentration</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>date</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>measured_by</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>location</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>device</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>series</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>path</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>corrected</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>evaluated</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>created_at</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>updated_at</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>frequency_band</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>attenuation</strong> (<em>Literal</em><em>[</em><em>'asc'</em><em>, </em><em>'desc'</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="specatalog.crud_db.read.MeasurementOrdering.html" class="btn btn-neutral float-left" title="MeasurementOrdering" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.crud_db.read.TREPROrdering.html" class="btn btn-neutral float-right" title="TREPROrdering" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

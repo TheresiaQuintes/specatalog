@@ -1,0 +1,484 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.helpers.helper_functions &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/helpers/helper_functions.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.helpers.helper_functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.helpers.helper_functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sqlalchemy.sql.sqltypes</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">Sqltypes</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.sql.sqltypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">String</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Boolean</span><span class="p">,</span> <span class="n">Date</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">,</span> <span class="n">Text</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.sql.sqltypes</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span> <span class="k">as</span> <span class="n">SAEnum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">create_model</span><span class="p">,</span> <span class="n">ConfigDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeStampedModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_type_name_for_doc</span><span class="p">(</span><span class="n">typ</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the string of a type for automatic documentation. If typ is a</span>
+<span class="sd">    Union[T, NoneType] (as it is the case for the type of optional arguments)</span>
+<span class="sd">    T is returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    typ : type</span>
+<span class="sd">        Any type of an object or variable.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    typ_string : str</span>
+<span class="sd">        The string of the type.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">origin</span> <span class="o">=</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+    <span class="c1"># union types</span>
+    <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="n">Union</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">get_args</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">typ_string</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">typ_string</span>
+
+    <span class="c1"># normal types</span>
+    <span class="n">typ_string</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">typ_string</span>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_map_sqla_type</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">:</span> <span class="n">Sqltypes</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">type</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Map SQLAlchemy types to Python types.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sqlatype : Sqltypes</span>
+<span class="sd">        An SQLAlchemy type.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    type</span>
+<span class="sd">        The Python type that corresponds the SQLAlchemy type.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="n">SAEnum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">sqlatype</span><span class="o">.</span><span class="n">enum_class</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">Integer</span><span class="p">,)):</span>
+        <span class="k">return</span> <span class="nb">int</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">Float</span><span class="p">,)):</span>
+        <span class="k">return</span> <span class="nb">float</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">Boolean</span><span class="p">,)):</span>
+        <span class="k">return</span> <span class="nb">bool</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">String</span><span class="p">,</span> <span class="n">Text</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="nb">str</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">Date</span><span class="p">,)):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sqlatype</span><span class="p">,</span> <span class="p">(</span><span class="n">DateTime</span><span class="p">,)):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="make_filter_model">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.helper_functions.make_filter_model.html#specatalog.helpers.helper_functions.make_filter_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_filter_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">,</span> <span class="n">creation_model</span><span class="p">:</span> <span class="n">BaseModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create dynamically a pydantic-class for filtering based on an SQLAlchemy-</span>
+<span class="sd">    model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : TimeStampedModel</span>
+<span class="sd">        An SQLAlchemy model of the type TimeStampedModel or any subclass.</span>
+<span class="sd">    creation_model : BaseModel</span>
+<span class="sd">        The creation_model from models.creation_pydantic_measurements/molecules</span>
+<span class="sd">        that corresponds to the class of model. E.g. model = ms.TREPR -&gt;</span>
+<span class="sd">        creation_model = cpm.TREPRModel.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    FilterModel : BaseModel</span>
+<span class="sd">        The filter-model contains all column names as optional fields. The type</span>
+<span class="sd">        of each field is determined by the type of the column. The default</span>
+<span class="sd">        value is None. For numerical fileds additionally fields with comparison</span>
+<span class="sd">        operators and for string-type fields text-comparison operators are</span>
+<span class="sd">        created. When using the model no addtional fields are allowed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pyd_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">annotation</span>
+                  <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">creation_model</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># get all columns of the SQLA-model</span>
+
+    <span class="c1"># fill fields-dictionary</span>
+    <span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mapper</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">pyd_fields</span><span class="p">:</span>
+            <span class="n">py_type</span> <span class="o">=</span> <span class="n">pyd_fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">py_type</span> <span class="o">=</span> <span class="n">_map_sqla_type</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+        <span class="c1"># add basisfield (equality) for all columns</span>
+        <span class="n">fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">py_type</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># add comparison operators for numerical types</span>
+        <span class="k">if</span> <span class="n">py_type</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">or</span> <span class="n">py_type</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;gt&quot;</span><span class="p">,</span> <span class="s2">&quot;lt&quot;</span><span class="p">,</span> <span class="s2">&quot;ge&quot;</span><span class="p">,</span> <span class="s2">&quot;le&quot;</span><span class="p">,</span> <span class="s2">&quot;ne&quot;</span><span class="p">):</span>
+                <span class="n">fields</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">py_type</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># add comparison operators for strings</span>
+        <span class="k">if</span> <span class="n">py_type</span> <span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;like&quot;</span><span class="p">,</span> <span class="s2">&quot;ilike&quot;</span><span class="p">,</span> <span class="s2">&quot;contains&quot;</span><span class="p">):</span>
+                <span class="n">fields</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">__</span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># create pydantic model from fields-dictionary</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">Filter&quot;</span>
+
+    <span class="n">FilterModel</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">__config__</span><span class="o">=</span><span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">fields</span><span class="p">,</span>
+    <span class="p">)</span>
+
+   <span class="c1"># *** create docstring ***</span>
+    <span class="n">operator_lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot; gt: greater than&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; lt: less than&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; ge: greater than or equal to&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; le: less than or equal to&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; ne: not equal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; like: SQL LIKE pattern match&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; ilike: case-insensitive LIKE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot; contains: substring match (for strings)&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">operator_explanation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">- </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">operator_lines</span>
+    <span class="p">)</span>
+
+
+    <span class="n">field_lines</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">- </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">_type_name_for_doc</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>  <span class="c1"># field_name + type</span>
+
+    <span class="n">FilterModel</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Pydantic filter model for </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">    The following operators can (but do not have to) be applied to the</span>
+<span class="s2">    attributes by appending the operator to the field name, e.g.</span>
+<span class="s2">    temperature__gt=20 (-&gt; temperature &gt; 20):</span>
+
+<span class="s2">    </span><span class="si">{</span><span class="n">operator_explanation</span><span class="si">}</span>
+
+<span class="s2">    The following fields can be selected:</span>
+
+<span class="s2">    </span><span class="si">{</span><span class="n">field_lines</span><span class="si">}</span>
+
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">FilterModel</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>  <span class="c1"># add the original model to the FilterModel</span>
+    <span class="k">return</span> <span class="n">FilterModel</span></div>
+
+
+
+<div class="viewcode-block" id="make_ordering_model">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.helper_functions.make_ordering_model.html#specatalog.helpers.helper_functions.make_ordering_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_ordering_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create dynamically a pydantic-class for ordering based on an SQLAlchemy</span>
+<span class="sd">    model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : TimeStampedModel</span>
+<span class="sd">        An SQLAlchemy model of the type TimeStampedModel or any subclass.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    OrderingModel : BaseModel</span>
+<span class="sd">        The ordering-model contains all column names as optional fields with</span>
+<span class="sd">        the default-value None. The value of the field can only be set to</span>
+<span class="sd">        &quot;asc&quot; (to indicate ascending ordering) or &quot;desc&quot; (to indicate</span>
+<span class="sd">        descending ordering). No additional fields can be created when using</span>
+<span class="sd">        the model.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># get all columns of the SQLA-model</span>
+
+    <span class="c1"># fill fields-dictionary</span>
+    <span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mapper</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">fields</span><span class="p">[</span><span class="n">column</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;asc&quot;</span><span class="p">,</span> <span class="s2">&quot;desc&quot;</span><span class="p">]],</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># create pydantic model from fields-dictionary</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">Ordering&quot;</span>
+
+    <span class="n">OrderingModel</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">fields</span><span class="p">,</span>
+        <span class="n">__config__</span><span class="o">=</span><span class="n">ConfigDict</span><span class="p">(</span>
+    <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span>
+    <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># *** create docstring ***</span>
+    <span class="n">field_lines</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">- </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">_type_name_for_doc</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">OrderingModel</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Pydantic ordering model for </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span>
+
+<span class="s2">    Choose &quot;asc&quot; (for ascending ordering) or &quot;desc&quot; (for descending ordering)</span>
+<span class="s2">    for each attribute that shall be included in the ordering of the results.</span>
+
+<span class="s2">    The following fields can be selected:</span>
+
+<span class="s2">    </span><span class="si">{</span><span class="n">field_lines</span><span class="si">}</span>
+
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">OrderingModel</span></div>
+
+
+
+
+<div class="viewcode-block" id="make_update_model">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.helper_functions.make_update_model.html#specatalog.helpers.helper_functions.make_update_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_update_model</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">,</span> <span class="n">creation_model</span><span class="p">:</span> <span class="n">BaseModel</span>
+                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseModel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create dynamically a pydantic-class for updating based on an SQLAlchemy</span>
+<span class="sd">    model.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : TimeStampedModel</span>
+<span class="sd">        An SQLAlchemy model of the type TimeStampedModel. Has to be of the</span>
+<span class="sd">        class Molecule or Measurement (or a subclass).</span>
+<span class="sd">    creation_model : BaseModel</span>
+<span class="sd">        The creation_model from models.creation_pydantic_measurements/molecules</span>
+<span class="sd">        that corresponds to the class of model. E.g. model = ms.TREPR -&gt;</span>
+<span class="sd">        creation_model = cpm.TREPRModel.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the model is not of the class Molecule or Measurement an error is</span>
+<span class="sd">        raised.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    UpdateModel : BaseModel</span>
+<span class="sd">        The update-model contains all column names as optional fields with</span>
+<span class="sd">        the default-value None. The value of the field can be set to any</span>
+<span class="sd">        value but must be the same type as the original column type. Fields</span>
+<span class="sd">        that must not be updated are excluded from the UpdateModel.</span>
+<span class="sd">        No additional fields can be created when using the model.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># define fields that must not be updated</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="s2">&quot;specatalog.models.measurements&quot;</span><span class="p">:</span>
+        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;molecular_id&quot;</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="s2">&quot;created_at&quot;</span><span class="p">,</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">model</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">==</span> <span class="s2">&quot;specatalog.models.molecules&quot;</span><span class="p">:</span>
+        <span class="n">exclude_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;group&quot;</span><span class="p">,</span> <span class="s2">&quot;created_at&quot;</span><span class="p">,</span> <span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown model class&quot;</span><span class="p">)</span>
+
+    <span class="n">pyd_fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">annotation</span>
+                  <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">creation_model</span><span class="o">.</span><span class="n">model_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">mapper</span> <span class="o">=</span> <span class="n">inspect</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># get all columns of the SQLA-model</span>
+
+    <span class="c1"># fill fields-dictionary</span>
+    <span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">mapper</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">field_name</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">exclude_fields</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">pyd_fields</span><span class="p">:</span>
+            <span class="n">py_type</span> <span class="o">=</span> <span class="n">pyd_fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">py_type</span> <span class="o">=</span> <span class="n">_map_sqla_type</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+        <span class="n">fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="n">py_type</span><span class="p">],</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># create pydantic model from fields-dictionary</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">Update&quot;</span>
+
+    <span class="n">UpdateModel</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span>
+        <span class="n">__config__</span><span class="o">=</span><span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">fields</span><span class="p">,</span>
+    <span class="p">)</span>
+
+   <span class="c1"># *** create docstrin ***</span>
+
+    <span class="n">field_lines</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">- </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">_type_name_for_doc</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">UpdateModel</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Pydantic update model for </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. The fields that are set</span>
+<span class="s2">    are the parameters that shall be updateted in the database.</span>
+
+<span class="s2">    The following fields can be selected:</span>
+
+<span class="s2">    </span><span class="si">{</span><span class="n">field_lines</span><span class="si">}</span>
+
+<span class="s2">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">UpdateModel</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>  <span class="c1"># reference SQLA-model</span>
+    <span class="k">return</span> <span class="n">UpdateModel</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_enum_to_value</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change the enum instance to the value of the enum-instance. In case the</span>
+<span class="sd">    value is not of enum instance return the value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">return</span> <span class="n">v</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.crud_db.read &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/crud_db/read.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.crud_db.read</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.crud_db.read</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.helpers.helper_functions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hf</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.measurements</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.molecules</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mol</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.creation_pydantic_measurements</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.creation_pydantic_molecules</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpmol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_session</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">selectinload</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+
+<span class="c1">#%%</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Automatic creation of the filter and ordering models using the</span>
+<span class="sd">helper_functions module. The functions for the creation include an automatic</span>
+<span class="sd">documentation for the classes. To add new classes add them to both of the</span>
+<span class="sd">model_mapping-dictionaries.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">model_mapping_filters</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;MeasurementFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">Measurement</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">MeasurementModel</span><span class="p">],</span>
+    <span class="s2">&quot;TREPRFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">TREPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">TREPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;CWEPRFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">CWEPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;PulseEPRFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">PulseEPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">PulseEPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;UVVisFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">UVVis</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">UVVisModel</span><span class="p">],</span>
+    <span class="s2">&quot;FluorescenceFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">Fluorescence</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">FluorescenceModel</span><span class="p">],</span>
+    <span class="s2">&quot;TAFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">TA</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">TAModel</span><span class="p">],</span>
+    <span class="s2">&quot;MoleculeFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">MoleculeModel</span><span class="p">],</span>
+    <span class="s2">&quot;SingleMoleculeFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">SingleMolecule</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">SingleMoleculeModel</span><span class="p">],</span>
+    <span class="s2">&quot;RPFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">RP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">RPModel</span><span class="p">],</span>
+    <span class="s2">&quot;TDPFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TDP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">TDPModel</span><span class="p">],</span>
+    <span class="s2">&quot;TTPFilter&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TTP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">TTPModel</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">filters</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">model_mapping_filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">make_filter_model</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">f</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="vm">__name__</span>
+    <span class="n">filters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+
+<span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
+<span class="n">filter_model_type</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">filters</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+
+<span class="n">model_mapping_ordering</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;MeasurementOrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">Measurement</span><span class="p">,</span>
+    <span class="s2">&quot;TREPROrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">TREPR</span><span class="p">,</span>
+    <span class="s2">&quot;CWEPROrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">,</span>
+    <span class="s2">&quot;PulseEPROrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">PulseEPR</span><span class="p">,</span>
+    <span class="s2">&quot;UVVisOrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">UVVis</span><span class="p">,</span>
+    <span class="s2">&quot;FluorescenceOrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">Fluorescence</span><span class="p">,</span>
+    <span class="s2">&quot;TAOrdering&quot;</span><span class="p">:</span> <span class="n">ms</span><span class="o">.</span><span class="n">TA</span><span class="p">,</span>
+    <span class="s2">&quot;MoleculeOrdering&quot;</span><span class="p">:</span> <span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span>
+    <span class="s2">&quot;SingleMoleculeOrdering&quot;</span><span class="p">:</span> <span class="n">mol</span><span class="o">.</span><span class="n">SingleMolecule</span><span class="p">,</span>
+    <span class="s2">&quot;RPOrdering&quot;</span><span class="p">:</span> <span class="n">mol</span><span class="o">.</span><span class="n">RP</span><span class="p">,</span>
+    <span class="s2">&quot;TDPOrdering&quot;</span><span class="p">:</span> <span class="n">mol</span><span class="o">.</span><span class="n">TDP</span><span class="p">,</span>
+    <span class="s2">&quot;TTPOrdering&quot;</span><span class="p">:</span> <span class="n">mol</span><span class="o">.</span><span class="n">TTP</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">ordering</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">model_mapping_ordering</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">make_ordering_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="vm">__name__</span>
+    <span class="n">ordering</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+
+<span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+<span class="n">ordering_model_type</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">ordering</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+
+
+
+<span class="c1"># %%</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">****************************************</span>
+<span class="sd">***** Function for running queries *****</span>
+<span class="sd">****************************************</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_query</span><span class="p">(</span><span class="n">filters</span><span class="p">:</span> <span class="n">filter_model_type</span><span class="p">,</span> <span class="n">ordering</span><span class="p">:</span> <span class="n">ordering_model_type</span><span class="p">,</span>
+               <span class="n">session</span><span class="p">:</span> <span class="n">db_session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the database. The table is chosen from the filter model. All</span>
+<span class="sd">    filters and the ordering is organised in filter and ordering models.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filters : filter_model</span>
+<span class="sd">        Pydantic model from one of the Filter-classes. The class that is</span>
+<span class="sd">        chosen determines which table is searched. If e.g. an object of the</span>
+<span class="sd">        class TREPRFilter is used only trEPR-measurements are searched.</span>
+<span class="sd">    ordering : ordering_model, optional</span>
+<span class="sd">        The list of results may be ordered depending on one or muliple ordering</span>
+<span class="sd">        parameters that are organised in an ordering model. For each parameter</span>
+<span class="sd">        &quot;asc&quot; (ascending) or &quot;desc&quot; (descending) order can (but does not have</span>
+<span class="sd">        to) be chosen. The default is None, which means that no ordering of the</span>
+<span class="sd">        results is applied.</span>
+<span class="sd">    session: db_session</span>
+<span class="sd">        Object of the class db_session.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        An error is raised if the filter or the ordering model contains</span>
+<span class="sd">        attributes that are not part of the queried table.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Results of the query. The lists contains objects of the sqlalchemy</span>
+<span class="sd">        model type.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get query instance</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">model</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;molecule&quot;</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">selectinload</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">molecule</span><span class="p">))</span>
+
+
+    <span class="c1"># process filters</span>
+    <span class="n">filter_dict_raw</span> <span class="o">=</span> <span class="n">filters</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">})</span>
+    <span class="n">filter_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">hf</span><span class="o">.</span><span class="n">_enum_to_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">filter_dict_raw</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">filter_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;__&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">field_name</span><span class="p">,</span> <span class="n">op</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">field_name</span><span class="p">,</span> <span class="n">op</span> <span class="o">=</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;eq&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&#39; not valid for </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">column</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;eq&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">==</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ne&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">!=</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;gt&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ge&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">&gt;=</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;lt&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;le&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span> <span class="o">&lt;=</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;like&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;ilike&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">ilike</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">&quot;contains&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown operator: </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># process ordering</span>
+    <span class="k">if</span> <span class="n">ordering</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">direction</span> <span class="ow">in</span> <span class="n">ordering</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">column</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> not valid for </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">__tablename__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s2">&quot;desc&quot;</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">column</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span>
+
+    <span class="c1"># run query</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">results</span>
+
+
+<div class="viewcode-block" id="run_query">
+<a class="viewcode-back" href="../../../generated/specatalog.crud_db.read.run_query.html#specatalog.crud_db.read.run_query">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_query</span><span class="p">(</span><span class="n">filters</span><span class="p">:</span> <span class="n">filter_model_type</span><span class="p">,</span> <span class="n">ordering</span><span class="p">:</span> <span class="n">ordering_model_type</span><span class="o">=</span><span class="kc">None</span>
+              <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Query the database. The table is chosen from the filter model. All</span>
+<span class="sd">    filters and the ordering is organised in filter and ordering models.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filters : filter_model</span>
+<span class="sd">        Pydantic model from one of the Filter-classes. The class that is</span>
+<span class="sd">        chosen determines which table is searched. If e.g. an object of the</span>
+<span class="sd">        class TREPRFilter is used only trEPR-measurements are searched.</span>
+<span class="sd">    ordering : ordering_model, optional</span>
+<span class="sd">        The list of results may be ordered depending on one or muliple ordering</span>
+<span class="sd">        parameters that are organised in an ordering model. For each parameter</span>
+<span class="sd">        &quot;asc&quot; (ascending) or &quot;desc&quot; (descending) order can (but does not have</span>
+<span class="sd">        to) be chosen. The default is None, which means that no ordering of the</span>
+<span class="sd">        results is applied.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        An error is raised if the filter or the ordering model contains</span>
+<span class="sd">        attributes that are not part of the queried table.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Results of the query. The lists contains objects of the sqlalchemy</span>
+<span class="sd">        model type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">db_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_run_query</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="n">ordering</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

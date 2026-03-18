@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.crud_db.update &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/crud_db/update.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.crud_db.update</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.crud_db.update</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.measurements</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.molecules</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mol</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeStampedModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_session</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.creation_pydantic_measurements</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.creation_pydantic_molecules</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cpmol</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.helpers.helper_functions</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">hf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+
+<span class="c1"># %%</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Automatic creation of the update model using the</span>
+<span class="sd">helper_functions module. The functions for the creation include an automatic</span>
+<span class="sd">documentation for the classes. To add new classes add them to the</span>
+<span class="sd">model_mapping-dictionariy.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">model_mapping_update</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;MeasurementUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">Measurement</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">MeasurementModel</span><span class="p">],</span>
+    <span class="s2">&quot;TREPRUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">TREPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">TREPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;CWEPRUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">CWEPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">CWEPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;PulseEPRUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">PulseEPR</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">PulseEPRModel</span><span class="p">],</span>
+    <span class="s2">&quot;UVVisUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">UVVis</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">UVVisModel</span><span class="p">],</span>
+    <span class="s2">&quot;FluorescenceUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">Fluorescence</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">FluorescenceModel</span><span class="p">],</span>
+    <span class="s2">&quot;TAUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">ms</span><span class="o">.</span><span class="n">TA</span><span class="p">,</span> <span class="n">cpm</span><span class="o">.</span><span class="n">TAModel</span><span class="p">],</span>
+    <span class="s2">&quot;MoleculeUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">MoleculeModel</span><span class="p">],</span>
+    <span class="s2">&quot;SingleMoleculeUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">SingleMolecule</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">SingleMoleculeModel</span><span class="p">],</span>
+    <span class="s2">&quot;RPUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">RP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">RPModel</span><span class="p">],</span>
+    <span class="s2">&quot;TDPUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TDP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">TDPModel</span><span class="p">],</span>
+    <span class="s2">&quot;TTPUpdate&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TTP</span><span class="p">,</span> <span class="n">cpmol</span><span class="o">.</span><span class="n">TTPModel</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">updates</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">model_mapping_update</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">make_update_model</span><span class="p">(</span><span class="n">model</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">f</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="vm">__name__</span>
+    <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">updates</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span>
+
+<span class="nb">globals</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">updates</span><span class="p">)</span>
+<span class="n">update_model_type</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">updates</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+
+
+<span class="c1"># %%</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">***********************************************</span>
+<span class="sd">***** Functions for updating the database *****</span>
+<span class="sd">***********************************************</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_update_model</span><span class="p">(</span><span class="n">entry</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">,</span> <span class="n">update_data</span><span class="p">:</span> <span class="n">update_model_type</span><span class="p">,</span>
+                 <span class="n">session</span><span class="p">:</span> <span class="n">db_session</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update a database entry using an update model.</span>
+<span class="sd">    The entry is updated and commited. In case of multicomponent molecules</span>
+<span class="sd">    the name is updated automatically using the components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    entry : TimeStampedModel</span>
+<span class="sd">        Any object from the models.base.TimeStampedModel (=sqlalchemy model)</span>
+<span class="sd">        class or from a subclass. The entry is updated.</span>
+<span class="sd">    update_data : update_model_type</span>
+<span class="sd">        Update model. The fields that are set determine which fields of the</span>
+<span class="sd">        entry are updated. The type of the update_data model should fit the</span>
+<span class="sd">        type of the entry. E.g. if the entry is an object of the class TREPR,</span>
+<span class="sd">        the update_data should be an object of the class TREPRUpdate.</span>
+<span class="sd">    session: db_session</span>
+<span class="sd">        Object of the class db_session.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        An error is raised if the update model contains attributes that are not</span>
+<span class="sd">        part of the database entry.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">data_raw</span> <span class="o">=</span> <span class="n">update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span><span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">hf</span><span class="o">.</span><span class="n">_enum_to_value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data_raw</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> not valid.&quot;</span><span class="p">)</span>
+
+
+    <span class="n">_automatic_name_update</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+
+    <span class="k">return</span>
+
+<div class="viewcode-block" id="update_model">
+<a class="viewcode-back" href="../../../generated/specatalog.crud_db.update.update_model.html#specatalog.crud_db.update.update_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_model</span><span class="p">(</span><span class="n">entry</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">,</span> <span class="n">update_data</span><span class="p">:</span> <span class="n">update_model_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update a database entry using an update model.</span>
+<span class="sd">    The entry is updated and commited. In case of multicomponent molecules</span>
+<span class="sd">    the name is updated automatically using the components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    entry : TimeStampedModel</span>
+<span class="sd">        Any object from the models.base.TimeStampedModel (=sqlalchemy model)</span>
+<span class="sd">        class or from a subclass. The entry is updated.</span>
+<span class="sd">    update_data : update_model_type</span>
+<span class="sd">        Update model. The fields that are set determine which fields of the</span>
+<span class="sd">        entry are updated. The type of the update_data model should fit the</span>
+<span class="sd">        type of the entry. E.g. if the entry is an object of the class TREPR,</span>
+<span class="sd">        the update_data should be an object of the class TREPRUpdate.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        An error is raised if the update model contains attributes that are not</span>
+<span class="sd">        part of the database entry.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">db_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="n">_update_model</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">update_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_automatic_name_update</span><span class="p">(</span><span class="n">entry</span><span class="p">:</span> <span class="n">TimeStampedModel</span><span class="p">,</span>
+                          <span class="n">update_data</span><span class="p">:</span> <span class="n">update_model_type</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Automatic update of the name of a multi-component molecule in a database</span>
+<span class="sd">    entry.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    entry : TimeStampedModel</span>
+<span class="sd">        Any object from the models.base.TimeStampedModel (=sqlalchemy model)</span>
+<span class="sd">        class or from a subclass. If the entry is an object of an multi-</span>
+<span class="sd">        component molecule class (i.e. RP, TDP or TTP) the name attribute</span>
+<span class="sd">        is automatically set using the single components of the molecule.</span>
+<span class="sd">    update_data : update_model_type</span>
+<span class="sd">        Update data. If components of the molecule name are changed this</span>
+<span class="sd">        defines how the total name of the molecule is changed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># map components of the molecules</span>
+    <span class="n">group_keys</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;rp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;radical_1&quot;</span><span class="p">,</span> <span class="s2">&quot;linker&quot;</span><span class="p">,</span> <span class="s2">&quot;radical_2&quot;</span><span class="p">,</span> <span class="s2">&quot;name_suffix&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;tdp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;chromophore&quot;</span><span class="p">,</span> <span class="s2">&quot;linker&quot;</span><span class="p">,</span> <span class="s2">&quot;doublet&quot;</span><span class="p">,</span> <span class="s2">&quot;name_suffix&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;ttp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;triplet_1&quot;</span><span class="p">,</span> <span class="s2">&quot;linker&quot;</span><span class="p">,</span> <span class="s2">&quot;triplet_2&quot;</span><span class="p">,</span> <span class="s2">&quot;name_suffix&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="c1"># check if a molecule name is changed by the update_data</span>
+    <span class="n">keys_to_check</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">keys</span> <span class="ow">in</span> <span class="n">group_keys</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">update_data</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys_to_check</span><span class="p">):</span>
+        <span class="k">return</span>  <span class="c1"># if not: do nothing</span>
+
+
+    <span class="c1"># helper function: take component name from update_data if it is changed</span>
+    <span class="c1"># in other cases: take it from the entry (entry is not changed)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">update_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">val</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+
+    <span class="c1"># build name</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_value</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">group_keys</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">group</span><span class="p">]]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)]</span>
+    <span class="n">entry</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">return</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

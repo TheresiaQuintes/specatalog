@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.models.creation_pydantic_molecules &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/models/creation_pydantic_molecules.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.models.creation_pydantic_molecules</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.models.creation_pydantic_molecules</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">computed_field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">ClassVar</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.models.molecules</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mol</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALLOWED_VALUES</span> <span class="k">as</span> <span class="n">av</span>
+
+
+<div class="viewcode-block" id="MoleculeModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_molecules.MoleculeModel.html#specatalog.models.creation_pydantic_molecules.MoleculeModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MoleculeModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`models.Molecule` entries.</span>
+
+<span class="sd">    This model defines the minimal required input for creating a molecule in</span>
+<span class="sd">    the database. It only includes essential molecular metadata; database-</span>
+<span class="sd">    managed fields such as ``id`` or timestamps are excluded.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    molecular_formula : str or None</span>
+<span class="sd">        Standard chemical formula of the molecule (e.g., &quot;C20H12&quot;).</span>
+<span class="sd">    additional_info : str or None</span>
+<span class="sd">        Optional free-text field with supplementary information.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">molecular_formula</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">additional_info</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;forbid&quot;</span><span class="p">,</span> <span class="n">validate_assignment</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="SingleMoleculeModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_molecules.SingleMoleculeModel.html#specatalog.models.creation_pydantic_molecules.SingleMoleculeModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SingleMoleculeModel</span><span class="p">(</span><span class="n">MoleculeModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`mol.SingleMolecule` molecules.</span>
+
+<span class="sd">    This subclass of :class:`MoleculeModel` adds fields specific to single-</span>
+<span class="sd">    molecule entries. The ``model_class`` attribute is fixed to</span>
+<span class="sd">    :class:`mol.SingleMolecule` and cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_class : Type</span>
+<span class="sd">        Always set to :class:`mol.SingleMolecule`. Attempting to assign a different</span>
+<span class="sd">        class raises a validation error.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Human-readable name of the molecule. Must be unique.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">SingleMolecule</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">SingleMolecule</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="RPModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_molecules.RPModel.html#specatalog.models.creation_pydantic_molecules.RPModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RPModel</span><span class="p">(</span><span class="n">MoleculeModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`mol.RP` radical-pair molecules.</span>
+
+<span class="sd">    This subclass of :class:`MoleculeModel` adds fields specific to</span>
+<span class="sd">    radical-pair molecules. The ``model_class`` attribute is fixed to</span>
+<span class="sd">    :class:`mol.RP` and cannot be changed. The ``name`` property is computed</span>
+<span class="sd">    automatically from the radicals and linker.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_class : Type</span>
+<span class="sd">        Always set to :class:`mol.RP`. Attempting to assign a different class</span>
+<span class="sd">        raises a validation error.</span>
+<span class="sd">    radical_1 : av.Radicals</span>
+<span class="sd">        Enumeration specifying the first radical centre.</span>
+<span class="sd">    linker : av.Linker</span>
+<span class="sd">        Enumeration specifying the chemical linker connecting the radicals.</span>
+<span class="sd">    radical_2 : av.Radicals</span>
+<span class="sd">        Enumeration specifying the second radical centre.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Computed property combining radicals and linker into a</span>
+<span class="sd">        name (e.g., &quot;TEMPO1-Ph-TEMPO2&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">RP</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">RP</span>
+
+    <span class="n">radical_1</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Radicals</span>
+    <span class="n">linker</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Linker</span>
+    <span class="n">radical_2</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Radicals</span>
+    <span class="n">name_suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="nd">@computed_field</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">radical_1</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">radical_2</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">radical_1</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">radical_2</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="TDPModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_molecules.TDPModel.html#specatalog.models.creation_pydantic_molecules.TDPModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TDPModel</span><span class="p">(</span><span class="n">MoleculeModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`mol.TDP` triplet–doublet–pair</span>
+<span class="sd">    molecules.</span>
+
+<span class="sd">    This subclass of :class:`MoleculeModel` adds fields specific to TDP</span>
+<span class="sd">    molecules. The ``model_class`` attribute is fixed to :class:`mol.TDP`</span>
+<span class="sd">    and cannot be changed.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_class : Type</span>
+<span class="sd">        Always set to :class:`mol.TDP`. Attempting to assign a different class</span>
+<span class="sd">        raises a validation error.</span>
+<span class="sd">    doublet : av.Doublets</span>
+<span class="sd">        Enumeration specifying the doublet radical centre.</span>
+<span class="sd">    linker : av.Linker</span>
+<span class="sd">        Enumeration defining the chemical linker connecting the doublet and</span>
+<span class="sd">        chromophore.</span>
+<span class="sd">    chromophore : av.Chromophores</span>
+<span class="sd">        Enumeration specifying the chromophoric unit in the TDP system.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Computed property combining doublet linker and chromophore into a</span>
+<span class="sd">        name (e.g., &quot;PDI2-co-TEMPO3&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TDP</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">TDP</span>
+
+    <span class="n">doublet</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Doublets</span>
+    <span class="n">linker</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Linker</span>
+    <span class="n">chromophore</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Chromophores</span>
+    <span class="n">name_suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="nd">@computed_field</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chromophore</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doublet</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chromophore</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">doublet</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="TTPModel">
+<a class="viewcode-back" href="../../../generated/specatalog.models.creation_pydantic_molecules.TTPModel.html#specatalog.models.creation_pydantic_molecules.TTPModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TTPModel</span><span class="p">(</span><span class="n">MoleculeModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pydantic model for creating new :class:`mol.TTP` triplet–triplet–pair</span>
+<span class="sd">    molecules.</span>
+
+<span class="sd">    This subclass of :class:`MoleculeModel` adds fields specific to TTP</span>
+<span class="sd">    molecules. The ``model_class`` attribute is fixed to :class:`mol.TTP` and</span>
+<span class="sd">    cannot be changed. The ``name`` property is computed automatically from the</span>
+<span class="sd">    triplets and linker.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model_class : Type</span>
+<span class="sd">        Always set to :class:`mol.TTP`. Attempting to assign a different class</span>
+<span class="sd">        raises a validation error.</span>
+<span class="sd">    triplet_1 : av.Chromophores</span>
+<span class="sd">        Enumeration specifying the first triplet-capable chromophore.</span>
+<span class="sd">    linker : av.Linker</span>
+<span class="sd">        Enumeration defining the chemical linker connecting the two triplets.</span>
+<span class="sd">    triplet_2 : av.Chromophores</span>
+<span class="sd">        Enumeration specifying the second triplet-capable chromophore.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Computed property combining triplet and linker values into a</span>
+<span class="sd">        name (e.g., &quot;Perylene-ph-Perylene&quot;).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_class</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">TTP</span><span class="p">]</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">TTP</span>
+
+    <span class="n">triplet_1</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Chromophores</span>
+    <span class="n">linker</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Linker</span>
+    <span class="n">triplet_2</span><span class="p">:</span> <span class="n">av</span><span class="o">.</span><span class="n">Chromophores</span>
+    <span class="n">name_suffix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="nd">@computed_field</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">triplet_1</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">triplet_2</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">triplet_1</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linker</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">triplet_2</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name_suffix</span><span class="si">}</span><span class="s2">&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
