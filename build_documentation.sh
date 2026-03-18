@@ -15,7 +15,7 @@ echo "📦 Switching to gh-pages branch..."
 git checkout gh-pages
 
 echo "🗑 Removing old HTML files..."
-git rm -rf * .[^.]*
+git rm -rf .
 
 echo "📂 Copying new HTML files..."
 cp docs/build/html/* .
