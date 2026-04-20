@@ -1,4 +1,11 @@
-# Specatalog
+<p align="center">
+  <img src="docs/images/logo.png" width="200">
+</p>
+
+<p align="center">
+  <b>Specatalog</b><br>
+  Management of spectroscopic measurement data
+</p>
 
 ## Overview
 
