@@ -1,0 +1,184 @@
+import specatalog.models.measurements as ms
+import specatalog.models.molecules as mol
+from specatalog.models.base import TimeStampedModel
+from specatalog.main import db_session
+import specatalog.models.creation_pydantic_measurements as cpm
+import specatalog.models.creation_pydantic_molecules as cpmol
+
+import specatalog.helpers.helper_functions as hf
+from typing import Union
+
+
+# %%
+"""
+Automatic creation of the update model using the
+helper_functions module. The functions for the creation include an automatic
+documentation for the classes. To add new classes add them to the
+model_mapping-dictionariy.
+
+"""
+
+model_mapping_update = {
+    "MeasurementUpdate": [ms.Measurement, cpm.MeasurementModel],
+    "TREPRUpdate": [ms.TREPR, cpm.TREPRModel],
+    "CWEPRUpdate": [ms.CWEPR, cpm.CWEPRModel],
+    "PulseEPRUpdate": [ms.PulseEPR, cpm.PulseEPRModel],
+    "UVVisUpdate": [ms.UVVis, cpm.UVVisModel],
+    "FluorescenceUpdate": [ms.Fluorescence, cpm.FluorescenceModel],
+    "TAUpdate": [ms.TA, cpm.TAModel],
+    "MoleculeUpdate": [mol.Molecule, cpmol.MoleculeModel],
+    "SingleMoleculeUpdate": [mol.SingleMolecule, cpmol.SingleMoleculeModel],
+    "RPUpdate": [mol.RP, cpmol.RPModel],
+    "TDPUpdate": [mol.TDP, cpmol.TDPModel],
+    "TTPUpdate": [mol.TTP, cpmol.TTPModel]
+}
+
+updates = {}
+for name, model in model_mapping_update.items():
+    f = hf.make_update_model(model[0], model[1])
+    f.__module__ = __name__
+    f.__name__ = name
+    updates[name] = f
+
+globals().update(updates)
+update_model_type = Union[tuple(updates.values())]
+
+
+# %%
+"""
+***********************************************
+***** Functions for updating the database *****
+***********************************************
+
+"""
+
+def _update_model(entry: TimeStampedModel, update_data: update_model_type,
+                 session: db_session):
+    """
+    Update a database entry using an update model.
+    The entry is updated and commited. In case of multicomponent molecules
+    the name is updated automatically using the components.
+
+    Parameters
+    ----------
+    entry : TimeStampedModel
+        Any object from the models.base.TimeStampedModel (=sqlalchemy model)
+        class or from a subclass. The entry is updated.
+    update_data : update_model_type
+        Update model. The fields that are set determine which fields of the
+        entry are updated. The type of the update_data model should fit the
+        type of the entry. E.g. if the entry is an object of the class TREPR,
+        the update_data should be an object of the class TREPRUpdate.
+    session: db_session
+        Object of the class db_session.
+
+    Raises
+    ------
+    ValueError
+        An error is raised if the update model contains attributes that are not
+        part of the database entry.
+
+    Returns
+    -------
+    None.
+
+    """
+    entry = session.merge(entry)
+    data_raw = update_data.model_dump(exclude_none=True)
+    data = {k: hf._enum_to_value(v) for k, v in data_raw.items()}
+
+    for field, value in data.items():
+        if hasattr(entry, field):
+            setattr(entry, field, value)
+        else:
+            raise ValueError(f"{field} not valid.")
+
+
+    _automatic_name_update(entry, data)
+
+    session.add(entry)
+
+    return
+
+def update_model(entry: TimeStampedModel, update_data: update_model_type):
+    """
+    Update a database entry using an update model.
+    The entry is updated and commited. In case of multicomponent molecules
+    the name is updated automatically using the components.
+
+    Parameters
+    ----------
+    entry : TimeStampedModel
+        Any object from the models.base.TimeStampedModel (=sqlalchemy model)
+        class or from a subclass. The entry is updated.
+    update_data : update_model_type
+        Update model. The fields that are set determine which fields of the
+        entry are updated. The type of the update_data model should fit the
+        type of the entry. E.g. if the entry is an object of the class TREPR,
+        the update_data should be an object of the class TREPRUpdate.
+
+    Raises
+    ------
+    ValueError
+        An error is raised if the update model contains attributes that are not
+        part of the database entry.
+
+    Returns
+    -------
+    None.
+
+    """
+    with db_session() as session:
+        _update_model(entry, update_data, session)
+
+
+def _automatic_name_update(entry: TimeStampedModel,
+                          update_data: update_model_type):
+    """
+    Automatic update of the name of a multi-component molecule in a database
+    entry.
+
+    Parameters
+    ----------
+    entry : TimeStampedModel
+        Any object from the models.base.TimeStampedModel (=sqlalchemy model)
+        class or from a subclass. If the entry is an object of an multi-
+        component molecule class (i.e. RP, TDP or TTP) the name attribute
+        is automatically set using the single components of the molecule.
+    update_data : update_model_type
+        Update data. If components of the molecule name are changed this
+        defines how the total name of the molecule is changed.
+
+    Returns
+    -------
+    None
+
+    """
+    # map components of the molecules
+    group_keys = {
+        "rp": ["radical_1", "linker", "radical_2", "name_suffix"],
+        "tdp": ["chromophore", "linker", "doublet", "name_suffix"],
+        "ttp": ["triplet_1", "linker", "triplet_2", "name_suffix"]
+    }
+
+    # check if a molecule name is changed by the update_data
+    keys_to_check = [k for keys in group_keys.values() for k in keys]
+    if not any(k in update_data for k in keys_to_check):
+        return  # if not: do nothing
+
+
+    # helper function: take component name from update_data if it is changed
+    # in other cases: take it from the entry (entry is not changed)
+    def get_value(field):
+        val = update_data.get(field)
+        if val is not None:
+            return val
+        else:
+            return getattr(entry, field)
+
+    # build name
+    values = [get_value(k) for k in group_keys[entry.group]]
+    values = values = [v for v in values if v not in (None, "", " ")]
+    entry.name = "-".join(values)
+
+    return
