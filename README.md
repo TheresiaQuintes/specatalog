@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/logo.png" width="260">
+  <img src="https://raw.githubusercontent.com/TheresiaQuintes/specatalog/master/docs/images/logo.png" width="260">
 </p>
 
 <h1 align="center">Specatalog</h1>
@@ -51,11 +51,11 @@ A central aspect of Specatalog is the tight coupling between metadata and data s
 The graphical user interface provides tools for interactive data management and inspection.
 
 <p align="center">
-  <img src="docs/images/database_view.png" width="70%">
+  <img src="https://raw.githubusercontent.com/TheresiaQuintes/specatalog/master/docs/images/database_view.png" width="70%">
 </p>
 
 <p align="center">
-  <img src="docs/images/new_entry.png" width="70%">
+  <img src="https://raw.githubusercontent.com/TheresiaQuintes/specatalog/master/docs/images/new_entry.png" width="70%">
 </p>
 
 The GUI supports:

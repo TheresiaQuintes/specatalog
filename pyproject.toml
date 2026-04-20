@@ -1,12 +1,13 @@
 [project]
 name = "specatalog"
-version = "1.0"
-description = "Tools to archive spectral data."
+version = "1.0.0"
+description = "Specatalog is a software framework for the systematic management and archival of spectroscopic measurement data, integrating a relational metadata database with structured data storage and analysis workflows. "
 authors = [
   { name = "Theresia Quintes", email = "theresia.quintes@physchem.uni-freiburg.de" }
 ]
-license = { text = "GPL-3.0" }
-requires-python = ">=3.11"
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = "~=3.11"
 dependencies = [
   "h5py~=3.0",
   "numpy>=1.20",
@@ -41,3 +42,7 @@ specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"
 specatalog-gui = "specatalog.gui.gui_launcher:start_gui"
 specatalog-sync-upload = "specatalog.helpers.remote_folder:cli_upload"
 specatalog-sync-download = "specatalog.helpers.remote_folder:cli_download"
+
+[project.urls]
+Repository = "https://github.com/TheresiaQuintes/specatalog"
+Documentation = "https://theresiaquintes.github.io/specatalog/"
