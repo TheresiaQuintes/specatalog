@@ -9,15 +9,9 @@ Installation and Setup
    
    - Make sure that your database admin has given you the following information: username, password and the url of the database.
 
-1. Clone the repository from GitHub::
+1. 
 
-      git clone https://github.com/TheresiaQuintes/specatalog.git
-
-2. Navigate into the cloned directory::
-
-      cd specatalog
-
-3. Optional but recommended: Create and activate a virtual environment
+1. Optional but recommended: Create and activate a virtual environment
 
 - via python-venv::
 
@@ -29,15 +23,27 @@ Installation and Setup
 	  conda create -n specatalog_venv python=3.11
 	  conda activate specatalog_venv
  
-4. Install the package via pip::
+2. Install the package via pip::
 
+      pip install specatalog
+
+Alternatively: Clone the repository from GitHub::
+
+      git clone https://github.com/TheresiaQuintes/specatalog.git
+
+Navigate into the cloned directory::
+
+      cd specatalog
+
+Install the package via pip::
+		
       pip install .
 
-5. Check the installation::
+3. Check the installation::
      
       specatalog-welcome
 
-6. Configure your database by defining a (local) root-path for your archive folder and a username/password::
+4. Configure your database by defining a (local) root-path for your archive folder and a username/password::
 
 	  specatalog-configuration
 

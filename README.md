@@ -78,11 +78,19 @@ cd specatalog
 pip install .
 ```
 
+Alternatively just run:
+
+```bash
+pip install specatalog
+```
+
 All dependencies are specified in the `pyproject.toml` file.
+
+Consult the documentation for the first-time-setup.
 
 ### Requirements
 
-* Python ≥ 3.11
+* Python = 3.11
 * PostgreSQL database
 * Operating systems: Linux, macOS, Windows
 
