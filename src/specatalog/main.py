@@ -17,7 +17,7 @@ with home_defaults.open("r") as f:
     defaults = json.load(f)
 f.close()
 
-# set path defintions
+# set path definitions
 BASE_PATH = Path(defaults["base_path"]).resolve()
 MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")

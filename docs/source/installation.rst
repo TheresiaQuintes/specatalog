@@ -9,7 +9,6 @@ Installation and Setup
    
    - Make sure that your database admin has given you the following information: username, password and the url of the database.
 
-1. 
 
 1. Optional but recommended: Create and activate a virtual environment
 
@@ -39,14 +38,23 @@ Install the package via pip::
 		
       pip install .
 
-3. Check the installation::
-     
-      specatalog-welcome
-
-4. Configure your database by defining a (local) root-path for your archive folder and a username/password::
+3. Configure your database by defining a (local) root-path for your archive folder and a username/password::
 
 	  specatalog-configuration
 
+4.a If you are part of a group with an existing shared base directory:
+
+Follow the instructions on at :doc:`working_with_remote_folders` before you proceed.
+
+4.b If no shared directory exists:
+
+Run::
+
+   specatalog-init-dir
+
+5. Check the installation::
+
+      specatalog-welcome
 
 .. admonition:: What's next?
 	

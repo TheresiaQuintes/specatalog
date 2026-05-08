@@ -38,10 +38,9 @@ specatalog = ["user/*.json"]
 specatalog-welcome = "specatalog.cli:print_welcome"
 specatalog-configuration = "specatalog.cli:configure_db"
 specatalog-init-db = "specatalog.helpers.create_database:specatalog_init_db"
+specatalog-init-dir = "specatalog.helpers.create_database:create_archive_directory"
 specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"
 specatalog-gui = "specatalog.gui.gui_launcher:start_gui"
-specatalog-sync-upload = "specatalog.helpers.remote_folder:cli_upload"
-specatalog-sync-download = "specatalog.helpers.remote_folder:cli_download"
 
 [project.urls]
 Repository = "https://github.com/TheresiaQuintes/specatalog"

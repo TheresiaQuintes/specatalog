@@ -5,17 +5,27 @@ from pathlib import Path
 import subprocess
 from alembic.config import Config
 from alembic import command
-from specatalog.main import DATABASE_URL_ADMIN
+import json
 
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
+
 # create archive directory
 def create_archive_directory():
-    from specatalog.main import  BASE_PATH, MOLECULES_PATH, MEASUREMENTS_PATH
     import os
     import shutil
+
+    home_defaults = Path.home() / ".specatalog" / "defaults.json"
+    with home_defaults.open("r") as f:
+        defaults = json.load(f)
+    f.close()
+
+    # set path definitions
+    BASE_PATH = Path(defaults["base_path"]).resolve()
+    MEASUREMENTS_PATH = Path("data")
+    MOLECULES_PATH = Path("molecules")
 
     try:
         os.makedirs(BASE_PATH / MOLECULES_PATH, exist_ok=True)
@@ -45,6 +55,7 @@ def run_alembic_upgrade():
     """
     Apply all migrations (initial schema)
     """
+    from specatalog.main import DATABASE_URL_ADMIN
     alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
     alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
     alembic_cfg.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
