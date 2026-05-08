@@ -116,9 +116,6 @@
 </ul>
 </div>
 <ol class="arabic simple">
-<li></li>
-</ol>
-<ol class="arabic simple">
 <li><p>Optional but recommended: Create and activate a virtual environment</p></li>
 </ol>
 <ul>
@@ -155,13 +152,22 @@
 </pre></div>
 </div>
 <ol class="arabic" start="3">
-<li><p>Check the installation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specatalog</span><span class="o">-</span><span class="n">welcome</span>
+<li><p>Configure your database by defining a (local) root-path for your archive folder and a username/password:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specatalog</span><span class="o">-</span><span class="n">configuration</span>
 </pre></div>
 </div>
 </li>
-<li><p>Configure your database by defining a (local) root-path for your archive folder and a username/password:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specatalog</span><span class="o">-</span><span class="n">configuration</span>
+</ol>
+<p>4.a If you are part of a group with an existing shared base directory:</p>
+<p>Follow the instructions on at <a class="reference internal" href="working_with_remote_folders.html"><span class="doc">Working with remote directories</span></a> before you proceed.</p>
+<p>4.b If no shared directory exists:</p>
+<p>Run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specatalog</span><span class="o">-</span><span class="n">init</span><span class="o">-</span><span class="nb">dir</span>
+</pre></div>
+</div>
+<ol class="arabic" start="5">
+<li><p>Check the installation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">specatalog</span><span class="o">-</span><span class="n">welcome</span>
 </pre></div>
 </div>
 </li>

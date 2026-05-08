@@ -5,98 +5,39 @@ If you want to have a shared archive folder with your group the following instru
 
 Prerequisites:
 --------------
-- A directory that is remotely saved
-- All group members are allowed to mount this folder via SMB
-- All members have read/write access to the folder
+- All collaborators have installed syncthing (running)
+- At least one collaborator has an initial archive directory that shall be shared
 
 
-First Setup
------------
+Install and activate syncthing
+------------------------------
 
-Linux
-^^^^^
+Linux (Ubuntu)
+^^^^^^^^^^^^^^
 
-1. Create a smb-credentials file::
-	
-	nano ~/.smbcredentials_specatalog
-	
-Fill the file with your access data for the remote folder::
-	
-	username=usrname
-	password=%%%%
+Run the following commands::
 
-2. Change the visibility::
-	
-	chmod 600 ~/.smbcredentials_sr_nas
-
-3. Create a new folder as a mount point::
-	
-	mkdir ~/tmp_archive_mount
-
-4. Add an entry to the /etc/fstab::
-	
-	//sr-nas.pc.intra.uni-freiburg.de/group/archive_specatalog  /home/USER/tmp_archive_mount  cifs  credentials=/home/USER/.smbcredentials_specatalog,vers=3.0,uid=1000,gid=1000,user,noauto,_netdev  0  0
-
-(You can find your uid/gid by typing ``id`` to your terminal)
-
-5. Reload fstab::
-
-	systemctl daemon-reload
-	
-6. Test mounting the remote folder::
-
-	mount ~/tmp_archive_mount
-	umount ~/tmp_archive_mount
-
-7. Open the defaults-file
-
-	::
-	
-		nano ~/.specatalog/defaults.json
-		
-	and add::
-
-		"mount_point" : /home/USER/tmp_archive_mount
-		
-	The ``base_path`` should be a local folder on your system.
+   sudo apt install syncthing
+   systemctl --user enable syncthing
+   systemctl --user start syncthing
 
 
-Windows
-^^^^^^^
-
-1. Add your access data to the remote folder::
-
-	cmdkey /add:sr-nas.pc.intra.uni-freiburg.de /user:usrname /pass:%%%%
-
-2. Test mounting the remote folder::
-
-	use P: \\sr-nas.pc.intra.uni-freiburg.de\group\archive_specatalog /persistent:no
-	
-	net use P: /delete
-
-3. Open the defaults-file in an editor
-	
-	::
-
-		~/.specatalog/defaults.json
-	
-
-	and add::
-
-		"mount_point" :  "\\\\sr-nas.pc.intra.uni-freiburg.de\\group\\archive_specatalog"
-		
-	The ``base_path`` should be a local folder on your system.
 
 
-New commands
-------------
+Synchronise the archive directory
+---------------------------------
+1. Create an empty folder (this will be your archive directory).
 
-You can now snchronise your local directory with the remote folder via the CLI-commands::
+2. Open the web interface of syncthing at `<http://localhost:8384>`_.
 
-	specatalog-sync-download
-	specatalog-sync-upload
+3. Click on "add folder" and add your empty archive directory
 
-.. caution::
-	
-	Before you run ``specatalog-sync-upload`` for the first time make sure that you have downloaded the remote folder before (``specatalog-sync-download``) Otherwise the remote folder will be overwritten by your (empty) local folder!
+   Make sure, that the "Folder ID" ("Ordnerkennung") has the name ``specatalog_archive``
 
+   Choose the "Trash Can File Versioning" and set the deletion e.g. to 30 days.
+
+4. Now you have to talk to your collaborators:
+
+   - Ask them for their Device ID and tell them yours (Actions -> Own ID)
+   - You and your collaborators are now able to add each other as remote devices using the Device ID
+   - Set your archive directory as shared folder.
