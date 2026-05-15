@@ -262,6 +262,26 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
     return
 
 
+def _get_next_rawdata_index(hdf5_path, group_name, reference_name):
+    """
+    Determine next free index for a raw dataset series.
+
+    Returns
+    -------
+    0 -> first dataset (no suffix)
+    int  -> suffix number
+    """
+
+    with h5py.File(hdf5_path, "a") as f:
+        grp = f.require_group(group_name)
+
+        i = 0
+        while f"{reference_name}_{i}" in grp:
+            i += 1
+
+        return i
+
+
 def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     """
     Write the data from the raw data datafiles in the archive at
@@ -315,22 +335,30 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
                                               "DSC", "")
 
         # write intensities to dataset
-        new_dataset_to_hdf5(data, hdf5_path, "raw_data", "data")
-        new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", "data_real")
-        new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", "data_imag")
+        idx = _get_next_rawdata_index(
+            hdf5_path,
+            "raw_data",
+            "data_real"
+        )
+
+
+        new_dataset_to_hdf5(data, hdf5_path, "raw_data", f"data_{idx}")
+        new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", f"data_real_{idx}")
+        new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", f"data_imag_{idx}")
 
         # write axes-data
         if type(x) == list:  # multiple axes
             for n in range(len(x)):
-                new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{n}")
+                new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{idx}_{n}")
         else:  # only one xaxis
-            new_dataset_to_hdf5(x, hdf5_path, "raw_data", "xaxis")
+            new_dataset_to_hdf5(x, hdf5_path, "raw_data", f"xaxis_{idx}")
 
-        # add metadata from DSC-file as attributes
-        with h5py.File(hdf5_path, "a") as f:
-            grp = f.require_group("raw_data")
-            for key, value in params.items():
-                grp.attrs[key] = value
+        # add metadata from first DSC-file as attributes
+        if idx != 0:
+            with h5py.File(hdf5_path, "a") as f:
+                grp = f.require_group("raw_data")
+                for key, value in params.items():
+                    grp.attrs[key] = value
 
 
     elif fmt == "cw_epr":
@@ -349,18 +377,24 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         spc_real, spc_imag, field, params = l.load_cw_epr(dsc[0].with_suffix(""))
 
         # write intensities to dataset
-        new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", "data_real")
-        new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", "data_imag")
-        new_dataset_to_hdf5(field, hdf5_path, "raw_data", "field")
+        idx = _get_next_rawdata_index(
+            hdf5_path,
+            "raw_data",
+            "data_real"
+        )
+        new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", f"data_real_{idx}")
+        new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", f"data_imag_{idx}")
+        new_dataset_to_hdf5(field, hdf5_path, "raw_data", f"field_{idx}")
 
 
-        # add metadata from DSC-file as attributes
-        with h5py.File(hdf5_path, "a") as f:
-            grp = f.require_group("raw_data")
-            for key, value in params.items():
-                if key is None or value is None:
-                    continue
-                grp.attrs[key] = value
+        # add metadata from first DSC-file as attributes
+        if idx != 0:
+            with h5py.File(hdf5_path, "a") as f:
+                grp = f.require_group("raw_data")
+                for key, value in params.items():
+                    if key is None or value is None:
+                        continue
+                    grp.attrs[key] = value
 
 
 
@@ -373,13 +407,20 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
 
         wavelength, intensity, meta = l.load_uvvis_ulm(txt[0].with_suffix(""))
 
-        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
-        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")
+        idx = _get_next_rawdata_index(
+            hdf5_path,
+            "raw_data",
+            "intensity"
+        )
 
-        with h5py.File(hdf5_path, "a") as f:
-            grp = f.require_group("raw_data")
-            for key, value in meta.items():
-                grp.attrs[key] = value
+        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
+        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
+
+        if idx != 0:
+            with h5py.File(hdf5_path, "a") as f:
+                grp = f.require_group("raw_data")
+                for key, value in meta.items():
+                    grp.attrs[key] = value
 
     elif fmt == "uvvis_freiburg":
         txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
@@ -390,13 +431,20 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
 
         wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0].with_suffix(""))
 
-        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", "intensity")
-        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", "wavelength")
+        idx = _get_next_rawdata_index(
+            hdf5_path,
+            "raw_data",
+            "intensity"
+        )
 
-        with h5py.File(hdf5_path, "a") as f:
-            grp = f.require_group("raw_data")
-            for key, value in meta.items():
-                grp.attrs[key] = value
+        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
+        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
+
+        if idx != 0:
+            with h5py.File(hdf5_path, "a") as f:
+                grp = f.require_group("raw_data")
+                for key, value in meta.items():
+                    grp.attrs[key] = value
 
     else:
         raise ValueError(f"Data type: {fmt} unknown!")
