@@ -1,8 +1,6 @@
 """ run only once to create the databases """
 
-import sys
 from pathlib import Path
-import subprocess
 from alembic.config import Config
 from alembic import command
 import json

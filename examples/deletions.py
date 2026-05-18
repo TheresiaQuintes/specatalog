@@ -1,8 +1,5 @@
 import specatalog.data_management.hdf5_reader as hf
 import numpy as np
-from specatalog.crud_db import delete as de
-from specatalog.data_management import measurement_management as mm
-from specatalog.main import BASE_PATH
 
 
 # attributes / datasets from hdf5
