@@ -9,7 +9,7 @@ from sqlalchemy.orm import selectinload
 from typing import Union
 
 
-#%%
+# %%
 
 """
 Automatic creation of the filter and ordering models using the
@@ -31,7 +31,7 @@ model_mapping_filters = {
     "SingleMoleculeFilter": [mol.SingleMolecule, cpmol.SingleMoleculeModel],
     "RPFilter": [mol.RP, cpmol.RPModel],
     "TDPFilter": [mol.TDP, cpmol.TDPModel],
-    "TTPFilter": [mol.TTP, cpmol.TTPModel]
+    "TTPFilter": [mol.TTP, cpmol.TTPModel],
 }
 
 filters = {}
@@ -68,7 +68,6 @@ globals().update(ordering)
 ordering_model_type = Union[tuple(ordering.values())]
 
 
-
 # %%
 """
 ****************************************
@@ -78,8 +77,9 @@ ordering_model_type = Union[tuple(ordering.values())]
 """
 
 
-def _run_query(filters: filter_model_type, ordering: ordering_model_type,
-               session: db_session) -> list:
+def _run_query(
+    filters: filter_model_type, ordering: ordering_model_type, session: db_session
+) -> list:
     """
     Query the database. The table is chosen from the filter model. All
     filters and the ordering is organised in filter and ordering models.
@@ -119,7 +119,6 @@ def _run_query(filters: filter_model_type, ordering: ordering_model_type,
     if hasattr(model, "molecule"):
         query = query.options(selectinload(model.molecule))
 
-
     # process filters
     filter_dict_raw = filters.model_dump(exclude_none=True, exclude={"model"})
     filter_dict = {k: hf._enum_to_value(v) for k, v in filter_dict_raw.items()}
@@ -130,8 +129,7 @@ def _run_query(filters: filter_model_type, ordering: ordering_model_type,
             field_name, op = key, "eq"
 
         if not hasattr(model, field_name):
-            raise ValueError(
-                f"'{field_name}' not valid for {model.__tablename__}")
+            raise ValueError(f"'{field_name}' not valid for {model.__tablename__}")
 
         column = getattr(model, field_name)
 
@@ -172,8 +170,7 @@ def _run_query(filters: filter_model_type, ordering: ordering_model_type,
     return results
 
 
-def run_query(filters: filter_model_type, ordering: ordering_model_type=None
-              ) -> list:
+def run_query(filters: filter_model_type, ordering: ordering_model_type = None) -> list:
     """
     Query the database. The table is chosen from the filter model. All
     filters and the ordering is organised in filter and ordering models.

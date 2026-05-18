@@ -70,11 +70,11 @@ class TimeStampedModel(Model):
     >>> m.updated_at
     datetime.datetime(2025, 4, 12, 14, 32, tzinfo=datetime.UTC)
     """
+
     __abstract__ = True
 
     created_at = alc.Column(alc.DateTime, default=datetime.datetime.now(datetime.UTC))
     updated_at = alc.Column(alc.DateTime, onupdate=datetime.datetime.now(datetime.UTC))
-
 
 
 @event.listens_for(TimeStampedModel, "before_update", propagate=True)

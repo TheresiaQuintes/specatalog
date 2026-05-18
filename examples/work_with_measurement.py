@@ -13,7 +13,7 @@ plt.plot(x, np.real(intensity))
 plt.plot(x, np.imag(intensity))
 
 
-fit = -2*(x-12000)**2 + 25000
+fit = -2 * (x - 12000) ** 2 + 25000
 
 plt.plot(x, fit)
 

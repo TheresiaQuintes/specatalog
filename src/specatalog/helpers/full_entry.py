@@ -10,7 +10,6 @@ from specatalog.models.measurements import Measurement
 from specatalog.crud_db.delete import _delete_object
 
 
-
 @dataclass
 class CreateMeasurementResult:
     """
@@ -27,6 +26,7 @@ class CreateMeasurementResult:
         Exception raised during the creation process. This value is only set
         if `success` is False.
     """
+
     success: bool
     measurement_id: Optional[int] = None
     error: Optional[Exception] = None
@@ -48,9 +48,11 @@ class CreateMoleculeResult:
         Exception raised during the creation process. This value is only set
         if `success` is False.
     """
+
     success: bool
     molecular_id: Optional[int] = None
     error: Optional[Exception] = None
+
 
 def _create_temp_measurement_dir(base_dir: str):
     """
@@ -74,6 +76,7 @@ def _create_temp_measurement_dir(base_dir: str):
     path = Path(base_dir) / "data"
     temp_dir = Path(tempfile.mkdtemp(dir=path))
     return temp_dir
+
 
 def _commit_measurement_dir(temp_root: Path, base_dir: Path, ms_id: int):
     """
@@ -101,11 +104,9 @@ def _commit_measurement_dir(temp_root: Path, base_dir: Path, ms_id: int):
     shutil.rmtree(temp_root)
 
 
-
-
-def create_full_measurement(data: cr.measurement_model_pyd, base_dir: Path,
-                            raw_data_path: Path, fmt:str
-                            ) -> CreateMeasurementResult:
+def create_full_measurement(
+    data: cr.measurement_model_pyd, base_dir: Path, raw_data_path: Path, fmt: str
+) -> CreateMeasurementResult:
     """
     Create a complete measurement entry including database and file system
     operations.
@@ -151,19 +152,16 @@ def create_full_measurement(data: cr.measurement_model_pyd, base_dir: Path,
 
         _commit_measurement_dir(temp_dir, base_dir, measurement.id)
 
-        return CreateMeasurementResult(success=True,
-                                       measurement_id=measurement.id)
+        return CreateMeasurementResult(success=True, measurement_id=measurement.id)
 
     except Exception as e:
         if temp_dir and temp_dir.exists():
             shutil.rmtree(temp_dir)
 
-        return CreateMeasurementResult(success=False,
-                                       error=e)
+        return CreateMeasurementResult(success=False, error=e)
 
 
-def delete_full_measurement(base_dir: Path, ms_id: int
-                            ) -> CreateMeasurementResult:
+def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResult:
     """
     Delete a complete measurement entry (with the id ms_id) including database
     and file system operations.
@@ -192,26 +190,22 @@ def delete_full_measurement(base_dir: Path, ms_id: int
     """
     try:
         with db_session() as session:
-            measurement = Measurement.query.filter(Measurement.id==ms_id).first()
+            measurement = Measurement.query.filter(Measurement.id == ms_id).first()
             if measurement is None:
                 raise ValueError(f"No measurement with the ID M{ms_id} found.")
             _delete_object(measurement, session)
 
-
-
             mm.delete_measurement(base_dir, ms_id, save_delete=False)
 
-        return CreateMeasurementResult(success=True,
-                                       measurement_id=ms_id)
+        return CreateMeasurementResult(success=True, measurement_id=ms_id)
 
     except Exception as e:
-        return CreateMeasurementResult(success=False,
-                                       error=e)
+        return CreateMeasurementResult(success=False, error=e)
 
 
-def create_full_molecule(data: cr.molecule_model_pyd, base_dir: Path,
-                            molecular_formula_path: Path, fmt:str
-                            ) -> CreateMoleculeResult:
+def create_full_molecule(
+    data: cr.molecule_model_pyd, base_dir: Path, molecular_formula_path: Path, fmt: str
+) -> CreateMoleculeResult:
     """
     Create a complete molecule entry including database and file system
     operations.
@@ -247,7 +241,6 @@ def create_full_molecule(data: cr.molecule_model_pyd, base_dir: Path,
     temp_base_dir = None
     try:
         with db_session() as session:
-
             molecule = cr._create_new_molecule(data, session)
 
             temp_base_dir = Path(tempfile.mkdtemp(dir=base_dir))
@@ -263,8 +256,7 @@ def create_full_molecule(data: cr.molecule_model_pyd, base_dir: Path,
         temp_path.rename(final_dir)
         shutil.rmtree(temp_base_dir)
 
-        return CreateMoleculeResult(success=True,
-                                    molecular_id=molecule.id)
+        return CreateMoleculeResult(success=True, molecular_id=molecule.id)
 
     except Exception as e:
         if temp_base_dir and temp_base_dir.exists():

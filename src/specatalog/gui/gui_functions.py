@@ -1,59 +1,80 @@
 from specatalog.crud_db import read as r
 from specatalog.gui.table_models import MeasurementsTableModel, MoleculesTableModel
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QComboBox,  QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit, QMessageBox
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QLineEdit,
+    QSpinBox,
+    QDoubleSpinBox,
+    QDateEdit,
+    QDateTimeEdit,
+    QMessageBox,
+)
 import datetime
 import enum
 from typing import get_origin, get_args, Union
 import specatalog.models.creation_pydantic_measurements as cpm
 import specatalog.models.creation_pydantic_molecules as cpmol
-from specatalog.helpers.full_entry import create_full_measurement, delete_full_measurement, create_full_molecule
+from specatalog.helpers.full_entry import (
+    create_full_measurement,
+    delete_full_measurement,
+    create_full_molecule,
+)
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
 from specatalog.main import BASE_PATH
 import specatalog.gui.table_models as tm
 
-MODEL_FILTER_MAPPER = {"Measurements": r.MeasurementFilter,
-                       "trEPR": r.TREPRFilter,
-                       "cwEPR": r.CWEPRFilter,
-                       "pulseEPR": r.PulseEPRFilter,
-                       "UVvis": r.UVVisFilter,
-                       "Fluorescence": r.FluorescenceFilter,
-                       "TA": r.TAFilter,
-                       "Molecules": r.MoleculeFilter,
-                       "SingleMolecule": r.SingleMoleculeFilter,
-                       "RP": r.RPFilter,
-                       "TDP": r.TDPFilter,
-                       "TTP": r.TTPFilter}
+MODEL_FILTER_MAPPER = {
+    "Measurements": r.MeasurementFilter,
+    "trEPR": r.TREPRFilter,
+    "cwEPR": r.CWEPRFilter,
+    "pulseEPR": r.PulseEPRFilter,
+    "UVvis": r.UVVisFilter,
+    "Fluorescence": r.FluorescenceFilter,
+    "TA": r.TAFilter,
+    "Molecules": r.MoleculeFilter,
+    "SingleMolecule": r.SingleMoleculeFilter,
+    "RP": r.RPFilter,
+    "TDP": r.TDPFilter,
+    "TTP": r.TTPFilter,
+}
 
-MODEL_ORDERING_MAPPER = {"Measurements": r.MeasurementOrdering,
-                       "trEPR": r.TREPROrdering,
-                       "cwEPR": r.CWEPROrdering,
-                       "pulseEPR": r.PulseEPROrdering,
-                       "UVvis": r.UVVisOrdering,
-                       "Fluorescence": r.FluorescenceOrdering,
-                       "TA": r.TAOrdering,
-                       "Molecules": r.MoleculeOrdering,
-                       "SingleMolecule": r.SingleMoleculeOrdering,
-                       "RP": r.RPOrdering,
-                       "TDP": r.TDPOrdering,
-                       "TTP": r.TTPOrdering}
+MODEL_ORDERING_MAPPER = {
+    "Measurements": r.MeasurementOrdering,
+    "trEPR": r.TREPROrdering,
+    "cwEPR": r.CWEPROrdering,
+    "pulseEPR": r.PulseEPROrdering,
+    "UVvis": r.UVVisOrdering,
+    "Fluorescence": r.FluorescenceOrdering,
+    "TA": r.TAOrdering,
+    "Molecules": r.MoleculeOrdering,
+    "SingleMolecule": r.SingleMoleculeOrdering,
+    "RP": r.RPOrdering,
+    "TDP": r.TDPOrdering,
+    "TTP": r.TTPOrdering,
+}
 
-MODEL_NEW_MODEL_MAPPER = {"trEPR": cpm.TREPRModel,
-                          "cwEPR": cpm.CWEPRModel,
-                          "pulseEPR": cpm.PulseEPRModel,
-                          "UVvis": cpm.UVVisModel,
-                          "Fluorescence": cpm.FluorescenceModel,
-                          "TA": cpm.TAModel,
-                          "SingleMolecule": cpmol.SingleMoleculeModel,
-                          "RP": cpmol.RPModel,
-                          "TDP": cpmol.TDPModel,
-                          "TTP": cpmol.TTPModel}
+MODEL_NEW_MODEL_MAPPER = {
+    "trEPR": cpm.TREPRModel,
+    "cwEPR": cpm.CWEPRModel,
+    "pulseEPR": cpm.PulseEPRModel,
+    "UVvis": cpm.UVVisModel,
+    "Fluorescence": cpm.FluorescenceModel,
+    "TA": cpm.TAModel,
+    "SingleMolecule": cpmol.SingleMoleculeModel,
+    "RP": cpmol.RPModel,
+    "TDP": cpmol.TDPModel,
+    "TTP": cpmol.TTPModel,
+}
+
+
 def run_query(self):
     data = get_values(self, self.filter_fields)
     self.filter_model = self.filter_model.copy(update=data)
     load_measurements(self)
+
 
 def submit_new_entry(self):
     data = get_values(self, self.new_fields)
@@ -64,7 +85,9 @@ def submit_new_entry(self):
             data["evaluated"] = False
 
     try:
-        new_entry_model = MODEL_NEW_MODEL_MAPPER[self.ComboModelChoiceNewEntry.currentText()](**data)
+        new_entry_model = MODEL_NEW_MODEL_MAPPER[
+            self.ComboModelChoiceNewEntry.currentText()
+        ](**data)
 
     except ValidationError as e:
         msg = QMessageBox(self)
@@ -78,10 +101,13 @@ def submit_new_entry(self):
     raw_data = self.LineRawDataInput.text()
 
     if self.RadioMeasurements.isChecked():
-        output = create_full_measurement(new_entry_model, BASE_PATH, raw_data,
-                                         self.ComboRawFormat.currentText())
+        output = create_full_measurement(
+            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+        )
     else:
-        output = create_full_molecule(new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText())
+        output = create_full_molecule(
+            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+        )
 
     if output.success:
         msg = QMessageBox(self)
@@ -104,8 +130,10 @@ def submit_new_entry(self):
 def delete_entry(self):
     ms_id = self.SpinBoxDelete.value()
     sure = QMessageBox.question(
-        self, "Sure?",
-        f"Do you really want to delete the measurement with the ID {ms_id} from the archive?")
+        self,
+        "Sure?",
+        f"Do you really want to delete the measurement with the ID {ms_id} from the archive?",
+    )
     if sure == QMessageBox.StandardButton.Yes:
         output = delete_full_measurement(BASE_PATH, ms_id)
 
@@ -113,7 +141,9 @@ def delete_entry(self):
             msg = QMessageBox(self)
             msg.setIcon(QMessageBox.Icon.Information)
             msg.setWindowTitle("Success")
-            msg.setText(f"Measurement M{output.measurement_id} has been deleted from the archive.")
+            msg.setText(
+                f"Measurement M{output.measurement_id} has been deleted from the archive."
+            )
             msg.exec()
             load_measurements(self)
             return
@@ -130,6 +160,7 @@ def delete_entry(self):
     else:
         return
 
+
 def open_file_dialog(self):
     file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a file")
     if file_path:
@@ -137,9 +168,9 @@ def open_file_dialog(self):
         self.LineRawDataInput.setText(str(path.with_suffix("")))
 
 
-
 def on_tab_changed(self, index):
     self.tab_index = index
+
 
 def on_header_clicked(self):
     self.ordering_model = MODEL_ORDERING_MAPPER[self.ComboModelChoice.currentText()]()
@@ -165,7 +196,6 @@ def on_header_clicked(self):
 
 
 def load_measurements(self):
-
     results = r.run_query(self.filter_model, self.ordering_model)
 
     if self.RadioMeasurements.isChecked():
@@ -175,6 +205,7 @@ def load_measurements(self):
 
     self.MeasurementsView.setModel(model)
     _setup_delegates(self, model, results)
+
 
 def _setup_delegates(self, model, measurements):
     if not measurements:
@@ -194,21 +225,32 @@ def _setup_delegates(self, model, measurements):
         if not field:
             continue
 
-        delegate = tm.TypedItemDelegate(get_field_type(field.annotation), self.MeasurementsView)
+        delegate = tm.TypedItemDelegate(
+            get_field_type(field.annotation), self.MeasurementsView
+        )
         self.MeasurementsView.setItemDelegateForColumn(col, delegate)
 
 
 def filter_model_changed(self, model):
     self.filter_model = MODEL_FILTER_MAPPER[model]()
     self.ordering_model = MODEL_ORDERING_MAPPER[model]()
-    self.ordering_model.id="asc"
+    self.ordering_model.id = "asc"
     load_measurements(self)
-    build_form(self, self.FormFilter, self.filter_fields, MODEL_FILTER_MAPPER[model].model_fields)
+    build_form(
+        self,
+        self.FormFilter,
+        self.filter_fields,
+        MODEL_FILTER_MAPPER[model].model_fields,
+    )
 
 
 def new_entry_model_changed(self, model):
-    build_form(self, self.FormNewEntry, self.new_fields, MODEL_NEW_MODEL_MAPPER[model].model_fields)
-
+    build_form(
+        self,
+        self.FormNewEntry,
+        self.new_fields,
+        MODEL_NEW_MODEL_MAPPER[model].model_fields,
+    )
 
 
 def get_field_type(field_annotation):
@@ -220,6 +262,7 @@ def get_field_type(field_annotation):
         return None
     return field_annotation
 
+
 def build_form(self, layout, fields, schema: dict):
     # altes Formular löschen
     while layout.rowCount():
@@ -230,7 +273,9 @@ def build_form(self, layout, fields, schema: dict):
     for key, field in schema.items():
         if "__" in key:
             continue
-        elif (self.tab_index == 0 and (key in["date", "created_at", "updated_at", "method", "group"])):
+        elif self.tab_index == 0 and (
+            key in ["date", "created_at", "updated_at", "method", "group"]
+        ):
             continue
         else:
             field_type = get_field_type(field.annotation)
@@ -292,11 +337,11 @@ def get_values(self, fields):
                 data[key] = None
         elif isinstance(widget, QSpinBox):
             data[key] = widget.value()
-            if widget.value()==0:
+            if widget.value() == 0:
                 data[key] = None
         elif isinstance(widget, QDoubleSpinBox):
             data[key] = widget.value()
-            if widget.value()==0:
+            if widget.value() == 0:
                 data[key] = None
         elif isinstance(widget, QComboBox):
             data[key] = widget.currentText()
@@ -321,21 +366,30 @@ def change_ms_mol(self):
         self.ComboModelChoice.blockSignals(True)
         self.ComboModelChoice.clear()
         self.ComboModelChoice.blockSignals(False)
-        self.ComboModelChoice.addItems(["Measurements", "trEPR", "cwEPR",
-                                        "pulseEPR", "UVvis", "Fluorescence",
-                                        "TA"])
+        self.ComboModelChoice.addItems(
+            [
+                "Measurements",
+                "trEPR",
+                "cwEPR",
+                "pulseEPR",
+                "UVvis",
+                "Fluorescence",
+                "TA",
+            ]
+        )
         self.ComboModelChoiceNewEntry.blockSignals(True)
         self.ComboModelChoiceNewEntry.clear()
         self.ComboModelChoiceNewEntry.blockSignals(False)
-        self.ComboModelChoiceNewEntry.addItems(["trEPR",
-                                                "cwEPR", "pulseEPR", "UVvis",
-                                                "Fluorescence", "TA"])
+        self.ComboModelChoiceNewEntry.addItems(
+            ["trEPR", "cwEPR", "pulseEPR", "UVvis", "Fluorescence", "TA"]
+        )
 
         self.ComboRawFormat.blockSignals(True)
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
-        self.ComboRawFormat.addItems(["bruker_bes3t", "cw_epr", "uvvis_ulm",
-                                      "uvvis_freiburg"])
+        self.ComboRawFormat.addItems(
+            ["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+        )
 
         self.SpinBoxDelete.setEnabled(True)
         self.ButtonDelete.setEnabled(True)
@@ -344,18 +398,19 @@ def change_ms_mol(self):
         self.ComboModelChoice.blockSignals(True)
         self.ComboModelChoice.clear()
         self.ComboModelChoice.blockSignals(False)
-        self.ComboModelChoice.addItems(["Molecules", "SingleMolecule", "RP",
-                                        "TDP", "TTP"])
+        self.ComboModelChoice.addItems(
+            ["Molecules", "SingleMolecule", "RP", "TDP", "TTP"]
+        )
         self.ComboModelChoiceNewEntry.blockSignals(True)
         self.ComboModelChoiceNewEntry.clear()
         self.ComboModelChoiceNewEntry.blockSignals(False)
-        self.ComboModelChoiceNewEntry.addItems(["SingleMolecule", "RP",
-                                                "TDP", "TTP"])
+        self.ComboModelChoiceNewEntry.addItems(["SingleMolecule", "RP", "TDP", "TTP"])
         self.ComboRawFormat.blockSignals(True)
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
-        self.ComboRawFormat.addItems([".pdf", ".cdxml", ".png", ".jpg",
-                                      ".jpeg", ".svg"])
+        self.ComboRawFormat.addItems(
+            [".pdf", ".cdxml", ".png", ".jpg", ".jpeg", ".svg"]
+        )
 
         self.SpinBoxDelete.setEnabled(False)
         self.ButtonDelete.setEnabled(False)

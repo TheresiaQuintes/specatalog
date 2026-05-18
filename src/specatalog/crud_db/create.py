@@ -11,17 +11,18 @@ from specatalog.main import MOLECULES_PATH, MEASUREMENTS_PATH, db_session
 
 
 measurement_model_pyd = TypeVar(
-    "models.creation_pydantic_measurements.MeasurementModel",
-    bound=MeasurementModel)
-measurement_model_alc = TypeVar("models.measurements.Measurement",
-                                bound=Measurement)
+    "models.creation_pydantic_measurements.MeasurementModel", bound=MeasurementModel
+)
+measurement_model_alc = TypeVar("models.measurements.Measurement", bound=Measurement)
 molecule_model_pyd = TypeVar(
-    "models.creation_pydantic_molecules.MoleculeModel", bound=MoleculeModel)
+    "models.creation_pydantic_molecules.MoleculeModel", bound=MoleculeModel
+)
 molecule_model_alc = TypeVar("models.molecules.Measurement", bound=Molecule)
 
 
-def _create_new_measurement(data: measurement_model_pyd, session: db_session
-                            ) -> measurement_model_alc:
+def _create_new_measurement(
+    data: measurement_model_pyd, session: db_session
+) -> measurement_model_alc:
     """
     Create a new database entry for the measurement table.
 
@@ -51,11 +52,12 @@ def _create_new_measurement(data: measurement_model_pyd, session: db_session
         the subclass is dependent on the chosen method.
 
     """
-    molecule = mol.Molecule.query.filter(
-        mol.Molecule.id == data.molecular_id).first()
+    molecule = mol.Molecule.query.filter(mol.Molecule.id == data.molecular_id).first()
     if molecule is None:
-        raise ValueError(f"No molecule with the ID \
-                         MOL{data.molecular_id} found.")
+        raise ValueError(
+            f"No molecule with the ID \
+                         MOL{data.molecular_id} found."
+        )
 
     metadata_raw = data.model_dump(exclude={"measurement_class"})
     metadata = {k: _enum_to_value(v) for k, v in metadata_raw.items()}
@@ -69,8 +71,7 @@ def _create_new_measurement(data: measurement_model_pyd, session: db_session
     return measurement
 
 
-def create_new_measurement(data: measurement_model_pyd
-                           ) -> measurement_model_alc:
+def create_new_measurement(data: measurement_model_pyd) -> measurement_model_alc:
     """
     Create a new database entry for the measurement table.
 
@@ -103,9 +104,9 @@ def create_new_measurement(data: measurement_model_pyd
         return _create_new_measurement(data, session)
 
 
-
-def _create_new_molecule(data: molecule_model_pyd, session: db_session
-                         ) -> molecule_model_alc:
+def _create_new_molecule(
+    data: molecule_model_pyd, session: db_session
+) -> molecule_model_alc:
     """
     Create a new database entry for the molecule table.
 
@@ -140,8 +141,7 @@ def _create_new_molecule(data: molecule_model_pyd, session: db_session
     return molecule
 
 
-def create_new_molecule(data: molecule_model_pyd
-                        ) -> molecule_model_alc:
+def create_new_molecule(data: molecule_model_pyd) -> molecule_model_alc:
     """
     Create a new database entry for the molecule table.
 

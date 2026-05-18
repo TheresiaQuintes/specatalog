@@ -30,7 +30,7 @@ model_mapping_update = {
     "SingleMoleculeUpdate": [mol.SingleMolecule, cpmol.SingleMoleculeModel],
     "RPUpdate": [mol.RP, cpmol.RPModel],
     "TDPUpdate": [mol.TDP, cpmol.TDPModel],
-    "TTPUpdate": [mol.TTP, cpmol.TTPModel]
+    "TTPUpdate": [mol.TTP, cpmol.TTPModel],
 }
 
 updates = {}
@@ -52,8 +52,10 @@ update_model_type = Union[tuple(updates.values())]
 
 """
 
-def _update_model(entry: TimeStampedModel, update_data: update_model_type,
-                 session: db_session):
+
+def _update_model(
+    entry: TimeStampedModel, update_data: update_model_type, session: db_session
+):
     """
     Update a database entry using an update model.
     The entry is updated and commited. In case of multicomponent molecules
@@ -93,12 +95,12 @@ def _update_model(entry: TimeStampedModel, update_data: update_model_type,
         else:
             raise ValueError(f"{field} not valid.")
 
-
     _automatic_name_update(entry, data)
 
     session.add(entry)
 
     return
+
 
 def update_model(entry: TimeStampedModel, update_data: update_model_type):
     """
@@ -132,8 +134,7 @@ def update_model(entry: TimeStampedModel, update_data: update_model_type):
         _update_model(entry, update_data, session)
 
 
-def _automatic_name_update(entry: TimeStampedModel,
-                          update_data: update_model_type):
+def _automatic_name_update(entry: TimeStampedModel, update_data: update_model_type):
     """
     Automatic update of the name of a multi-component molecule in a database
     entry.
@@ -158,14 +159,13 @@ def _automatic_name_update(entry: TimeStampedModel,
     group_keys = {
         "rp": ["radical_1", "linker", "radical_2", "name_suffix"],
         "tdp": ["chromophore", "linker", "doublet", "name_suffix"],
-        "ttp": ["triplet_1", "linker", "triplet_2", "name_suffix"]
+        "ttp": ["triplet_1", "linker", "triplet_2", "name_suffix"],
     }
 
     # check if a molecule name is changed by the update_data
     keys_to_check = [k for keys in group_keys.values() for k in keys]
     if not any(k in update_data for k in keys_to_check):
         return  # if not: do nothing
-
 
     # helper function: take component name from update_data if it is changed
     # in other cases: take it from the entry (entry is not changed)

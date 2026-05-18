@@ -65,9 +65,9 @@ latex_engine = "xelatex"
 html_theme = "sphinx_rtd_theme"
 
 html_codeblock_linenos_style = "table"
-#html_css_files = [
+# html_css_files = [
 #    'custom.css',
-#]
+# ]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -82,5 +82,5 @@ html_logo = "logo.png"
 
 
 # Autosummary-Einstellungen
-autosummary_generate = True      # <-- hier einfügen
+autosummary_generate = True  # <-- hier einfügen
 autodoc_typehints = "description"

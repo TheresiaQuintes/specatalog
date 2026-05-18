@@ -1,4 +1,4 @@
-""" run only once to create the databases """
+"""run only once to create the databases"""
 
 from pathlib import Path
 from alembic.config import Config
@@ -7,7 +7,6 @@ import json
 
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-
 
 
 # create archive directory
@@ -37,8 +36,10 @@ def create_archive_directory():
 
     try:
         if not (BASE_PATH / "allowed_values.py").exists():
-            shutil.copy(CURRENT_DIR / "allowed_values_not_adapted.py",
-                        BASE_PATH / "allowed_values.py")
+            shutil.copy(
+                CURRENT_DIR / "allowed_values_not_adapted.py",
+                BASE_PATH / "allowed_values.py",
+            )
             print(f"{BASE_PATH / 'allowed_values.py'} created.")
         else:
             print(f"{BASE_PATH / 'allowed_values.py'} exists.")
@@ -54,6 +55,7 @@ def run_alembic_upgrade():
     Apply all migrations (initial schema)
     """
     from specatalog.main import DATABASE_URL_ADMIN
+
     alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
     alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
     alembic_cfg.set_main_option("script_location", str(PROJECT_ROOT / "migrations"))
@@ -62,9 +64,9 @@ def run_alembic_upgrade():
     return
 
 
-
 def specatalog_init_db():
     from specatalog.main import BASE_PATH
+
     exist = input(f"Does the archive and database already exist at {BASE_PATH}? y/n?")
 
     if exist == "n":

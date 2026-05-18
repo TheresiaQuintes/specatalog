@@ -1,8 +1,7 @@
 from specatalog.models.base import TimeStampedModel
 
-from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean
+from sqlalchemy import Column, Integer, ForeignKey, String, Float, Date, Text, Boolean
 from sqlalchemy.orm import Relationship
-
 
 
 class Measurement(TimeStampedModel):
@@ -96,13 +95,18 @@ class Measurement(TimeStampedModel):
     >>> session.add(m)
     >>> session.commit()
     """
+
     __tablename__ = "measurements"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
 
     # molecule
-    molecular_id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
-                              nullable=False, index=True)
+    molecular_id = Column(
+        Integer,
+        ForeignKey("molecules.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
     molecule = Relationship("Molecule", back_populates="measurements")
 
     # method
@@ -110,7 +114,7 @@ class Measurement(TimeStampedModel):
     __mapper_args__ = {
         "polymorphic_on": method,
         "polymorphic_identity": "base",
-        }
+    }
 
     # metadata
     temperature = Column(Float, nullable=False)
@@ -125,10 +129,8 @@ class Measurement(TimeStampedModel):
     corrected = Column(Boolean, nullable=False)
     evaluated = Column(Boolean, nullable=False)
 
-
     def __repr__(self):
         return f"(M{self.id}: {self.__class__.__name__}; {self.molecule.name})"
-
 
 
 class TREPR(Measurement):
@@ -204,12 +206,16 @@ class TREPR(Measurement):
     >>> type(m)
     <class 'models.TREPR'>
     """
+
     __tablename__ = "trepr"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "trepr",}
+    __mapper_args__ = {
+        "polymorphic_identity": "trepr",
+    }
 
     frequency_band = Column(String(16), nullable=False)
     excitation_wl = Column(Float, nullable=False)
@@ -218,7 +224,6 @@ class TREPR(Measurement):
     number_of_scans = Column(Integer)
     repetitionrate = Column(Float)
     mode = Column(String(128))
-
 
 
 class CWEPR(Measurement):
@@ -282,16 +287,19 @@ class CWEPR(Measurement):
     >>> type(m)
     <class 'models.CWEPR'>
     """
+
     __tablename__ = "cwepr"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "cwepr",}
+    __mapper_args__ = {
+        "polymorphic_identity": "cwepr",
+    }
 
     frequency_band = Column(String(16), nullable=False)
     attenuation = Column(String(32), nullable=False)
-
 
 
 class PulseEPR(Measurement):
@@ -367,13 +375,15 @@ class PulseEPR(Measurement):
     <class 'models.PulseEPR'>
     """
 
-
     __tablename__ = "pulse_epr"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "pulse_epr",}
+    __mapper_args__ = {
+        "polymorphic_identity": "pulse_epr",
+    }
 
     pulse_experiment = Column(String(32), nullable=False)
     frequency_band = Column(String(16))
@@ -437,14 +447,15 @@ class UVVis(Measurement):
     <class 'models.UVVis'>
     """
 
-
     __tablename__ = "uvvis"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "uvvis",}
-
+    __mapper_args__ = {
+        "polymorphic_identity": "uvvis",
+    }
 
     dim_cuvette = Column(String(64), nullable=False)
 
@@ -513,13 +524,15 @@ class Fluorescence(Measurement):
     <class 'models.Fluorescence'>
     """
 
-
     __tablename__ = "fluorescence"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "fluorescence",}
+    __mapper_args__ = {
+        "polymorphic_identity": "fluorescence",
+    }
 
     excitation = Column(Boolean, nullable=False)
     excitation_wl = Column(String(64), nullable=False)
@@ -592,13 +605,15 @@ class TA(Measurement):
     <class 'models.TransientAbsorption'>
     """
 
-
     __tablename__ = "ta"
 
-    id = Column(Integer, ForeignKey("measurements.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("measurements.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "ta",}
+    __mapper_args__ = {
+        "polymorphic_identity": "ta",
+    }
 
     timedomain = Column(String(16), nullable=False)
     excitation_energy = Column(String(64), nullable=False)

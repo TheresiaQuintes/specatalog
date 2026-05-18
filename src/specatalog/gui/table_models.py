@@ -5,32 +5,43 @@ import specatalog.crud_db.update as up
 from sqlalchemy.inspection import inspect
 import enum
 import datetime
-from PyQt6.QtWidgets import QComboBox,  QLineEdit, QSpinBox, QDoubleSpinBox, QDateEdit, QDateTimeEdit, QStyledItemDelegate
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QLineEdit,
+    QSpinBox,
+    QDoubleSpinBox,
+    QDateEdit,
+    QDateTimeEdit,
+    QStyledItemDelegate,
+)
 
-MODEL_MODEL_MAPPER = {"Measurements": ms.Measurement,
-                       "trEPR": ms.TREPR,
-                       "cwEPR": ms.CWEPR,
-                       "pulseEPR": ms.PulseEPR,
-                       "UVvis": ms.UVVis,
-                       "Fluorescence": ms.Fluorescence,
-                       "TA": ms.TA,
-                       "Molecules": mol.Molecule,
-                       "SingleMolecule": mol.SingleMolecule,
-                       "RP": mol.RP,
-                       "TDP": mol.TDP,
-                       "TTP": mol.TTP}
+MODEL_MODEL_MAPPER = {
+    "Measurements": ms.Measurement,
+    "trEPR": ms.TREPR,
+    "cwEPR": ms.CWEPR,
+    "pulseEPR": ms.PulseEPR,
+    "UVvis": ms.UVVis,
+    "Fluorescence": ms.Fluorescence,
+    "TA": ms.TA,
+    "Molecules": mol.Molecule,
+    "SingleMolecule": mol.SingleMolecule,
+    "RP": mol.RP,
+    "TDP": mol.TDP,
+    "TTP": mol.TTP,
+}
 
-MODEL_UPDATE_MAPPER = {"trepr": up.TREPRUpdate,
-                       "cwepr": up.CWEPRUpdate,
-                       "pulse_epr": up.PulseEPRUpdate,
-                       "uvvis": up.UVVisUpdate,
-                       "fluorescence": up.FluorescenceUpdate,
-                       "ta": up.TAUpdate,
-                       "single": up.SingleMoleculeUpdate,
-                       "rp": up.RPUpdate,
-                       "tdp": up.TDPUpdate,
-                       "ttp": up.TTPUpdate
-                       }
+MODEL_UPDATE_MAPPER = {
+    "trepr": up.TREPRUpdate,
+    "cwepr": up.CWEPRUpdate,
+    "pulse_epr": up.PulseEPRUpdate,
+    "uvvis": up.UVVisUpdate,
+    "fluorescence": up.FluorescenceUpdate,
+    "ta": up.TAUpdate,
+    "single": up.SingleMoleculeUpdate,
+    "rp": up.RPUpdate,
+    "tdp": up.TDPUpdate,
+    "ttp": up.TTPUpdate,
+}
 
 
 class MeasurementsTableModel(QAbstractTableModel):
@@ -41,7 +52,8 @@ class MeasurementsTableModel(QAbstractTableModel):
         self._headers = [
             column.key
             for column in mapper.columns
-            if not (column.primary_key and column.foreign_keys)]
+            if not (column.primary_key and column.foreign_keys)
+        ]
         self._headers.insert(2, "molecule_name")
 
     def rowCount(self, parent=None):
@@ -91,8 +103,15 @@ class MeasurementsTableModel(QAbstractTableModel):
 
         attr = self._headers[index.column()]
 
-        if attr in ("id", "molecular_id", "method", "path", "created_at",
-                    "updated_at", "molecule_name"):
+        if attr in (
+            "id",
+            "molecular_id",
+            "method",
+            "path",
+            "created_at",
+            "updated_at",
+            "molecule_name",
+        ):
             return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
 
         return (
@@ -135,7 +154,8 @@ class MoleculesTableModel(QAbstractTableModel):
         self._headers = [
             column.key
             for column in mapper.columns
-            if not (column.primary_key and column.foreign_keys)]
+            if not (column.primary_key and column.foreign_keys)
+        ]
 
     def rowCount(self, parent=None):
         return len(self._molecules)
@@ -149,7 +169,6 @@ class MoleculesTableModel(QAbstractTableModel):
 
         molecule = self._molecules[index.row()]
         attr = self._headers[index.column()]
-
 
         value = getattr(molecule, attr)
 
@@ -183,8 +202,7 @@ class MoleculesTableModel(QAbstractTableModel):
         attr = self._headers[index.column()]
         molecule = self._molecules[index.row()]
 
-        if attr in ("id", "group", "structural_formula", "created_at",
-                    "updated_at"):
+        if attr in ("id", "group", "structural_formula", "created_at", "updated_at"):
             return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled
 
         if attr == "name":
@@ -223,6 +241,7 @@ class MoleculesTableModel(QAbstractTableModel):
         # GUI aktualisieren
         self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole])
         return True
+
 
 def create_editor_for_type(field_type, parent):
     if isinstance(field_type, str):

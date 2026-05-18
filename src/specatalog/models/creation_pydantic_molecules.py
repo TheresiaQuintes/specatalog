@@ -21,8 +21,9 @@ class MoleculeModel(BaseModel):
         Optional free-text field with supplementary information.
 
     """
-    molecular_formula: Optional[str]=None
-    additional_info: Optional[str]=None
+
+    molecular_formula: Optional[str] = None
+    additional_info: Optional[str] = None
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
 
@@ -43,6 +44,7 @@ class SingleMoleculeModel(MoleculeModel):
         Human-readable name of the molecule. Must be unique.
 
     """
+
     model_class: ClassVar[mol.SingleMolecule] = mol.SingleMolecule
 
     name: str
@@ -72,12 +74,13 @@ class RPModel(MoleculeModel):
         Computed property combining radicals and linker into a
         name (e.g., "TEMPO1-Ph-TEMPO2").
     """
+
     model_class: ClassVar[mol.RP] = mol.RP
 
     radical_1: av.Radicals
     linker: av.Linker
     radical_2: av.Radicals
-    name_suffix: Optional[str]=None
+    name_suffix: Optional[str] = None
 
     @computed_field
     @property
@@ -113,12 +116,13 @@ class TDPModel(MoleculeModel):
         Computed property combining doublet linker and chromophore into a
         name (e.g., "PDI2-co-TEMPO3").
     """
+
     model_class: ClassVar[mol.TDP] = mol.TDP
 
     doublet: av.Doublets
     linker: av.Linker
     chromophore: av.Chromophores
-    name_suffix: Optional[str]=None
+    name_suffix: Optional[str] = None
 
     @computed_field
     @property
@@ -154,12 +158,13 @@ class TTPModel(MoleculeModel):
         Computed property combining triplet and linker values into a
         name (e.g., "Perylene-ph-Perylene").
     """
+
     model_class: ClassVar[mol.TTP] = mol.TTP
 
     triplet_1: av.Chromophores
     linker: av.Linker
     triplet_2: av.Chromophores
-    name_suffix: Optional[str]=None
+    name_suffix: Optional[str] = None
 
     @computed_field
     @property

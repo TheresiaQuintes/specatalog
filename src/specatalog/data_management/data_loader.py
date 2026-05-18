@@ -13,8 +13,6 @@ to measurement_management.SUPPORTED_FORMATS."""
  (https://github.com/BertainaS/epyrtools)"""
 
 
-
-
 # Regular expression to check if a string can be converted to a number
 _NUMBER_RE = re.compile(r"^[+-]?(\d+(\.\d*)?|\.\d+)([eE][+-]?\d+)?$")
 
@@ -291,9 +289,7 @@ def BrukerListFiles(path, recursive=False):
     return sorted(files)
 
 
-
-def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
-                      ) -> tuple:
+def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str) -> tuple:
     """
     Loads Bruker BES3T data (.DTA, .DSC).
 
@@ -415,7 +411,9 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
             else:
                 companion_dtype_str = fmt_map[data_format_char]
                 # Determine endianness for companion file (assume same as data)
-                companion_dtype = np.dtype(f"{companion_dtype_str}")#np.dtype(f"{dt_char}{companion_dtype_str}")
+                companion_dtype = np.dtype(
+                    f"{companion_dtype_str}"
+                )  # np.dtype(f"{dt_char}{companion_dtype_str}")
 
                 if companion_file.is_file():
                     try:
@@ -613,7 +611,6 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
 
 
 def load_cw_epr(path: str):
-
     path = Path(path)
 
     dta = path.with_suffix(".DTA")
@@ -638,32 +635,30 @@ def load_cw_epr(path: str):
                 pass
 
     meta = parse_field_params(meta)
-    dta_file = open(dta, 'rb')
-    data_type = np.dtype('>f8')
+    dta_file = open(dta, "rb")
+    data_type = np.dtype(">f8")
     spc_full = np.fromfile(dta_file, data_type).astype(float)
     dta_file.close()
 
     if meta["IKKF"] == "CPLX":
         # take every second value as real or imag part
-        spc_real = spc_full[0:len(spc_full):2]
-        spc_imag = spc_full[1:len(spc_full):2]
+        spc_real = spc_full[0 : len(spc_full) : 2]
+        spc_imag = spc_full[1 : len(spc_full) : 2]
 
     else:
         spc_real = spc_full
         spc_imag = None
 
-
     x_min = float(meta["XMIN"])
     x_wid = float(meta["XWID"])
     x_pts = int(meta["XPTS"])
 
-    field = np.linspace(x_min, x_min+x_wid, x_pts)
-
+    field = np.linspace(x_min, x_min + x_wid, x_pts)
 
     return spc_real, spc_imag, field, meta
 
 
-def load_uvvis_ulm(path:str):
+def load_uvvis_ulm(path: str):
     """
     Load UVvis-data from the spectrometer located at Ulm.
 
@@ -708,16 +703,20 @@ def load_uvvis_ulm(path:str):
                     meta[kv_pair[0]] = " ".join(kv_pair[1:])
 
             if line.startswith("###"):
-                data_stop = line_number -1
+                data_stop = line_number - 1
                 current_section = "footer"
 
-    data = pd.read_csv(path, usecols=[0,1],
-                       names=['lambda','int'],
-                       skiprows=(data_start),
-                       skipfooter=(line_number-data_stop),
-                       sep="\s+", engine="python")
-    wavelength = data['lambda'].to_numpy()
-    intensity = data['int'].to_numpy()
+    data = pd.read_csv(
+        path,
+        usecols=[0, 1],
+        names=["lambda", "int"],
+        skiprows=(data_start),
+        skipfooter=(line_number - data_stop),
+        sep="\s+",
+        engine="python",
+    )
+    wavelength = data["lambda"].to_numpy()
+    intensity = data["int"].to_numpy()
     return wavelength, intensity, meta
 
 
@@ -741,15 +740,22 @@ def load_uvvis_freiburg(path: str):
 
     """
     path = Path(path).with_suffix(".txt")
-    data = pd.read_csv(path, usecols=[0,1], names=['lambda','int'], skiprows=(2), sep="\s+", engine="python")
-    wavelength = data['lambda']
-    intensity = data['int']
+    data = pd.read_csv(
+        path,
+        usecols=[0, 1],
+        names=["lambda", "int"],
+        skiprows=(2),
+        sep="\s+",
+        engine="python",
+    )
+    wavelength = data["lambda"]
+    intensity = data["int"]
 
     meta = {}
     meta["wavestart"] = float(wavelength.iloc[-1])
     meta["waveend"] = float(wavelength.iloc[0])
     meta["npoints"] = int(len(wavelength))
-    meta["interval"] = round(float(wavelength.iloc[1]-wavelength.iloc[0]),2)
+    meta["interval"] = round(float(wavelength.iloc[1] - wavelength.iloc[0]), 2)
 
     with open(path, "r", encoding="utf-8", errors="ignore") as f:
         row1 = f.readline().strip()

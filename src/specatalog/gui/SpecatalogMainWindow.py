@@ -13,16 +13,24 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1033, 897)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.centralwidget.sizePolicy().hasHeightForWidth()
+        )
         self.centralwidget.setSizePolicy(sizePolicy)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout_3 = QtWidgets.QGridLayout(self.centralwidget)
@@ -46,7 +54,12 @@ class Ui_MainWindow(object):
         self.ButtonClearQuery = QtWidgets.QPushButton(parent=self.widget)
         self.ButtonClearQuery.setObjectName("ButtonClearQuery")
         self.gridLayout_4.addWidget(self.ButtonClearQuery, 1, 1, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 223, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20,
+            223,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         self.gridLayout_4.addItem(spacerItem, 2, 1, 1, 1)
         self.ButtonDelete = QtWidgets.QPushButton(parent=self.widget)
         self.ButtonDelete.setObjectName("ButtonDelete")
@@ -91,7 +104,12 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName("groupBox")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.groupBox)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
         self.horizontalLayout.addItem(spacerItem1)
         self.RadioMeasurements = QtWidgets.QRadioButton(parent=self.groupBox)
         self.RadioMeasurements.setChecked(True)
@@ -116,10 +134,18 @@ class Ui_MainWindow(object):
         self.ButtonClearQuery.setText(_translate("MainWindow", "Clear Query"))
         self.ButtonDelete.setText(_translate("MainWindow", "Delete Entry"))
         self.ButtonQuery.setText(_translate("MainWindow", "Run Query"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), _translate("MainWindow", "Database"))
-        self.LineRawDataInput.setPlaceholderText(_translate("MainWindow", "Drag raw data file here"))
-        self.ButtonRawDataInput.setText(_translate("MainWindow", "Choose raw data file"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_1), _translate("MainWindow", "Database")
+        )
+        self.LineRawDataInput.setPlaceholderText(
+            _translate("MainWindow", "Drag raw data file here")
+        )
+        self.ButtonRawDataInput.setText(
+            _translate("MainWindow", "Choose raw data file")
+        )
         self.ButtonNewEntry.setText(_translate("MainWindow", "Submit new Entry"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "New Entry"))
+        self.tabWidget.setTabText(
+            self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "New Entry")
+        )
         self.RadioMeasurements.setText(_translate("MainWindow", "Measurements"))
         self.RadioMolecules.setText(_translate("MainWindow", "Molecules"))

@@ -59,11 +59,10 @@ def create_measurement_dir(base_dir: str, ms_id: int) -> Path:
     if path.exists():
         raise FileExistsError(f"Measurement folder {path} already exists!")
 
-
     for subdir in CATEGORIES:
         (path / subdir).mkdir(parents=True, exist_ok=True)
 
-    measurement_path = (path / f"measurement_M{ms_id}.h5")
+    measurement_path = path / f"measurement_M{ms_id}.h5"
     if measurement_path.exists():
         raise FileExistsError(f"HDF5 file {measurement_path} already exists!")
 
@@ -76,7 +75,7 @@ def create_measurement_dir(base_dir: str, ms_id: int) -> Path:
     return path
 
 
-def measurement_path (base_dir: str, ms_id: int) -> Path:
+def measurement_path(base_dir: str, ms_id: int) -> Path:
     """
     Create the absolute path to a measurement folder with the ID ms_id.
 
@@ -99,14 +98,15 @@ def measurement_path (base_dir: str, ms_id: int) -> Path:
 
     """
     ms_id = f"M{ms_id}"
-    path = Path(base_dir) /"data"/ ms_id
+    path = Path(base_dir) / "data" / ms_id
     if not path.exists():
         raise FileNotFoundError(f"Measurement folder {path} does not exist!")
     return path
 
 
-def new_file_to_archive(src: str, base_dir: str, ms_id: int, category: str,
-                        update=False):
+def new_file_to_archive(
+    src: str, base_dir: str, ms_id: int, category: str, update=False
+):
     """
     Copy a file to the archive. The file is saved at:
     <base_dir>/data/M<ms_id>/<category>/<src_file_name>.
@@ -163,7 +163,9 @@ def new_file_to_archive(src: str, base_dir: str, ms_id: int, category: str,
     # check target_file
     if target_file.exists():
         if not update:
-            raise FileExistsError(f"File at {target_file} already exists! Use new name or update-function instead")
+            raise FileExistsError(
+                f"File at {target_file} already exists! Use new name or update-function instead"
+            )
 
     # Copy or update file
     shutil.copy2(src, target_file)
@@ -171,8 +173,9 @@ def new_file_to_archive(src: str, base_dir: str, ms_id: int, category: str,
     return
 
 
-def new_dataset_to_hdf5(data: np.ndarray, hdf5_path: str, group_name: str,
-                        dataset_name: str):
+def new_dataset_to_hdf5(
+    data: np.ndarray, hdf5_path: str, group_name: str, dataset_name: str
+):
     """
     Write a new dataset to a hdf5-file.
 
@@ -201,8 +204,8 @@ def new_dataset_to_hdf5(data: np.ndarray, hdf5_path: str, group_name: str,
         f.close()
     return
 
-def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str,
-                           ms_id: int):
+
+def raw_data_to_folder(raw_data_path: str, fmt: str, base_dir: str, ms_id: int):
     """
     Copy raw datafiles to the archive. Existing data with the same name get
     overwritten. The data are saved at
@@ -314,9 +317,8 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     """
     # set the path
     path = measurement_path(base_dir, ms_id)
-    raw_path = path/"raw"
+    raw_path = path / "raw"
     hdf5_path = path / f"measurement_M{ms_id}.h5"
-
 
     # load and save data from Bruker bes3t format
     if fmt == "bruker_bes3t":
@@ -324,23 +326,21 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
 
         if not dsc or not dta:
-            raise ValueError("Exactly one .DSC and one .DTA file have to be\
-                             available")
+            raise ValueError(
+                "Exactly one .DSC and one .DTA file have to be\
+                             available"
+            )
         if dsc[0].stem != dta[0].stem:
-            raise ValueError("The DSC and the DTA files need to have equal\
-                             basenames.")
+            raise ValueError(
+                "The DSC and the DTA files need to have equal\
+                             basenames."
+            )
 
         # load data to arrays using the loader function
-        data, x, params = l.load_bruker_bes3t(dsc[0].with_suffix(""),
-                                              "DSC", "")
+        data, x, params = l.load_bruker_bes3t(dsc[0].with_suffix(""), "DSC", "")
 
         # write intensities to dataset
-        idx = _get_next_rawdata_index(
-            hdf5_path,
-            "raw_data",
-            "data_real"
-        )
-
+        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
 
         new_dataset_to_hdf5(data, hdf5_path, "raw_data", f"data_{idx}")
         new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", f"data_real_{idx}")
@@ -360,32 +360,30 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
                 for key, value in params.items():
                     grp.attrs[key] = value
 
-
     elif fmt == "cw_epr":
         dsc = [p for p in raw_path.iterdir() if p.suffix == ".DSC"]
         dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
 
         if not dsc or not dta:
-            raise ValueError("Exactly one .DSC and one .DTA file have to be\
-                             available")
+            raise ValueError(
+                "Exactly one .DSC and one .DTA file have to be\
+                             available"
+            )
         if dsc[0].stem != dta[0].stem:
-            raise ValueError("The DSC and the DTA files need to have equal\
-                             basenames.")
+            raise ValueError(
+                "The DSC and the DTA files need to have equal\
+                             basenames."
+            )
 
         # load data to arrays using the loader function
 
         spc_real, spc_imag, field, params = l.load_cw_epr(dsc[0].with_suffix(""))
 
         # write intensities to dataset
-        idx = _get_next_rawdata_index(
-            hdf5_path,
-            "raw_data",
-            "data_real"
-        )
+        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
         new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", f"data_real_{idx}")
         new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", f"data_imag_{idx}")
         new_dataset_to_hdf5(field, hdf5_path, "raw_data", f"field_{idx}")
-
 
         # add metadata from first DSC-file as attributes
         if idx != 0:
@@ -396,22 +394,18 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
                         continue
                     grp.attrs[key] = value
 
-
-
     elif fmt == "uvvis_ulm":
         txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
 
         if not txt:
-            raise ValueError(f"No .txt file is available. Make sure your raw\
-                             data are stored at {raw_path} in the right format.")
+            raise ValueError(
+                f"No .txt file is available. Make sure your raw\
+                             data are stored at {raw_path} in the right format."
+            )
 
         wavelength, intensity, meta = l.load_uvvis_ulm(txt[0].with_suffix(""))
 
-        idx = _get_next_rawdata_index(
-            hdf5_path,
-            "raw_data",
-            "intensity"
-        )
+        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
 
         new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
         new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
@@ -426,16 +420,14 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
 
         if not txt:
-            raise ValueError(f"No .txt file is available. Make sure your raw\
-                             data are stored at {raw_path} in the right format.")
+            raise ValueError(
+                f"No .txt file is available. Make sure your raw\
+                             data are stored at {raw_path} in the right format."
+            )
 
         wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0].with_suffix(""))
 
-        idx = _get_next_rawdata_index(
-            hdf5_path,
-            "raw_data",
-            "intensity"
-        )
+        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
 
         new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
         new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
@@ -453,8 +445,9 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     return
 
 
-def delete_element(base_dir: str, ms_id: int, category: str, filename: str,
-                   save_delete: bool=True):
+def delete_element(
+    base_dir: str, ms_id: int, category: str, filename: str, save_delete: bool = True
+):
     """
     Delete a file from the archive.
 
@@ -486,8 +479,10 @@ def delete_element(base_dir: str, ms_id: int, category: str, filename: str,
 
     """
     if category not in CATEGORIES:
-        raise ValueError(f"'{category}' is not valid. Allowed values are: \
-                         {CATEGORIES}")
+        raise ValueError(
+            f"'{category}' is not valid. Allowed values are: \
+                         {CATEGORIES}"
+        )
 
     path = measurement_path(base_dir, ms_id)
     file_path = path / category / filename
@@ -507,7 +502,8 @@ def delete_element(base_dir: str, ms_id: int, category: str, filename: str,
 
     return
 
-def delete_measurement(base_dir: str, ms_id: int, save_delete: bool=True):
+
+def delete_measurement(base_dir: str, ms_id: int, save_delete: bool = True):
     """
     Delete a whole measurement directory from the archive.
 
@@ -546,7 +542,7 @@ def delete_measurement(base_dir: str, ms_id: int, save_delete: bool=True):
     return
 
 
-def list_files(base_dir: str, ms_id: str, category: str="") -> list:
+def list_files(base_dir: str, ms_id: str, category: str = "") -> list:
     """
     List all files in a single measurement directory with the ID ms_id and
     all subdirectorys. If a category is chosen only files of this category
@@ -576,8 +572,10 @@ def list_files(base_dir: str, ms_id: str, category: str="") -> list:
     """
     if category != "":
         if category not in CATEGORIES:
-            raise ValueError(f"'{category}' no valid category.\
-                             Allowed values are: {CATEGORIES}")
+            raise ValueError(
+                f"'{category}' no valid category.\
+                             Allowed values are: {CATEGORIES}"
+            )
 
     path = measurement_path(base_dir, ms_id)
     folder = path / category

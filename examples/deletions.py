@@ -17,12 +17,9 @@ dat.sync()
 print(vars(dat))
 
 
-
-
-
 # measurements
 # de.delete_measurement(ms_id=14)
 # mm.delete_measurement(BASE_PATH, 14)
 
 # molecules (all connected measurements are also deleted!! Only delete new molecules)
-#de.delete_molecule(mol_id=2)
+# de.delete_molecule(mol_id=2)

@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Names(str, Enum):
     richert = "richert"
     maylaender = "maylaender"
@@ -31,9 +32,11 @@ class PulseExperiments(str, Enum):
     saturation_recovery = "sr"
     esenut = "esenut"
 
+
 class Timedomains(str, Enum):
     ns = "ns"
     fs = "fs"
+
 
 class Chromophores(str, Enum):
     bdp0 = "bdp0"

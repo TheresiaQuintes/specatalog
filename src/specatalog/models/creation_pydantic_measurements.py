@@ -46,17 +46,18 @@ class MeasurementModel(BaseModel):
     * Assignment is validated on set (``validate_assignment=True``).
 
     """
+
     molecular_id: int
     temperature: float = Field(..., gt=0)
     solvent: av.Solvents
-    concentration: Optional[str]=None
+    concentration: Optional[str] = None
     date: datetime.date
-    measured_by : av.Names
-    location: Optional[str]=None
-    device: Optional[av.Devices]=None
-    series: Optional[str]=None
-    corrected: bool=False
-    evaluated: bool=False
+    measured_by: av.Names
+    location: Optional[str] = None
+    device: Optional[av.Devices] = None
+    series: Optional[str] = None
+    corrected: bool = False
+    evaluated: bool = False
 
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
@@ -87,6 +88,7 @@ class CWEPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.CWEPR
 
     frequency_band: av.FrequencyBands
@@ -129,15 +131,16 @@ class TREPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TREPR
 
     frequency_band: av.FrequencyBands
     excitation_wl: float
-    excitation_energy: Optional[float]=None
+    excitation_energy: Optional[float] = None
     attenuation: str
-    number_of_scans: Optional[int]=None
-    repetitionrate: Optional[float]=None
-    mode: Optional[str]=None
+    number_of_scans: Optional[int] = None
+    repetitionrate: Optional[float] = None
+    mode: Optional[str] = None
 
 
 class PulseEPRModel(MeasurementModel):
@@ -170,11 +173,12 @@ class PulseEPRModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.PulseEPR
 
-    frequency_band: Optional[av.FrequencyBands]=None
-    attenuation: Optional[str]=None
-    excitation_wl: Optional[float]=None
+    frequency_band: Optional[av.FrequencyBands] = None
+    attenuation: Optional[str] = None
+    excitation_wl: Optional[float] = None
     pulse_experiment: av.PulseExperiments
 
 
@@ -202,6 +206,7 @@ class UVVisModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.UVVis
 
     dim_cuvette: str
@@ -236,11 +241,12 @@ class FluorescenceModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.Fluorescence
 
     excitation: bool
     excitation_wl: str
-    od: Optional[str]=None
+    od: Optional[str] = None
 
 
 class TAModel(MeasurementModel):
@@ -275,9 +281,10 @@ class TAModel(MeasurementModel):
     * All further attributes are inherited from :class:`MeasurementModel`.
 
     """
+
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TA
 
     timedomain: av.Timedomains
-    excitation_energy: Optional[str]=None
+    excitation_energy: Optional[str] = None
     excitation_wl: str
-    od: Optional[str]=None
+    od: Optional[str] = None

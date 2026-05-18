@@ -1,6 +1,14 @@
 from sqlalchemy import inspect
 import sqlalchemy.sql.sqltypes as Sqltypes
-from sqlalchemy.sql.sqltypes import String, Integer, Float, Boolean, Date, DateTime, Text
+from sqlalchemy.sql.sqltypes import (
+    String,
+    Integer,
+    Float,
+    Boolean,
+    Date,
+    DateTime,
+    Text,
+)
 from sqlalchemy.sql.sqltypes import Enum as SAEnum
 from pydantic import BaseModel, create_model, ConfigDict
 from typing import Any, Optional, Literal, get_origin, get_args, Union
@@ -8,8 +16,6 @@ from specatalog.models.base import TimeStampedModel
 import datetime
 import textwrap
 from enum import Enum
-
-
 
 
 def _type_name_for_doc(typ: type) -> str:
@@ -41,7 +47,6 @@ def _type_name_for_doc(typ: type) -> str:
     # normal types
     typ_string = typ.__name__ if hasattr(typ, "__name__") else str(typ)
     return typ_string
-
 
 
 def _map_sqla_type(sqlatype: Sqltypes) -> type:
@@ -101,8 +106,9 @@ def make_filter_model(model: TimeStampedModel, creation_model: BaseModel) -> Bas
         created. When using the model no addtional fields are allowed.
 
     """
-    pyd_fields = {name: field.annotation
-                  for name, field in creation_model.model_fields.items()}
+    pyd_fields = {
+        name: field.annotation for name, field in creation_model.model_fields.items()
+    }
 
     mapper = inspect(model)  # get all columns of the SQLA-model
 
@@ -138,22 +144,18 @@ def make_filter_model(model: TimeStampedModel, creation_model: BaseModel) -> Bas
         **fields,
     )
 
-   # *** create docstring ***
+    # *** create docstring ***
     operator_lines = [
-    " gt: greater than",
-    " lt: less than",
-    " ge: greater than or equal to",
-    " le: less than or equal to",
-    " ne: not equal",
-    " like: SQL LIKE pattern match",
-    " ilike: case-insensitive LIKE",
-    " contains: substring match (for strings)",
+        " gt: greater than",
+        " lt: less than",
+        " ge: greater than or equal to",
+        " le: less than or equal to",
+        " ne: not equal",
+        " like: SQL LIKE pattern match",
+        " ilike: case-insensitive LIKE",
+        " contains: substring match (for strings)",
     ]
-    operator_explanation = "".join(
-        f"\n\t\t- {op}"
-        for op in operator_lines
-    )
-
+    operator_explanation = "".join(f"\n\t\t- {op}" for op in operator_lines)
 
     field_lines = "".join(
         f"\n\t\t- {fname}: {_type_name_for_doc(typ)}"
@@ -161,7 +163,7 @@ def make_filter_model(model: TimeStampedModel, creation_model: BaseModel) -> Bas
     )  # field_name + type
 
     FilterModel.__doc__ = textwrap.dedent(
-    f"""
+        f"""
     Pydantic filter model for {model.__name__}.
 
     The following operators can (but do not have to) be applied to the
@@ -214,10 +216,7 @@ def make_ordering_model(model: TimeStampedModel) -> BaseModel:
     OrderingModel = create_model(
         name,
         **fields,
-        __config__=ConfigDict(
-    extra="forbid",
-    validate_assignment=True
-        ),
+        __config__=ConfigDict(extra="forbid", validate_assignment=True),
     )
 
     # *** create docstring ***
@@ -227,7 +226,7 @@ def make_ordering_model(model: TimeStampedModel) -> BaseModel:
     )
 
     OrderingModel.__doc__ = textwrap.dedent(
-    f"""
+        f"""
     Pydantic ordering model for {model.__name__}.
 
     Choose "asc" (for ascending ordering) or "desc" (for descending ordering)
@@ -237,14 +236,13 @@ def make_ordering_model(model: TimeStampedModel) -> BaseModel:
 
     {field_lines}
 
-    """)
+    """
+    )
 
     return OrderingModel
 
 
-
-def make_update_model(model: TimeStampedModel, creation_model: BaseModel
-                      ) -> BaseModel:
+def make_update_model(model: TimeStampedModel, creation_model: BaseModel) -> BaseModel:
     """
     Create dynamically a pydantic-class for updating based on an SQLAlchemy
     model.
@@ -283,8 +281,9 @@ def make_update_model(model: TimeStampedModel, creation_model: BaseModel
     else:
         raise ValueError("Unknown model class")
 
-    pyd_fields = {name: field.annotation
-                  for name, field in creation_model.model_fields.items()}
+    pyd_fields = {
+        name: field.annotation for name, field in creation_model.model_fields.items()
+    }
 
     mapper = inspect(model)  # get all columns of the SQLA-model
 
@@ -312,7 +311,7 @@ def make_update_model(model: TimeStampedModel, creation_model: BaseModel
         **fields,
     )
 
-   # *** create docstrin ***
+    # *** create docstrin ***
 
     field_lines = "".join(
         f"\n\t\t- {fname}: {_type_name_for_doc(typ)}"
@@ -320,7 +319,7 @@ def make_update_model(model: TimeStampedModel, creation_model: BaseModel
     )
 
     UpdateModel.__doc__ = textwrap.dedent(
-    f"""
+        f"""
     Pydantic update model for {model.__name__}. The fields that are set
     are the parameters that shall be updateted in the database.
 
@@ -328,7 +327,8 @@ def make_update_model(model: TimeStampedModel, creation_model: BaseModel
 
     {field_lines}
 
-    """)
+    """
+    )
 
     UpdateModel.model = model  # reference SQLA-model
     return UpdateModel

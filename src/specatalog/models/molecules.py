@@ -68,6 +68,7 @@ class Molecule(TimeStampedModel):
     >>> mol.measurements
     [Measurement(...), TREPR(...), PulseEPR(...)]
     """
+
     __tablename__ = "molecules"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -77,17 +78,17 @@ class Molecule(TimeStampedModel):
     structural_formula = Column(Text, unique=True, nullable=False)
     additional_info = Column(Text)
 
-    measurements = Relationship("Measurement", back_populates="molecule",
-                                    passive_deletes=True)
+    measurements = Relationship(
+        "Measurement", back_populates="molecule", passive_deletes=True
+    )
 
     group = Column(String(20), nullable=False)
     __mapper_args__ = {
         "polymorphic_on": group,
         "polymorphic_identity": "base",
-        }
+    }
 
     def __repr__(self):
-
         return f"({self.__class__.__name__}: {self.name}, {self.id})"
 
 
@@ -143,13 +144,16 @@ class SingleMolecule(Molecule):
     >>> type(mol)
     <class 'models.SingleMolecule'>
     """
+
     __tablename__ = "single"
 
-    id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("molecules.id", ondelete="CASCADE"), primary_key=True
+    )
 
-
-    __mapper_args__ = {"polymorphic_identity": "single",}
+    __mapper_args__ = {
+        "polymorphic_identity": "single",
+    }
 
 
 class RP(Molecule):
@@ -212,12 +216,16 @@ class RP(Molecule):
     >>> type(mol)
     <class 'models.RP'>
     """
+
     __tablename__ = "rp"
 
-    id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("molecules.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "rp",}
+    __mapper_args__ = {
+        "polymorphic_identity": "rp",
+    }
 
     radical_1 = Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
@@ -283,18 +291,21 @@ class TDP(Molecule):
     >>> type(mol)
     <class 'models.TDP'>
     """
+
     __tablename__ = "tdp"
 
-    id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("molecules.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "tdp",}
+    __mapper_args__ = {
+        "polymorphic_identity": "tdp",
+    }
 
     doublet = Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
     chromophore = Column(String(64), nullable=False)
     name_suffix = Column(String(64))
-
 
 
 class TTP(Molecule):
@@ -355,14 +366,18 @@ class TTP(Molecule):
     >>> type(mol)
     <class 'models.TTP'>
     """
+
     __tablename__ = "ttp"
 
-    id = Column(Integer, ForeignKey("molecules.id", ondelete="CASCADE"),
-                primary_key=True)
+    id = Column(
+        Integer, ForeignKey("molecules.id", ondelete="CASCADE"), primary_key=True
+    )
 
-    __mapper_args__ = {"polymorphic_identity": "ttp",}
+    __mapper_args__ = {
+        "polymorphic_identity": "ttp",
+    }
 
-    triplet_1= Column(String(64), nullable=False)
+    triplet_1 = Column(String(64), nullable=False)
     linker = Column(String(64), nullable=False)
     triplet_2 = Column(String(64), nullable=False)
     name_suffix = Column(String(64))

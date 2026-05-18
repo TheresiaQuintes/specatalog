@@ -5,7 +5,6 @@ from specatalog.models.base import TimeStampedModel
 from specatalog.main import db_session
 
 
-
 def _delete_object(obj: TimeStampedModel, session: db_session):
     """
     Delete an entry from the database.
@@ -26,6 +25,7 @@ def _delete_object(obj: TimeStampedModel, session: db_session):
     session.delete(obj)
     return
 
+
 def delete_object(obj: TimeStampedModel):
     """
     Delete an entry from the database.
@@ -43,6 +43,7 @@ def delete_object(obj: TimeStampedModel):
     """
     with db_session() as session:
         session.delete(obj)
+
 
 def delete_molecule(mol_id: int):
     """
@@ -63,11 +64,12 @@ def delete_molecule(mol_id: int):
     None.
 
     """
-    molecule = Molecule.query.filter(Molecule.id==mol_id).first()
+    molecule = Molecule.query.filter(Molecule.id == mol_id).first()
     if molecule is None:
         raise ValueError(f"No molecule with the ID MOL{mol_id} found.")
     delete_object(molecule)
     return
+
 
 def delete_measurement(ms_id: int):
     """
@@ -89,7 +91,7 @@ def delete_measurement(ms_id: int):
     None.
 
     """
-    measurement = Measurement.query.filter(Measurement.id==ms_id).first()
+    measurement = Measurement.query.filter(Measurement.id == ms_id).first()
     if measurement is None:
         raise ValueError(f"No measurement with the ID M{ms_id} found.")
     delete_object(measurement)

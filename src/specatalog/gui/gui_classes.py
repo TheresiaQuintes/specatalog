@@ -45,14 +45,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Filter area
         self.tab_index = 0
         self.filter_fields = {}
-        gf.build_form(self, self.FormFilter, self.filter_fields,
-                      r.MeasurementFilter.model_fields)
+        gf.build_form(
+            self, self.FormFilter, self.filter_fields, r.MeasurementFilter.model_fields
+        )
 
         # New Entry area
         self.tab_index = 1
         self.new_fields = {}
-        gf.build_form(self, self.FormNewEntry, self.new_fields,
-                      cpm.TREPRModel.model_fields)
+        gf.build_form(
+            self, self.FormNewEntry, self.new_fields, cpm.TREPRModel.model_fields
+        )
         self.tab_index = 0
 
         self.raw_format = "bruker_bes3t"
@@ -72,7 +74,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.LineRawDataInput = DragDropLineEdit()
                     layout.addWidget(self.LineRawDataInput, row, col)
                     break
-
 
         # connections
         gss.connect_signal_slot(self)

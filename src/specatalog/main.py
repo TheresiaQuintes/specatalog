@@ -26,31 +26,22 @@ MOLECULES_PATH = Path("molecules")
 USR_NAME = defaults["usr_name"]
 PASSWORD = defaults["password"]
 database = defaults["database_url"]
-DATABASE_URL_USR = (
-    f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@{database}"
-    )
+DATABASE_URL_USR = f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@{database}"
 DATABASE_URL_ADMIN = (
     f"postgresql+psycopg2://specatalog_admin:administration_of_specatalog@{database}"
-    )
+)
 
 
 engine = alc.create_engine(
-    DATABASE_URL_USR,
-    echo=True,
-    pool_size=10,
-    max_overflow=20,
-    pool_pre_ping=True
+    DATABASE_URL_USR, echo=True, pool_size=10, max_overflow=20, pool_pre_ping=True
 )
 
 # initialise session and connect to engine
 Session = orm.scoped_session(
     orm.sessionmaker(
-        autoflush=False,
-        autocommit=False,
-        bind=engine,
-        expire_on_commit=False
-        )
+        autoflush=False, autocommit=False, bind=engine, expire_on_commit=False
     )
+)
 
 
 @contextmanager
@@ -66,9 +57,9 @@ def db_session():
         Session.remove()
 
 
-
 # Import external allowed_values
 _ALLOWED_VALUES_MODULE = None
+
 
 def load_allowed_values(path: Path):
     global _ALLOWED_VALUES_MODULE
@@ -76,10 +67,7 @@ def load_allowed_values(path: Path):
     if _ALLOWED_VALUES_MODULE is not None:
         return _ALLOWED_VALUES_MODULE
 
-    spec = importlib.util.spec_from_file_location(
-        "allowed_values",
-        path
-    )
+    spec = importlib.util.spec_from_file_location("allowed_values", path)
     module = importlib.util.module_from_spec(spec)
 
     # 🔐 extrem wichtig
@@ -89,5 +77,6 @@ def load_allowed_values(path: Path):
 
     _ALLOWED_VALUES_MODULE = module
     return module
+
 
 ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")

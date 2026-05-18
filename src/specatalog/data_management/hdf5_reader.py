@@ -4,6 +4,7 @@ from specatalog.main import BASE_PATH
 from typing import Any
 import numpy as np
 
+
 class H5Object:
     """
     Represents a hdf5-file with its internal structure and all attributes/
@@ -47,9 +48,10 @@ class H5Object:
     >>> dat.sync()
 
     """
-    def __init__(self, h5node: h5py.File, writable: bool=False,
-                 auto_flush: bool=True):
 
+    def __init__(
+        self, h5node: h5py.File, writable: bool = False, auto_flush: bool = True
+    ):
         self._node = h5node
         self._writable = writable
 
@@ -102,7 +104,6 @@ class H5Object:
         self._attrs_keys.add(key)
         if key in self._datasets_keys:
             self._datasets_keys.remove(key)
-
 
     def set_dataset(self, key: str, value: np.ndarray):
         """
@@ -228,8 +229,7 @@ class H5Object:
             self._node.file.flush()
 
 
-
-def load_h5(filename: str, mode: str="r") -> (H5Object, h5py.File):
+def load_h5(filename: str, mode: str = "r") -> (H5Object, h5py.File):
     """
     Load a hdf5-file as a H5Object.
 
@@ -253,10 +253,10 @@ def load_h5(filename: str, mode: str="r") -> (H5Object, h5py.File):
     """
     f = h5py.File(filename, mode)
     obj = H5Object(f, writable=(mode != "r"))
-    return obj , f
+    return obj, f
 
 
-def load_from_id(ms_id: int, mode: str="r") -> (H5Object, h5py.File):
+def load_from_id(ms_id: int, mode: str = "r") -> (H5Object, h5py.File):
     """
     Load a hdf5-measurement-file from the archive as a H5Object.
 
