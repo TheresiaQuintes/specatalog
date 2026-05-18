@@ -2,7 +2,7 @@ from specatalog.models.base import Model
 import time
 from sqlalchemy import Column, Integer, String
 from specatalog.models.base import TimeStampedModel
-from specatalog.models.molecules import  Molecule
+from specatalog.models.molecules import Molecule
 from specatalog.models.measurements import Measurement, TREPR
 from datetime import datetime, date
 
@@ -12,9 +12,9 @@ class Dummy(TimeStampedModel):
     id = Column(Integer, primary_key=True)
     name = Column(String)
 
+
 def test_table_exists(engine):
     assert "dummy" in Model.metadata.tables
-
 
 
 def test_created_at_is_set(db_session):
@@ -25,6 +25,7 @@ def test_created_at_is_set(db_session):
 
     assert obj.created_at is not None
     assert isinstance(obj.created_at, datetime)
+
 
 def test_updated_at_initial(db_session):
     obj = Dummy(name="test")
@@ -51,13 +52,13 @@ def test_updated_at_on_update(db_session):
     assert obj.updated_at is not None
     assert obj.updated_at >= first_created
 
+
 def test_no_update_does_not_change_timestamp(db_session):
     obj = Dummy(name="test")
     db_session.add(obj)
     db_session.commit()
 
     created_updated = obj.updated_at
-
 
     db_session.commit()  # kein change
 
@@ -76,6 +77,7 @@ def test_create_molecule(db_session):
     db_session.commit()
 
     assert mol.id is not None
+
 
 def test_create_measurement(db_session):
     mol = Molecule(
@@ -104,6 +106,7 @@ def test_create_measurement(db_session):
 
     assert m.id is not None
 
+
 def test_molecule_has_measurements(db_session):
     mol = Molecule(
         name="TestMol",
@@ -130,6 +133,7 @@ def test_molecule_has_measurements(db_session):
     db_session.commit()
 
     assert len(mol.measurements) == 1
+
 
 def test_trepr_polymorphism(db_session):
     mol = Molecule(
@@ -162,6 +166,7 @@ def test_trepr_polymorphism(db_session):
     loaded = db_session.query(Measurement).filter_by(id=m.id).one()
 
     assert isinstance(loaded, TREPR)
+
 
 def test_cascade_delete(db_session):
     mol = Molecule(

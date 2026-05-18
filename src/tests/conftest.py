@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from specatalog.models.base import Model
 
+
 @pytest.fixture
 def engine():
     engine = create_engine("sqlite:///:memory:")
