@@ -225,21 +225,21 @@ class MoleculesTableModel(QAbstractTableModel):
         return True
 
 def create_editor_for_type(field_type, parent):
-    if field_type == str:
+    if isinstance(field_type, str):
         return QLineEdit(parent)
 
-    if field_type == int:
+    if isinstance(field_type, int):
         spin = QSpinBox(parent)
         spin.setRange(-1_000_000_000, 1_000_000_000)
         return spin
 
-    if field_type == float:
+    if isinstance(field_type, float):
         dspin = QDoubleSpinBox(parent)
         dspin.setRange(-1e15, 1e15)
         dspin.setDecimals(3)
         return dspin
 
-    if field_type == bool:
+    if isinstance(field_type, bool):
         combo = QComboBox(parent)
         combo.addItem("Yes", True)
         combo.addItem("No", False)

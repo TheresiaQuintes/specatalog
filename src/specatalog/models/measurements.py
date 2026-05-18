@@ -1,4 +1,3 @@
-print("IMPORT measurement.py", __name__)
 from specatalog.models.base import TimeStampedModel
 
 from sqlalchemy import Column, Integer, ForeignKey, String, Float,  Date, Text, Boolean

@@ -347,7 +347,7 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", f"data_imag_{idx}")
 
         # write axes-data
-        if type(x) == list:  # multiple axes
+        if type(x) is list:  # multiple axes
             for n in range(len(x)):
                 new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{idx}_{n}")
         else:  # only one xaxis

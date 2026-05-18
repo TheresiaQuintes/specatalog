@@ -1,9 +1,3 @@
-""" Place functions for load data of a specific type here. Add new data-types
-to measurement_management.SUPPORTED_FORMATS."""
-
-"""Code taken from the epyrtools project by BertainaS
- (https://github.com/BertainaS/epyrtools)"""
-
 import numpy as np
 from pathlib import Path
 import warnings
@@ -11,6 +5,14 @@ import re
 import pandas as pd
 
 from typing import List, Union
+
+""" Place functions for load data of a specific type here. Add new data-types
+to measurement_management.SUPPORTED_FORMATS."""
+
+"""Code taken from the epyrtools project by BertainaS
+ (https://github.com/BertainaS/epyrtools)"""
+
+
 
 
 # Regular expression to check if a string can be converted to a number
@@ -354,7 +356,6 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
         warnings.warn("BSEQ not found in .DSC file. Assuming BSEQ=BIG (big-endian).")
 
     # Number Format (assuming same for real and imag if complex)
-    number_format_code = None
     if "IRFMT" in parameters:
         # For simplicity, take the first format if multiple are listed
         irfmt_val = parameters["IRFMT"].split(",")[0].strip().upper()
@@ -414,7 +415,6 @@ def load_bruker_bes3t(full_base_name: Path, file_extension: str, scaling: str
             else:
                 companion_dtype_str = fmt_map[data_format_char]
                 # Determine endianness for companion file (assume same as data)
-                dt_char = ">" if byte_order == "ieee-be" else "<"
                 companion_dtype = np.dtype(f"{companion_dtype_str}")#np.dtype(f"{dt_char}{companion_dtype_str}")
 
                 if companion_file.is_file():

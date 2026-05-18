@@ -58,9 +58,9 @@ def run_query(self):
 def submit_new_entry(self):
     data = get_values(self, self.new_fields)
     if self.RadioMeasurements.isChecked():
-        if data["corrected"] == None:
+        if data["corrected"] is None:
             data["corrected"] = False
-        if data["evaluated"] == None:
+        if data["evaluated"] is None:
             data["evaluated"] = False
 
     try:
@@ -245,20 +245,20 @@ def build_form(self, layout, fields, schema: dict):
 
 
 def create_widget_for_type(self, field_type):
-    if field_type == str:
+    if isinstance(field_type, str):
         return QLineEdit()
-    if field_type == int:
+    if isinstance(field_type, int):
         spin = QSpinBox()
         spin.setRange(-1_000_000_000, 1_000_000_000)
         spin.setValue(0)
         return spin
-    if field_type == float:
+    if isinstance(field_type, float):
         dspin = QDoubleSpinBox()
         dspin.setRange(-1e15, 1e15)
         dspin.setDecimals(3)
         dspin.setValue(0.0)
         return dspin
-    if field_type == bool:
+    if isinstance(field_type, bool):
         combo = QComboBox()
         combo.addItem("", userData=None)
         combo.addItem("Yes", True)

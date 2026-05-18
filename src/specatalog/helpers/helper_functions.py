@@ -125,7 +125,7 @@ def make_filter_model(model: TimeStampedModel, creation_model: BaseModel) -> Bas
                 fields[f"{field_name}__{op}"] = (Optional[py_type], None)
 
         # add comparison operators for strings
-        if py_type == str:
+        if isinstance(py_type, str):
             for op in ("like", "ilike", "contains"):
                 fields[f"{field_name}__{op}"] = (Optional[str], None)
 
