@@ -70,7 +70,7 @@ def test_create_molecule(db_session):
         name="TestMol",
         molecular_formula="C10H10",
         structural_formula="/tmp/test",
-        group="single",
+        group="base",
     )
 
     db_session.add(mol)
@@ -84,7 +84,7 @@ def test_create_measurement(db_session):
         name="TestMol",
         molecular_formula="C10H10",
         structural_formula="/tmp/test",
-        group="single",
+        group="base",
     )
     db_session.add(mol)
     db_session.commit()
@@ -112,7 +112,7 @@ def test_molecule_has_measurements(db_session):
         name="TestMol",
         molecular_formula="C10H10",
         structural_formula="/tmp/test",
-        group="single",
+        group="base",
     )
     db_session.add(mol)
     db_session.commit()
@@ -140,7 +140,7 @@ def test_trepr_polymorphism(db_session):
         name="TestMol",
         molecular_formula="C10H10",
         structural_formula="/tmp/test",
-        group="single",
+        group="base",
     )
     db_session.add(mol)
     db_session.commit()
@@ -173,7 +173,7 @@ def test_cascade_delete(db_session):
         name="TestMol",
         molecular_formula="C10H10",
         structural_formula="/tmp/test",
-        group="single",
+        group="base",
     )
     db_session.add(mol)
     db_session.commit()
