@@ -13,11 +13,11 @@ class Dummy(TimeStampedModel):
     name = Column(String)
 
 
-def test_table_exists(engine):
+def test_table_exists(engine, test_workspace):
     assert "dummy" in Model.metadata.tables
 
 
-def test_created_at_is_set(db_session):
+def test_created_at_is_set(db_session, test_workspace):
     obj = Dummy(name="test")
 
     db_session.add(obj)
@@ -27,7 +27,7 @@ def test_created_at_is_set(db_session):
     assert isinstance(obj.created_at, datetime)
 
 
-def test_updated_at_initial(db_session):
+def test_updated_at_initial(db_session, test_workspace):
     obj = Dummy(name="test")
 
     db_session.add(obj)
@@ -36,7 +36,7 @@ def test_updated_at_initial(db_session):
     assert obj.updated_at is None
 
 
-def test_updated_at_on_update(db_session):
+def test_updated_at_on_update(db_session, test_workspace):
     obj = Dummy(name="test")
 
     db_session.add(obj)
@@ -53,7 +53,7 @@ def test_updated_at_on_update(db_session):
     assert obj.updated_at >= first_created
 
 
-def test_no_update_does_not_change_timestamp(db_session):
+def test_no_update_does_not_change_timestamp(db_session, test_workspace):
     obj = Dummy(name="test")
     db_session.add(obj)
     db_session.commit()
@@ -65,7 +65,7 @@ def test_no_update_does_not_change_timestamp(db_session):
     assert obj.updated_at == created_updated
 
 
-def test_create_molecule(db_session):
+def test_create_molecule(db_session, test_workspace):
     mol = Molecule(
         name="TestMol",
         molecular_formula="C10H10",
@@ -79,7 +79,7 @@ def test_create_molecule(db_session):
     assert mol.id is not None
 
 
-def test_create_measurement(db_session):
+def test_create_measurement(db_session, test_workspace):
     mol = Molecule(
         name="TestMol",
         molecular_formula="C10H10",
@@ -107,7 +107,7 @@ def test_create_measurement(db_session):
     assert m.id is not None
 
 
-def test_molecule_has_measurements(db_session):
+def test_molecule_has_measurements(db_session, test_workspace):
     mol = Molecule(
         name="TestMol",
         molecular_formula="C10H10",
@@ -135,7 +135,7 @@ def test_molecule_has_measurements(db_session):
     assert len(mol.measurements) == 1
 
 
-def test_trepr_polymorphism(db_session):
+def test_trepr_polymorphism(db_session, test_workspace):
     mol = Molecule(
         name="TestMol",
         molecular_formula="C10H10",
@@ -168,7 +168,7 @@ def test_trepr_polymorphism(db_session):
     assert isinstance(loaded, TREPR)
 
 
-def test_cascade_delete(db_session):
+def test_cascade_delete(db_session, test_workspace):
     mol = Molecule(
         name="TestMol",
         molecular_formula="C10H10",
