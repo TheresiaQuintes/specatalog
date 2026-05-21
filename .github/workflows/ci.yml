@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+    branches: [main]
   pull_request:
 
 jobs:
@@ -25,6 +26,15 @@ jobs:
           ruff format --check .
 
       - name: Run tests
+        run:  pytest
+
+      # Type check erst bei vollständiger Testabdeckung rein -> es sind größere Umstrukturierungen nötig
+      # - name: Type check
+      #   run: |
+      #     pip install mypy
+      #     mypy src/
+
+      - name: Build package
         run: |
-          pip install pytest
-          pytest
+          pip install build
+          python -m build
