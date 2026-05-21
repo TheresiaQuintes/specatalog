@@ -62,3 +62,45 @@ def test_workspace(tmp_path, monkeypatch):
     # monkeypatch.setattr(Path, "home", lambda: tmp_path)
 
     yield workspace
+
+TEST_ROOT = None
+
+def pytest_configure():
+
+    global TEST_ROOT
+
+    # temporäres root erzeugen
+    TEST_ROOT = Path(tempfile.mkdtemp())
+
+    # fake HOME
+    fake_home = TEST_ROOT
+
+    # ~/.specatalog
+    specatalog_dir = fake_home / ".specatalog"
+    specatalog_dir.mkdir(parents=True)
+
+    # workspace
+    workspace = TEST_ROOT / "archive_specatalog"
+    workspace.mkdir()
+
+    # allowed_values.py bereitstellen
+    shutil.copy(
+        Path("specatalog/helpers/allowed_values_not_adapted.py"),
+        workspace / "allowed_values.py"
+    )
+
+    # fake defaults.json
+    defaults = {
+        "base_path": str(workspace),
+        "usr_name": "test",
+        "password": "test",
+        "database_url": "localhost/test"
+    }
+
+    with open(specatalog_dir / "defaults.json", "w") as f:
+        json.dump(defaults, f)
+
+    # HOME überschreiben
+    import pathlib
+
+    pathlib.Path.home = lambda: fake_home
