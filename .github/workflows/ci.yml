@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
 
 jobs:
@@ -18,7 +17,11 @@ jobs:
           cache: "pip"
 
       - name: Install package
-        run: pip install -e ".[dev]"
+        run: |
+          pip install -e ".[dev]"
+          pip install ruff
+          pip install pytest
+            
 
       - name: Run linting
         run: |
