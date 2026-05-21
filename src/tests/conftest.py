@@ -20,7 +20,7 @@ def engine():
 
 
 @pytest.fixture
-def db_session(engine, test_workspace):
+def db_session(engine):
     from specatalog.models.base import Model
     Model.metadata.create_all(engine)
 
@@ -64,6 +64,8 @@ def test_workspace(tmp_path, monkeypatch):
     yield workspace
 
 TEST_ROOT = None
+THIS_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = THIS_DIR.parent
 
 def pytest_configure():
 
@@ -84,8 +86,14 @@ def pytest_configure():
     workspace.mkdir()
 
     # allowed_values.py bereitstellen
+    source_file = (
+            PROJECT_ROOT
+            / "specatalog"
+            / "helpers"
+            / "allowed_values_not_adapted.py"
+    )
     shutil.copy(
-        Path("specatalog/helpers/allowed_values_not_adapted.py"),
+        Path(source_file),
         workspace / "allowed_values.py"
     )
 
