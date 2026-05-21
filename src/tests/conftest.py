@@ -1,7 +1,6 @@
 import pytest
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
-from specatalog.models.base import Model
 import shutil
 import json
 from pathlib import Path
@@ -21,7 +20,8 @@ def engine():
 
 
 @pytest.fixture
-def db_session(engine):
+def db_session(engine, test_workspace):
+    from specatalog.models.base import Model
     Model.metadata.create_all(engine)
 
     SessionLocal = sessionmaker(bind=engine)
