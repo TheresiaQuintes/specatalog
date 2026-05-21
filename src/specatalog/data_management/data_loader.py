@@ -136,7 +136,7 @@ def parse_field_params(parameters: dict) -> dict:
     """
     Attempts to convert string values in a dictionary to numbers (int or float).
     """
-    parsed_params = {}
+    parsed_params: dict[str, int | float | str] = {}
     for key, value in parameters.items():
         if isinstance(value, str):
             # Try converting to int
