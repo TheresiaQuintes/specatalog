@@ -39,6 +39,8 @@ class MeasurementModel(BaseModel):
         Whether the measurement has been baseline- or artefact-corrected.
     evaluated : bool
         Whether the measurement has been analysed or processed.
+    additional_info : str or None
+        Optional free-text field with supplementary information.
 
     Notes
     -----
@@ -58,6 +60,7 @@ class MeasurementModel(BaseModel):
     series: Optional[str] = None
     corrected: bool = False
     evaluated: bool = False
+    additional_info: Optional[str] = None
 
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
 
