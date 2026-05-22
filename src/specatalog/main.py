@@ -82,5 +82,8 @@ def load_allowed_values(path: Path):
     _ALLOWED_VALUES_MODULE = module
     return module
 
-
-ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")
+try:
+    ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")
+except FileNotFoundError:
+    print("Please run postinstall to get the allowed values.")
+    ALLOWED_VALUES = {}
