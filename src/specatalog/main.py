@@ -82,6 +82,7 @@ def load_allowed_values(path: Path):
     _ALLOWED_VALUES_MODULE = module
     return module
 
+
 try:
     ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")
 except FileNotFoundError:
