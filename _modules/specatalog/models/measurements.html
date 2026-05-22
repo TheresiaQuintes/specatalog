@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specatalog.models.measurements &mdash; specatalog 2025 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
@@ -15,8 +15,8 @@
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -99,12 +99,10 @@
            <div itemprop="articleBody">
              
   <h1>Source code for specatalog.models.measurements</h1><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IMPORT measurement.py&quot;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeStampedModel</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeStampedModel</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span>  <span class="n">Date</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Boolean</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Date</span><span class="p">,</span> <span class="n">Text</span><span class="p">,</span> <span class="n">Boolean</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">Relationship</span>
-
 
 
 <div class="viewcode-block" id="Measurement">
@@ -170,6 +168,9 @@
 <span class="sd">        ``True`` if the measurement has been corrected.</span>
 <span class="sd">    evaluated : bool</span>
 <span class="sd">        ``True`` if the measurement has been analysed.</span>
+<span class="sd">    additional_info : str or None</span>
+<span class="sd">        Optional free-text field containing supplementary information about</span>
+<span class="sd">        the measurement.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -200,13 +201,18 @@
 <span class="sd">    &gt;&gt;&gt; session.add(m)</span>
 <span class="sd">    &gt;&gt;&gt; session.commit()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;measurements&quot;</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># molecule</span>
-    <span class="n">molecular_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;molecules.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                              <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">molecular_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span>
+        <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;molecules.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">molecule</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="s2">&quot;Molecule&quot;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;measurements&quot;</span><span class="p">)</span>
 
     <span class="c1"># method</span>
@@ -214,7 +220,7 @@
     <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;polymorphic_on&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
         <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
+    <span class="p">}</span>
 
     <span class="c1"># metadata</span>
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -228,11 +234,10 @@
     <span class="n">path</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">corrected</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">evaluated</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
+    <span class="n">additional_info</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Text</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(M</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">molecule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span></div>
-
 
 
 
@@ -311,12 +316,16 @@
 <span class="sd">    &gt;&gt;&gt; type(m)</span>
 <span class="sd">    &lt;class &#39;models.TREPR&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;trepr&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;trepr&quot;</span><span class="p">,}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;trepr&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -325,7 +334,6 @@
     <span class="n">number_of_scans</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">)</span>
     <span class="n">repetitionrate</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">)</span>
     <span class="n">mode</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span></div>
-
 
 
 
@@ -392,16 +400,19 @@
 <span class="sd">    &gt;&gt;&gt; type(m)</span>
 <span class="sd">    &lt;class &#39;models.CWEPR&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;cwepr&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;cwepr&quot;</span><span class="p">,}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;cwepr&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">attenuation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
 
 
 
@@ -480,13 +491,15 @@
 <span class="sd">    &lt;class &#39;models.PulseEPR&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;pulse_epr&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;pulse_epr&quot;</span><span class="p">,}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;pulse_epr&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">pulse_experiment</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">32</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">frequency_band</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>
@@ -553,14 +566,15 @@
 <span class="sd">    &lt;class &#39;models.UVVis&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;uvvis&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;uvvis&quot;</span><span class="p">,}</span>
-
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;uvvis&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">dim_cuvette</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
@@ -632,13 +646,15 @@
 <span class="sd">    &lt;class &#39;models.Fluorescence&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;fluorescence&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;fluorescence&quot;</span><span class="p">,}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;fluorescence&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">excitation</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">excitation_wl</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -714,13 +730,15 @@
 <span class="sd">    &lt;class &#39;models.TransientAbsorption&#39;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;ta&quot;</span>
 
-    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span>
-                <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s2">&quot;measurements.id&quot;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
 
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;ta&quot;</span><span class="p">,}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;ta&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
 
     <span class="n">timedomain</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">excitation_energy</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

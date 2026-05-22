@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specatalog.data_management.measurement_management &mdash; specatalog 2025 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
@@ -15,8 +15,8 @@
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -162,11 +162,10 @@
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measurement folder </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> already exists!&quot;</span><span class="p">)</span>
 
-
     <span class="k">for</span> <span class="n">subdir</span> <span class="ow">in</span> <span class="n">CATEGORIES</span><span class="p">:</span>
         <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="n">subdir</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">measurement_path</span> <span class="o">=</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;measurement_M</span><span class="si">{</span><span class="n">ms_id</span><span class="si">}</span><span class="s2">.h5&quot;</span><span class="p">)</span>
+    <span class="n">measurement_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;measurement_M</span><span class="si">{</span><span class="n">ms_id</span><span class="si">}</span><span class="s2">.h5&quot;</span>
     <span class="k">if</span> <span class="n">measurement_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HDF5 file </span><span class="si">{</span><span class="n">measurement_path</span><span class="si">}</span><span class="s2"> already exists!&quot;</span><span class="p">)</span>
 
@@ -182,7 +181,7 @@
 
 <div class="viewcode-block" id="measurement_path">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.measurement_path.html#specatalog.data_management.measurement_management.measurement_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">measurement_path</span> <span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">measurement_path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create the absolute path to a measurement folder with the ID ms_id.</span>
 
@@ -205,7 +204,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ms_id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;M</span><span class="si">{</span><span class="n">ms_id</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span> <span class="o">/</span><span class="s2">&quot;data&quot;</span><span class="o">/</span> <span class="n">ms_id</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="n">ms_id</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measurement folder </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not exist!&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">path</span></div>
@@ -214,8 +213,9 @@
 
 <div class="viewcode-block" id="new_file_to_archive">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.new_file_to_archive.html#specatalog.data_management.measurement_management.new_file_to_archive">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">new_file_to_archive</span><span class="p">(</span><span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                        <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_file_to_archive</span><span class="p">(</span>
+    <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copy a file to the archive. The file is saved at:</span>
 <span class="sd">    &lt;base_dir&gt;/data/M&lt;ms_id&gt;/&lt;category&gt;/&lt;src_file_name&gt;.</span>
@@ -272,7 +272,9 @@
     <span class="c1"># check target_file</span>
     <span class="k">if</span> <span class="n">target_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">update</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;File at </span><span class="si">{</span><span class="n">target_file</span><span class="si">}</span><span class="s2"> already exists! Use new name or update-function instead&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;File at </span><span class="si">{</span><span class="n">target_file</span><span class="si">}</span><span class="s2"> already exists! Use new name or update-function instead&quot;</span>
+            <span class="p">)</span>
 
     <span class="c1"># Copy or update file</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">target_file</span><span class="p">)</span>
@@ -283,8 +285,9 @@
 
 <div class="viewcode-block" id="new_dataset_to_hdf5">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.new_dataset_to_hdf5.html#specatalog.data_management.measurement_management.new_dataset_to_hdf5">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">group_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                        <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">new_dataset_to_hdf5</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">group_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Write a new dataset to a hdf5-file.</span>
 
@@ -314,10 +317,10 @@
     <span class="k">return</span></div>
 
 
+
 <div class="viewcode-block" id="raw_data_to_folder">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.raw_data_to_folder.html#specatalog.data_management.measurement_management.raw_data_to_folder">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                           <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copy raw datafiles to the archive. Existing data with the same name get</span>
 <span class="sd">    overwritten. The data are saved at</span>
@@ -378,6 +381,26 @@
 
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_next_rawdata_index</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="n">group_name</span><span class="p">,</span> <span class="n">reference_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine next free index for a raw dataset series.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    0 -&gt; first dataset (no suffix)</span>
+<span class="sd">    int  -&gt; suffix number</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">reference_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">grp</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">i</span>
+
+
 <div class="viewcode-block" id="raw_data_to_hdf5">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">raw_data_to_hdf5</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -412,9 +435,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># set the path</span>
     <span class="n">path</span> <span class="o">=</span> <span class="n">measurement_path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">)</span>
-    <span class="n">raw_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="s2">&quot;raw&quot;</span>
+    <span class="n">raw_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span>
     <span class="n">hdf5_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;measurement_M</span><span class="si">{</span><span class="n">ms_id</span><span class="si">}</span><span class="s2">.h5&quot;</span>
-
 
     <span class="c1"># load and save data from Bruker bes3t format</span>
     <span class="k">if</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">:</span>
@@ -422,99 +444,117 @@
         <span class="n">dta</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.DTA&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dsc</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">dta</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Exactly one .DSC and one .DTA file have to be</span><span class="se">\</span>
-<span class="s2">                             available&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Exactly one .DSC and one .DTA file have to be</span><span class="se">\</span>
+<span class="s2">                             available&quot;</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">dsc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stem</span> <span class="o">!=</span> <span class="n">dta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The DSC and the DTA files need to have equal</span><span class="se">\</span>
-<span class="s2">                             basenames.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The DSC and the DTA files need to have equal</span><span class="se">\</span>
+<span class="s2">                             basenames.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># load data to arrays using the loader function</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">load_bruker_bes3t</span><span class="p">(</span><span class="n">dsc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span>
-                                              <span class="s2">&quot;DSC&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">load_bruker_bes3t</span><span class="p">(</span><span class="n">dsc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;DSC&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="c1"># write intensities to dataset</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_real&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_imag&quot;</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_get_next_rawdata_index</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_real&quot;</span><span class="p">)</span>
+
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_real_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_imag_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># write axes-data</span>
-        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># multiple axes</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>  <span class="c1"># multiple axes</span>
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)):</span>
-                <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;axis_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;axis_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># only one xaxis</span>
-            <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;xaxis&quot;</span><span class="p">)</span>
+            <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;xaxis_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># add metadata from DSC-file as attributes</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
+        <span class="c1"># add metadata from first DSC-file as attributes</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;cw_epr&quot;</span><span class="p">:</span>
         <span class="n">dsc</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.DSC&quot;</span><span class="p">]</span>
         <span class="n">dta</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.DTA&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dsc</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">dta</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Exactly one .DSC and one .DTA file have to be</span><span class="se">\</span>
-<span class="s2">                             available&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Exactly one .DSC and one .DTA file have to be</span><span class="se">\</span>
+<span class="s2">                             available&quot;</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">dsc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stem</span> <span class="o">!=</span> <span class="n">dta</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stem</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The DSC and the DTA files need to have equal</span><span class="se">\</span>
-<span class="s2">                             basenames.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The DSC and the DTA files need to have equal</span><span class="se">\</span>
+<span class="s2">                             basenames.&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># load data to arrays using the loader function</span>
 
         <span class="n">spc_real</span><span class="p">,</span> <span class="n">spc_imag</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">load_cw_epr</span><span class="p">(</span><span class="n">dsc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
 
         <span class="c1"># write intensities to dataset</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">spc_real</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_real&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">spc_imag</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_imag&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_get_next_rawdata_index</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;data_real&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">spc_real</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_real_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">spc_imag</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;data_imag_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;field_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
-        <span class="c1"># add metadata from DSC-file as attributes</span>
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-
+        <span class="c1"># add metadata from first DSC-file as attributes</span>
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;uvvis_ulm&quot;</span><span class="p">:</span>
         <span class="n">txt</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">txt</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No .txt file is available. Make sure your raw</span><span class="se">\</span>
-<span class="s2">                             data are stored at </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2"> in the right format.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No .txt file is available. Make sure your raw</span><span class="se">\</span>
+<span class="s2">                             data are stored at </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2"> in the right format.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">wavelength</span><span class="p">,</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">load_uvvis_ulm</span><span class="p">(</span><span class="n">txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
 
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_get_next_rawdata_index</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;intensity_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;wavelength_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">elif</span> <span class="n">fmt</span> <span class="o">==</span> <span class="s2">&quot;uvvis_freiburg&quot;</span><span class="p">:</span>
         <span class="n">txt</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">raw_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">txt</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No .txt file is available. Make sure your raw</span><span class="se">\</span>
-<span class="s2">                             data are stored at </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2"> in the right format.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;No .txt file is available. Make sure your raw</span><span class="se">\</span>
+<span class="s2">                             data are stored at </span><span class="si">{</span><span class="n">raw_path</span><span class="si">}</span><span class="s2"> in the right format.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">wavelength</span><span class="p">,</span> <span class="n">intensity</span><span class="p">,</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">load_uvvis_freiburg</span><span class="p">(</span><span class="n">txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">))</span>
 
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
-        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;wavelength&quot;</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">_get_next_rawdata_index</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;intensity_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">new_dataset_to_hdf5</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;raw_data&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;wavelength_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">idx</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">hdf5_path</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">grp</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">require_group</span><span class="p">(</span><span class="s2">&quot;raw_data&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">meta</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">grp</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data type: </span><span class="si">{</span><span class="n">fmt</span><span class="si">}</span><span class="s2"> unknown!&quot;</span><span class="p">)</span>
@@ -526,8 +566,9 @@
 
 <div class="viewcode-block" id="delete_element">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">delete_element</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                   <span class="n">save_delete</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_element</span><span class="p">(</span>
+    <span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">save_delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Delete a file from the archive.</span>
 
@@ -559,8 +600,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CATEGORIES</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; is not valid. Allowed values are: </span><span class="se">\</span>
-<span class="s2">                         </span><span class="si">{</span><span class="n">CATEGORIES</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; is not valid. Allowed values are: </span><span class="se">\</span>
+<span class="s2">                         </span><span class="si">{</span><span class="n">CATEGORIES</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="n">measurement_path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">)</span>
     <span class="n">file_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">category</span> <span class="o">/</span> <span class="n">filename</span>
@@ -581,9 +624,10 @@
     <span class="k">return</span></div>
 
 
+
 <div class="viewcode-block" id="delete_measurement">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.delete_measurement.html#specatalog.data_management.measurement_management.delete_measurement">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">delete_measurement</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">save_delete</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_measurement</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">save_delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Delete a whole measurement directory from the archive.</span>
 
@@ -625,7 +669,7 @@
 
 <div class="viewcode-block" id="list_files">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.measurement_management.list_files.html#specatalog.data_management.measurement_management.list_files">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="n">base_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    List all files in a single measurement directory with the ID ms_id and</span>
 <span class="sd">    all subdirectorys. If a category is chosen only files of this category</span>
@@ -655,8 +699,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">category</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">CATEGORIES</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; no valid category.</span><span class="se">\</span>
-<span class="s2">                             Allowed values are: </span><span class="si">{</span><span class="n">CATEGORIES</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">category</span><span class="si">}</span><span class="s2">&#39; no valid category.</span><span class="se">\</span>
+<span class="s2">                             Allowed values are: </span><span class="si">{</span><span class="n">CATEGORIES</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="n">measurement_path</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="n">ms_id</span><span class="p">)</span>
     <span class="n">folder</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">category</span>

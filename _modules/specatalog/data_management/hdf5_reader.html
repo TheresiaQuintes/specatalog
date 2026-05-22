@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>specatalog.data_management.hdf5_reader &mdash; specatalog 2025 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
 
   
@@ -15,8 +15,8 @@
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=e66a8189"></script>
-      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -105,6 +105,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
+
 <div class="viewcode-block" id="H5Object">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">H5Object</span><span class="p">:</span>
@@ -150,9 +151,10 @@
 <span class="sd">    &gt;&gt;&gt; dat.sync()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">h5node</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">writable</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">auto_flush</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">h5node</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">writable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">auto_flush</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_node</span> <span class="o">=</span> <span class="n">h5node</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_writable</span> <span class="o">=</span> <span class="n">writable</span>
 
@@ -207,7 +209,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_attrs_keys</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_datasets_keys</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_datasets_keys</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
-
 
 
 <div class="viewcode-block" id="H5Object.set_dataset">
@@ -347,10 +348,9 @@
 
 
 
-
 <div class="viewcode-block" id="load_h5">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.hdf5_reader.load_h5.html#specatalog.data_management.hdf5_reader.load_h5">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_h5</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">H5Object</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_h5</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">H5Object</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a hdf5-file as a H5Object.</span>
 
@@ -374,13 +374,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="n">H5Object</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">writable</span><span class="o">=</span><span class="p">(</span><span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;r&quot;</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">obj</span> <span class="p">,</span> <span class="n">f</span></div>
+    <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">f</span></div>
 
 
 
 <div class="viewcode-block" id="load_from_id">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_from_id</span><span class="p">(</span><span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">H5Object</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_from_id</span><span class="p">(</span><span class="n">ms_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">H5Object</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a hdf5-measurement-file from the archive as a H5Object.</span>
 
