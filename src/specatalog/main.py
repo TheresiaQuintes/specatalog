@@ -88,4 +88,5 @@ try:
 except FileNotFoundError:
     print("Please run postinstall to generate your own allowed_values.py.")
     import specatalog.helpers.allowed_values_not_adapted as module
+
     ALLOWED_VALUES = module
