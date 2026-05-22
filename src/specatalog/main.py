@@ -85,5 +85,5 @@ def load_allowed_values(path: Path):
 try:
     ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")
 except FileNotFoundError:
-    print("Please run postinstall to get the allowed values.")
-    ALLOWED_VALUES = {}
+    print("Please run postinstall to generate your own allowed_values.py.")
+    import specatalog.helpers.allowed_values_not_adapted as ALLOWED_VALUES
