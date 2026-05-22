@@ -65,6 +65,9 @@ class Measurement(TimeStampedModel):
         ``True`` if the measurement has been corrected.
     evaluated : bool
         ``True`` if the measurement has been analysed.
+    additional_info : str or None
+        Optional free-text field containing supplementary information about
+        the measurement.
 
     Notes
     -----
@@ -128,6 +131,7 @@ class Measurement(TimeStampedModel):
     path = Column(Text, nullable=False, unique=True)
     corrected = Column(Boolean, nullable=False)
     evaluated = Column(Boolean, nullable=False)
+    additional_info = Column(Text)
 
     def __repr__(self):
         return f"(M{self.id}: {self.__class__.__name__}; {self.molecule.name})"
