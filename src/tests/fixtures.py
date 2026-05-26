@@ -1,0 +1,59 @@
+import specatalog.models.molecules as mol
+
+# Example setup for all Molecule classes for iteration in tests
+MOLECULE_CASES = [
+    (
+        mol.Molecule,
+        dict(
+            name="Mol",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/mol",
+            group="base",
+        ),
+    ),
+    (
+        mol.SingleMolecule,
+        dict(
+            name="SingleMolecule",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/single",
+            group="single",
+        ),
+    ),
+    (
+        mol.RP,
+        dict(
+            name="RP1",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/rp",
+            group="rp",
+            radical_1="A",
+            linker="B",
+            radical_2="C",
+        ),
+    ),
+    (
+        mol.TDP,
+        dict(
+            name="TDP1",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/tdp",
+            group="tdp",
+            doublet="A",
+            linker="B",
+            chromophore="C",
+        ),
+    ),
+    (
+        mol.TTP,
+        dict(
+            name="TTP1",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/ttp",
+            group="ttp",
+            triplet_1="A",
+            linker="B",
+            triplet_2="C",
+        ),
+    ),
+]

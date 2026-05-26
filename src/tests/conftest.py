@@ -5,6 +5,8 @@ import shutil
 import json
 from pathlib import Path
 import tempfile
+from datetime import date
+
 
 
 TEST_ROOT = None
@@ -74,3 +76,44 @@ def db_session(engine):
 
     session.close()
     Model.metadata.drop_all(engine)
+
+@pytest.fixture
+def entry_factory(db_session):
+
+    def create(cls, **kwargs):
+        obj = cls(**kwargs)
+        db_session.add(obj)
+        db_session.commit()
+        return obj
+
+    return create
+
+@pytest.fixture
+def molecule_instance(entry_factory):
+    from specatalog.models.molecules import Molecule
+    data = dict(name="TestMol",
+                molecular_formula="C10H10",
+                structural_formula="/tmp/test",
+                group="base")
+
+    mol = entry_factory(Molecule, **data)
+    return mol
+
+@pytest.fixture
+def measurement_instance(entry_factory, molecule_instance):
+    from specatalog.models.measurements import Measurement
+    data = dict(molecule=molecule_instance,
+                method="base",
+                temperature=300,
+                solvent="Water",
+                date=date(2025, 5, 6),
+                measured_by="Alice",
+                path="/tmp/m1",
+                corrected=False,
+                evaluated=False)
+    ms = entry_factory(Measurement, **data)
+    return ms
+
+    mol = entry_factory(Molecule, **data)
+    return mol
+
