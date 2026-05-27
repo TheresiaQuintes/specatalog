@@ -114,6 +114,3 @@ def measurement_instance(entry_factory, molecule_instance):
     ms = entry_factory(Measurement, **data)
     return ms
 
-    mol = entry_factory(Molecule, **data)
-    return mol
-

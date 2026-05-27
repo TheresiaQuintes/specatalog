@@ -58,7 +58,7 @@ def test_no_update_does_not_change_timestamp(db_session):
 
     created_updated = obj.updated_at
 
-    db_session.commit()  # kein change
+    db_session.commit()  # no change
 
     assert obj.updated_at == created_updated
 

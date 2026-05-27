@@ -113,11 +113,15 @@ class Measurement(TimeStampedModel):
     molecule = Relationship("Molecule", back_populates="measurements")
 
     # method
-    method = Column(String(64), nullable=False)
+    _method = Column(String(64), nullable=False)
     __mapper_args__ = {
-        "polymorphic_on": method,
+        "polymorphic_on": _method,
         "polymorphic_identity": "base",
     }
+
+    @property
+    def method(self):
+        return self._method
 
     # metadata
     temperature = Column(Float, nullable=False)

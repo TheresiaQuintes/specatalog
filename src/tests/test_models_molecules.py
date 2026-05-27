@@ -102,7 +102,6 @@ def test_multiple_measurements(molecule_instance, entry_factory):
     mol = molecule_instance
 
     data1 = dict(molecule=mol,
-                method="base",
                 temperature=300,
                 solvent="Water",
                 date=date(2025, 5, 6),
@@ -111,7 +110,6 @@ def test_multiple_measurements(molecule_instance, entry_factory):
                 corrected=False,
                 evaluated=False)
     data2 = dict(molecule=mol,
-                method="base",
                 temperature=300,
                 solvent="Water",
                 date=date(2025, 5, 6),
