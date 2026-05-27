@@ -216,11 +216,15 @@
     <span class="n">molecule</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="s2">&quot;Molecule&quot;</span><span class="p">,</span> <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;measurements&quot;</span><span class="p">)</span>
 
     <span class="c1"># method</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">_method</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;polymorphic_on&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+        <span class="s2">&quot;polymorphic_on&quot;</span><span class="p">:</span> <span class="n">_method</span><span class="p">,</span>
         <span class="s2">&quot;polymorphic_identity&quot;</span><span class="p">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span>
     <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span>
 
     <span class="c1"># metadata</span>
     <span class="n">temperature</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
