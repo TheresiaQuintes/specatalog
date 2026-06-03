@@ -1,5 +1,7 @@
 import specatalog.models.molecules as mol
 import specatalog.models.measurements as ms
+import specatalog.models.creation_pydantic_molecules as pymol
+from specatalog.main import ALLOWED_VALUES as av
 from datetime import date
 
 # Example setup for all Molecule classes for iteration in tests
@@ -159,3 +161,40 @@ MEASUREMENT_CASES = [
         ),
     ),
 ]
+
+
+MODEL_SPECS = {
+    "RP": {
+        "model": mol.RP,
+        "class": pymol.RPModel,
+        "factory": lambda suffix=None: dict(
+            radical_1=av.Radicals.trp,
+            linker=av.Linker.co,
+            radical_2=av.Radicals.trp,
+            name_suffix=suffix,
+        ),
+        "expected_base_name": "trp-co-trp",
+    },
+    "TDP": {
+        "model": mol.TDP,
+        "class": pymol.TDPModel,
+        "factory": lambda suffix=None: dict(
+            doublet=av.Doublets.no1,
+            linker=av.Linker.co,
+            chromophore=av.Chromophores.per,
+            name_suffix=suffix,
+        ),
+        "expected_base_name": "per-co-no1",
+    },
+    "TTP": {
+        "model": mol.TTP,
+        "class": pymol.TTPModel,
+        "factory": lambda suffix=None: dict(
+            triplet_1=av.Chromophores.per,
+            linker=av.Linker.co,
+            triplet_2=av.Chromophores.per,
+            name_suffix=suffix,
+        ),
+        "expected_base_name": "per-co-per",
+    },
+}
