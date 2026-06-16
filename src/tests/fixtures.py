@@ -102,7 +102,7 @@ MEASUREMENT_CASES = [
             corrected=True,
             evaluated=True,
             frequency_band="x",
-            attenuation="20dB"
+            attenuation="20dB",
         ),
     ),
     (
@@ -142,7 +142,7 @@ MEASUREMENT_CASES = [
             corrected=True,
             evaluated=True,
             excitation=False,
-            excitation_wl="345nm"
+            excitation_wl="345nm",
         ),
     ),
     (
@@ -164,6 +164,12 @@ MEASUREMENT_CASES = [
 
 
 MODEL_SPECS = {
+    "SingleMolecule": {
+        "model": mol.SingleMolecule,
+        "class": pymol.SingleMoleculeModel,
+        "factory": lambda suffix=None: dict(name="molecule"),
+        "expected_base_name": "molecule",
+    },
     "RP": {
         "model": mol.RP,
         "class": pymol.RPModel,

@@ -5,14 +5,19 @@ import specatalog.models.measurements as mmes
 from datetime import date
 from utils import parametrize_measurements
 
+
 @parametrize_measurements()
-def test_create_measurement(db_session, entry_factory, molecule_instance, model_class, kwargs):
+def test_create_measurement(
+    db_session, entry_factory, molecule_instance, model_class, kwargs
+):
     ms = entry_factory(model_class, molecule=molecule_instance, **kwargs)
     assert ms.id is not None
 
 
 @parametrize_measurements()
-def test_polymorphism(db_session, entry_factory, molecule_instance, model_class, kwargs):
+def test_polymorphism(
+    db_session, entry_factory, molecule_instance, model_class, kwargs
+):
     ms = entry_factory(model_class, molecule=molecule_instance, **kwargs)
     loaded = db_session.query(mmes.Measurement).filter_by(id=ms.id).one()
     assert isinstance(loaded, model_class)
@@ -24,6 +29,7 @@ def test_table_entry(db_session, entry_factory, molecule_instance, model_class, 
     entry_factory(model_class, molecule=molecule_instance, **kwargs)
     loaded = db_session.query(model_class).one()
     assert loaded.temperature == 298
+
 
 def test_cascade_delete(db_session, molecule_instance):
     mol = molecule_instance
@@ -46,6 +52,7 @@ def test_cascade_delete(db_session, molecule_instance):
 
     assert db_session.query(mmes.Measurement).count() == 0
 
+
 def test_bidirectional_relationship(db_session, molecule_instance):
     mol = molecule_instance
     ms = mmes.Measurement(
@@ -67,10 +74,13 @@ def test_bidirectional_relationship(db_session, molecule_instance):
 
 
 @parametrize_measurements()
-def test_set_polymorphic_identity(db_session, entry_factory, molecule_instance, model_class, kwargs):
+def test_set_polymorphic_identity(
+    db_session, entry_factory, molecule_instance, model_class, kwargs
+):
     with pytest.raises(AttributeError):
-        entry_factory(model_class, molecule=molecule_instance, method="self_set", **kwargs)
-
+        entry_factory(
+            model_class, molecule=molecule_instance, method="self_set", **kwargs
+        )
 
 
 def test_measurement_path_unique(db_session, molecule_instance):
@@ -82,9 +92,9 @@ def test_measurement_path_unique(db_session, molecule_instance):
         measured_by="Alice",
         path="/tmp/m1",
         corrected=False,
-        evaluated=False
+        evaluated=False,
     )
-    ms2 =  mmes.Measurement(
+    ms2 = mmes.Measurement(
         molecule=molecule_instance,
         temperature=300,
         solvent="Water",
@@ -92,7 +102,7 @@ def test_measurement_path_unique(db_session, molecule_instance):
         measured_by="Alice",
         path="/tmp/m1",
         corrected=False,
-        evaluated=False
+        evaluated=False,
     )
 
     db_session.add_all([ms1, ms2])
@@ -101,23 +111,23 @@ def test_measurement_path_unique(db_session, molecule_instance):
         db_session.commit()
 
 
-
 def generate_params():
-    rows = [
-        [None if col == row else "bla" for col in range(18)]
-        for row in range(13)
-    ]
+    rows = [[None if col == row else "bla" for col in range(18)] for row in range(13)]
 
-    rows.extend([
-        [None if col == 13 else True for col in range(18)],
-        [None if col == 14 else True for col in range(18)],
-        [None if col == 15 else True for col in range(18)],
-    ])
+    rows.extend(
+        [
+            [None if col == 13 else True for col in range(18)],
+            [None if col == 14 else True for col in range(18)],
+            [None if col == 15 else True for col in range(18)],
+        ]
+    )
 
-    rows.extend([
-        [None if col == 16 else 1.2 for col in range(18)],
-        [None if col == 17 else 1.2 for col in range(18)],
-    ])
+    rows.extend(
+        [
+            [None if col == 16 else 1.2 for col in range(18)],
+            [None if col == 17 else 1.2 for col in range(18)],
+        ]
+    )
 
     return list(zip(*rows))
 
@@ -148,11 +158,25 @@ def make_base(molecule, **overrides):
 def test_required_values(
     db_session,
     molecule_instance,
-    str_a, str_b, str_c, str_d, str_e, str_f, str_g,
-    str_h, str_i, str_j, str_k, str_l, str_m,
-    bool_a, bool_b, bool_c, num_a, num_b
+    str_a,
+    str_b,
+    str_c,
+    str_d,
+    str_e,
+    str_f,
+    str_g,
+    str_h,
+    str_i,
+    str_j,
+    str_k,
+    str_l,
+    str_m,
+    bool_a,
+    bool_b,
+    bool_c,
+    num_a,
+    num_b,
 ):
-
     ms = mmes.Measurement(
         **make_base(
             molecule_instance,
@@ -217,4 +241,3 @@ def test_required_values(
 
     with pytest.raises(IntegrityError):
         db_session.commit()
-
