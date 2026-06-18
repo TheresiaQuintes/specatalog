@@ -1,6 +1,8 @@
 import specatalog.models.molecules as mol
 import specatalog.models.measurements as ms
 import specatalog.models.creation_pydantic_molecules as pymol
+import specatalog.models.creation_pydantic_measurements as pyms
+from specatalog.helpers.allowed_values_not_adapted import Names
 from specatalog.main import ALLOWED_VALUES as av
 from datetime import date
 
@@ -164,6 +166,11 @@ MEASUREMENT_CASES = [
 
 
 MODEL_SPECS = {
+    "MoleculeModel": {
+        "model": mol.Molecule,
+        "class": pymol.MoleculeModel,
+        "factory": lambda suffix=None: dict()
+    },
     "SingleMolecule": {
         "model": mol.SingleMolecule,
         "class": pymol.SingleMoleculeModel,
@@ -202,5 +209,22 @@ MODEL_SPECS = {
             name_suffix=suffix,
         ),
         "expected_base_name": "per-co-per",
+    },
+}
+
+
+MEASUREMENT_SPECS = {
+    "Measurement": {
+        "model": ms.Measurement,
+        "class": pyms.MeasurementModel,
+        "factory": lambda: dict(
+            molecular_id = 5,
+            temperature=298,
+            solvent=av.Solvents.toluene,
+            date=date(2026, 5, 5),
+            measured_by=av.Names.richert,
+            corrected=True,
+            evaluated=True,
+        ),
     },
 }

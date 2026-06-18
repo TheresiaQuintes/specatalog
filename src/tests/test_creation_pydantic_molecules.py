@@ -4,17 +4,19 @@ from fixtures import MODEL_SPECS
 
 
 def test_model_class(model_spec, model_instance):
-    assert model_instance.model_class is model_spec["model"]
+    if model_spec["model"] is not mol.Molecule:
+        assert model_instance.model_class is model_spec["model"]
 
 
 def test_base_name(model_spec, model_instance):
-    expected = model_spec["expected_base_name"]
-    assert model_instance.name == expected
+    if model_spec["model"] is not mol.Molecule:
+        expected = model_spec["expected_base_name"]
+        assert model_instance.name == expected
 
 
 @pytest.mark.parametrize("suffix", ["A", "test"])
 def test_name_with_suffix(model_spec, suffix):
-    if model_spec["model"] is not mol.SingleMolecule:
+    if model_spec["model"] not in (mol.SingleMolecule, mol.Molecule):
         instance = model_spec["class"](**model_spec["factory"](suffix=suffix))
         expected = model_spec["expected_base_name"] + f"-{suffix}"
         assert instance.name == expected
