@@ -58,8 +58,8 @@ class MeasurementModel(BaseModel):
     location: Optional[str] = None
     device: Optional[av.Devices] = None
     series: Optional[str] = None
-    corrected: bool = False
-    evaluated: bool = False
+    corrected: bool
+    evaluated: bool
     additional_info: Optional[str] = None
 
     model_config = ConfigDict(extra="forbid", validate_assignment=True)

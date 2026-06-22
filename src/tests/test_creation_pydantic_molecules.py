@@ -1,6 +1,6 @@
 import pytest
 import specatalog.models.molecules as mol
-from fixtures import MODEL_SPECS
+from fixtures import MOLECULE_SPECS
 
 
 def test_model_class(model_spec, model_instance):
@@ -38,7 +38,7 @@ def test_name_with_suffix(model_spec, suffix):
     ],
 )
 def test_missing_required_fields(model_key, missing_field):
-    spec = MODEL_SPECS[model_key]
+    spec = MOLECULE_SPECS[model_key]
     data = spec["factory"]()
 
     data.pop(missing_field)
@@ -47,9 +47,9 @@ def test_missing_required_fields(model_key, missing_field):
         spec["class"](**data)
 
 
-@pytest.mark.parametrize("model_key", MODEL_SPECS.keys())
+@pytest.mark.parametrize("model_key", MOLECULE_SPECS.keys())
 def test_extra_fields_forbidden(model_key):
-    spec = MODEL_SPECS[model_key]
+    spec = MOLECULE_SPECS[model_key]
     data = spec["factory"]()
     data["not_allowed_field"] = "x"
 
@@ -72,7 +72,7 @@ def test_extra_fields_forbidden(model_key):
     ],
 )
 def test_forbidden_enum_values(model_key, enum_field):
-    spec = MODEL_SPECS[model_key]
+    spec = MOLECULE_SPECS[model_key]
     data = spec["factory"]()
 
     data[enum_field] = "not allowed"

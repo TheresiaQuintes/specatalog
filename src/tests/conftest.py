@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 from datetime import date
-from fixtures import MODEL_SPECS
+from fixtures import MOLECULE_SPECS, MEASUREMENT_SPECS
 
 
 TEST_ROOT = None
@@ -123,11 +123,21 @@ def measurement_instance(entry_factory, molecule_instance):
     return ms
 
 
-@pytest.fixture(params=list(MODEL_SPECS.keys()))
+@pytest.fixture(params=list(MOLECULE_SPECS.keys()))
 def model_spec(request):
-    return MODEL_SPECS[request.param]
+    return MOLECULE_SPECS[request.param]
 
 
 @pytest.fixture
 def model_instance(model_spec):
     return model_spec["class"](**model_spec["factory"]())
+
+
+@pytest.fixture(params=list(MEASUREMENT_SPECS.keys()))
+def measurement_spec(request):
+    return MEASUREMENT_SPECS[request.param]
+
+
+@pytest.fixture
+def measurement_instance_pyd(measurement_spec):
+    return measurement_spec["class"](**measurement_spec["factory"]())

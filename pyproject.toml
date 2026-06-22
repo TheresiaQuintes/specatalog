@@ -17,7 +17,8 @@ dependencies = [
   "psycopg2-binary",
   "pandas~=2.3",
   "PyQt6~=6.10",
-  "pyqtdarktheme~=2.1"
+  "pyqtdarktheme~=2.1",
+  "pytest>=9.1.0",
 ]
 
 [build-system]
