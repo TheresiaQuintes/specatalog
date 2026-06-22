@@ -29,7 +29,8 @@ def test_measurement_class(measurement_spec, measurement_instance_pyd):
         ("Fluorescence", "excitation"),
         ("Fluorescence", "excitation_wl"),
         ("TA", "timedomain"),
-        ("TA", "excitation_wl")
+        ("TA", "excitation_wl"),
+        ("TA", "excitation_energy")
     ]
 )
 def test_missing_required_fields(measurement_key, missing_field):

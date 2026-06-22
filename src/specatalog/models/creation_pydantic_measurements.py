@@ -288,6 +288,6 @@ class TAModel(MeasurementModel):
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TA
 
     timedomain: av.Timedomains
-    excitation_energy: Optional[str] = None
+    excitation_energy: str
     excitation_wl: str
     od: Optional[str] = None

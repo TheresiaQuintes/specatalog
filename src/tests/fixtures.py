@@ -314,6 +314,7 @@ MEASUREMENT_SPECS = {
             evaluated=True,
             timedomain=av.Timedomains.ns,
             excitation_wl="345nm",
+            excitation_energy="10"
         ),
     },
 }
