@@ -153,7 +153,6 @@ def db_with_content(entry_factory, db_session):
             name="TestMol",
             molecular_formula="C10H10",
             structural_formula="/tmp/test1",
-            group="base",
         )
         return entry_factory(model, **{**base, **inputs})
 
@@ -177,6 +176,8 @@ def db_with_content(entry_factory, db_session):
                               structural_formula="/tmp/test2",
                               name="TestMol2")
     make_molecule(mol.Molecule,structural_formula="/tmp/Test3", name="TestMol3")
+
+    make_molecule(mol.TDP, structural_formula="/tmp/Test4", doublet="no1", linker="co", chromophore="per", name="per-co-no1")
 
     # create measurements
     make_measurement(ms.Measurement)

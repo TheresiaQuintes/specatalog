@@ -1,7 +1,3 @@
-import pytest
-
-import specatalog.models.molecules as mol
-import specatalog.models.measurements as ms
 import specatalog.crud_db.read as r
 
 
@@ -25,7 +21,7 @@ def test_equals(db_with_content):
 def test_not_equals(db_with_content):
     filter = r.MoleculeFilter(id__ne="1")
     results = r._run_query(filter, None, db_with_content)
-    assert len(results) == 2
+    assert len(results) == 3
     assert all(x.id != 1 for x in results)
 
 def test_gt(db_with_content):
