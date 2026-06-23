@@ -7,6 +7,8 @@ from pathlib import Path
 import tempfile
 from datetime import date
 from fixtures import MOLECULE_SPECS, MEASUREMENT_SPECS
+import specatalog.models.molecules as mol
+import specatalog.models.measurements as ms
 
 
 TEST_ROOT = None
@@ -141,3 +143,46 @@ def measurement_spec(request):
 @pytest.fixture
 def measurement_instance_pyd(measurement_spec):
     return measurement_spec["class"](**measurement_spec["factory"]())
+
+
+
+@pytest.fixture
+def db_with_content(entry_factory, db_session):
+    def make_molecule(model, **inputs):
+        base = dict(
+            name="TestMol",
+            molecular_formula="C10H10",
+            structural_formula="/tmp/test1",
+            group="base",
+        )
+        return entry_factory(model, **{**base, **inputs})
+
+    def make_measurement(model, **inputs):
+        base =  dict(
+        molecule=molecule1,
+        temperature=300,
+        solvent="water",
+        date=date(2025, 5, 6),
+        measured_by="Alice",
+        path="m6",
+        corrected=False,
+        evaluated=False,
+    )
+        return entry_factory(model, **{**base, **inputs})
+
+    # create molecules
+    molecule1 = make_molecule(mol.Molecule)
+
+    molecule2 = make_molecule(mol.Molecule,
+                              structural_formula="/tmp/test2",
+                              name="TestMol2")
+    make_molecule(mol.Molecule,structural_formula="/tmp/Test3", name="TestMol3")
+
+    # create measurements
+    make_measurement(ms.Measurement)
+    make_measurement(ms.Measurement, path="m4", temperature=50, solvent="toluene")
+    make_measurement(ms.Measurement, path="m2", temperature=200)
+    make_measurement(ms.Measurement, path="m3", temperature=100)
+    make_measurement(ms.Measurement, path="m1", temperature=50, molecule=molecule2)
+    make_measurement(ms.CWEPR, path="m5", frequency_band="x", attenuation="20dB")
+    return db_session
