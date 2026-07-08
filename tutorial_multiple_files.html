@@ -1,0 +1,405 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow: Multiple Raw Data Measurements &mdash; specatalog 2025 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_multiple_files.html" />
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="main" href="main.html" />
+    <link rel="prev" title="Allowed values" href="tutorial_allowed_values.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            specatalog
+              <img src="_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
+<li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Workflow: Multiple Raw Data Measurements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#workflow-switches">Workflow switches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-the-database-measurement">Creating the database measurement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-additional-raw-measurements">Adding additional raw measurements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-processed-datasets">Adding processed datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-processing-parameters">Adding processing parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-supplementary-analysis-files">Adding supplementary analysis files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-workflow">Complete workflow</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Workflow: Multiple Raw Data Measurements</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_multiple_files.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-left" title="Allowed values" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="workflow-multiple-raw-data-measurements">
+<h1>Workflow: Multiple Raw Data Measurements<a class="headerlink" href="#workflow-multiple-raw-data-measurements" title="Link to this heading"></a></h1>
+<p>This tutorial demonstrates how to create a measurement entry, import multiple raw
+data files belonging to the same experiment, and attach processed datasets to the
+corresponding HDF5 file. The workflow is shown for multiple bruker_bes3t format
+files. The script is only exemplary and can be adapted for other formats or name
+conventions.</p>
+<p>The workflow is controlled by several switches, allowing the same script to be
+used for creating new measurements as well as extending existing entries.</p>
+<section id="workflow-switches">
+<h2>Workflow switches<a class="headerlink" href="#workflow-switches" title="Link to this heading"></a></h2>
+<p>At the beginning of the script, the following options define which parts of the
+workflow are executed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">multidata</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">corrected_data</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">log</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">origin</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">manual_id</span> <span class="o">=</span> <span class="mi">45</span>
+</pre></div>
+</div>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">create</span></code></p>
+<blockquote>
+<div><p>Controls whether a new measurement entry is created.</p>
+<ul class="simple">
+<li><p><cite>True</cite>: Creates a new database entry, imports the first raw data file, and
+creates the HDF5 file.</p></li>
+<li><p><cite>False</cite>: No new entry is created. The existing measurement defined by
+<cite>manual_id</cite> is used instead.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multidata</span></code></p>
+<blockquote>
+<div><p>Controls importing additional raw data files belonging to the same measurement.</p>
+<ul class="simple">
+<li><p><cite>True</cite>: All additional raw datasets found in <cite>raw_data_path</cite> are added to
+the same measurement entry.</p></li>
+<li><p><cite>False</cite>: Only the initial raw data file is stored.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">corrected_data</span></code></p>
+<blockquote>
+<div><p>Controls importing processed datasets.</p>
+<ul class="simple">
+<li><p><cite>True</cite>: Processed files (<cite>.dat</cite> files) are loaded and stored
+in the <cite>corrected_data</cite> section of the HDF5 file.</p></li>
+<li><p><cite>False</cite>: No processed data are imported.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">log</span></code></p>
+<blockquote>
+<div><p>Controls importing processing parameters from a log file.</p>
+<ul class="simple">
+<li><p><cite>True</cite>: Values stored as <cite>parameter = value</cite> in a <cite>.log</cite> file are added
+as HDF5 attributes.</p></li>
+<li><p><cite>False</cite>: Log files are ignored.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">origin</span></code></p>
+<blockquote>
+<div><p>Controls importing Origin-exported datasets.</p>
+<ul class="simple">
+<li><p><cite>True</cite>: Columns from an Origin text export are stored as individual datasets
+in the HDF5 file.</p></li>
+<li><p><cite>False</cite>: Origin files are ignored.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">manual_id</span></code></p>
+<blockquote>
+<div><p>Defines the measurement ID used when <cite>create=False</cite>.</p>
+<p>In this case, the workflow modifies measurement entry with the given ID instead of
+creating a new measurement.</p>
+</div></blockquote>
+</li>
+</ol>
+</section>
+<section id="creating-the-database-measurement">
+<h2>Creating the database measurement<a class="headerlink" href="#creating-the-database-measurement" title="Link to this heading"></a></h2>
+<p>The first step is to define the measurement metadata using the corresponding
+Pydantic model. In this example, a trEPR measurement is created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">date</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">creation_pydantic_measurements</span> <span class="k">as</span> <span class="n">ms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.helpers.full_entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_full_measurement</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">specatalog.data_management.measurement_management</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.data_management.hdf5_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_id</span>
+
+<span class="n">measurement_model</span> <span class="o">=</span> <span class="n">ms</span><span class="o">.</span><span class="n">TREPRModel</span><span class="p">(</span>
+    <span class="n">molecular_id</span><span class="o">=</span><span class="mi">31</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+    <span class="n">solvent</span><span class="o">=</span><span class="s2">&quot;toluene&quot;</span><span class="p">,</span>
+    <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2026</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">measured_by</span><span class="o">=</span><span class="s2">&quot;redman&quot;</span><span class="p">,</span>
+    <span class="n">location</span><span class="o">=</span><span class="s2">&quot;freiburg&quot;</span><span class="p">,</span>
+    <span class="n">series</span><span class="o">=</span><span class="s2">&quot;nmis&quot;</span><span class="p">,</span>
+    <span class="n">corrected</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">frequency_band</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+    <span class="n">excitation_wl</span><span class="o">=</span><span class="mi">355</span><span class="p">,</span>
+    <span class="n">excitation_energy</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="n">attenuation</span><span class="o">=</span><span class="s2">&quot;20dB&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">create=True</span></code>, the measurement entry and the first raw dataset are created
+using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data_file</span> <span class="o">=</span> <span class="s2">&quot;/path/to/first/dsc/file/filename&quot;</span>  <span class="c1"># without suffix</span>
+
+<span class="n">raw_data_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/first/dsc/file&quot;</span> <span class="c1"># folder with all measurements</span>
+
+<span class="n">new_measurement_created</span> <span class="o">=</span> <span class="n">create_full_measurement</span><span class="p">(</span>
+    <span class="n">measurement_model</span><span class="p">,</span>
+    <span class="n">BASE_PATH</span><span class="p">,</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">raw_data_file</span><span class="p">),</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This function creates the database entry, creates the corresponding measurement
+directory and HDF5 file, and imports the first raw measurement.</p>
+<p>The measurement ID is stored for all following operations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">create</span><span class="p">:</span>
+    <span class="n">ms_id</span> <span class="o">=</span> <span class="n">new_measurement_created</span><span class="o">.</span><span class="n">measurement_id</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ms_id</span> <span class="o">=</span> <span class="n">manual_id</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-additional-raw-measurements">
+<h2>Adding additional raw measurements<a class="headerlink" href="#adding-additional-raw-measurements" title="Link to this heading"></a></h2>
+<p>A single experiment can consist of several raw data files. These files can be
+added to the same measurement entry.</p>
+<p>First, all additional Bruker BES3T files are collected and the raw file used
+during measurement creation is excluded. If multidata=True, all remaining raw
+datasets are copied to the measurement directory and added to the HDF5 file::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">list_raw_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.DSC&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">list_raw_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">list_raw_data</span>
+    <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="n">raw_data_file</span>
+<span class="p">]</span>
+
+<span class="k">if</span> <span class="n">multidata</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">list_raw_data</span><span class="p">:</span>
+        <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span>
+            <span class="n">entry</span><span class="p">,</span>
+            <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
+            <span class="n">BASE_PATH</span><span class="p">,</span>
+            <span class="n">ms_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span>
+            <span class="n">BASE_PATH</span><span class="p">,</span>
+            <span class="n">ms_id</span><span class="p">,</span>
+            <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>Each raw measurement remains separately accessible but is associated with the
+same database measurement entry.</p>
+</section>
+<section id="adding-processed-datasets">
+<h2>Adding processed datasets<a class="headerlink" href="#adding-processed-datasets" title="Link to this heading"></a></h2>
+<p>Processed data can be stored in the same HDF5 file as the raw data.</p>
+<p>The existing measurement file is opened and all processed data files are loaded
+and added as datasets. This part of the code has to be adapted to your personal
+needs (e.g. file format / file structure/ file name). Make sure that loading
+of the right data works properly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat_files</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.dat&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="k">if</span> <span class="n">corrected_data</span><span class="p">:</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">load_from_id</span><span class="p">(</span><span class="n">ms_id</span><span class="p">)</span>
+
+    <span class="n">All</span> <span class="n">processed</span> <span class="n">data</span> <span class="n">files</span> <span class="n">are</span> <span class="n">loaded</span> <span class="ow">and</span> <span class="n">added</span> <span class="k">as</span> <span class="n">datasets</span><span class="p">:</span>
+
+    <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">dat_files</span><span class="p">:</span>
+        <span class="n">set_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span>
+            <span class="n">set_name</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<span class="n">d</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
+<span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The dataset name is generated from the filename, allowing multiple processed
+datasets to be stored within the same measurement.</p>
+</section>
+<section id="adding-processing-parameters">
+<h2>Adding processing parameters<a class="headerlink" href="#adding-processing-parameters" title="Link to this heading"></a></h2>
+<p>If a processing log file is available, its parameters can also be stored.</p>
+<p>The script reads all entries in the form parameter=value and stores them as
+HDF5 attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">load_from_id</span><span class="p">(</span><span class="n">ms_id</span><span class="p">)</span>
+    <span class="n">log_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.log&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">log_files</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;There are </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">log_files</span><span class="p">)</span><span class="si">}</span><span class="s2"> .log-files in your folder. Exactly one is expected.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">log_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">log_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
+
+                <span class="n">d</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span>
+                    <span class="n">key</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                    <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="p">)</span>
+</pre></div>
+</div>
+<p>This keeps processing information together with the corresponding datasets.</p>
+</section>
+<section id="adding-supplementary-analysis-files">
+<h2>Adding supplementary analysis files<a class="headerlink" href="#adding-supplementary-analysis-files" title="Link to this heading"></a></h2>
+<p>The workflow stores raw data, processed data, and metadata automatically.
+Additional files such as analysis scripts, notebooks, figures, or fitting
+results can be copied manually into the measurement directory.</p>
+<p>Keeping these files together ensures that the complete analysis workflow
+remains reproducible.</p>
+</section>
+<section id="complete-workflow">
+<h2>Complete workflow<a class="headerlink" href="#complete-workflow" title="Link to this heading"></a></h2>
+<p>A typical workflow therefore consists of the following steps:</p>
+<ol class="arabic simple">
+<li><p>Define the measurement metadata.</p></li>
+<li><p>Create the measurement entry and import the first raw dataset.</p></li>
+<li><p>Add additional raw measurements belonging to the same experiment.</p></li>
+<li><p>Import processed datasets into the HDF5 file.</p></li>
+<li><p>Store processing parameters if available.</p></li>
+<li><p>Add supplementary analysis files.</p></li>
+</ol>
+<p>The result is a single Specatalog measurement entry containing the complete
+experimental information: raw data, processed data, metadata, and analysis
+files.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-left" title="Allowed values" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

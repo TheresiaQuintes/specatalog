@@ -57,6 +57,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
@@ -153,7 +154,10 @@
 <span class="sd">        the subclass is dependent on the chosen method.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">molecule</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">molecular_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="c1"># molecule = mol.Molecule.query.filter(mol.Molecule.id == data.molecular_id).first()</span>
+    <span class="n">molecule</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">Molecule</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">molecular_id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;No molecule with the ID </span><span class="se">\</span>
