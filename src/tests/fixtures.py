@@ -2,7 +2,6 @@ import specatalog.models.molecules as mol
 import specatalog.models.measurements as ms
 import specatalog.models.creation_pydantic_molecules as pymol
 import specatalog.models.creation_pydantic_measurements as pyms
-from specatalog.helpers.allowed_values_not_adapted import Names
 from specatalog.main import ALLOWED_VALUES as av
 from datetime import date
 
@@ -169,7 +168,7 @@ MOLECULE_SPECS = {
     "MoleculeModel": {
         "model": mol.Molecule,
         "class": pymol.MoleculeModel,
-        "factory": lambda suffix=None: dict()
+        "factory": lambda suffix=None: dict(),
     },
     "SingleMolecule": {
         "model": mol.SingleMolecule,
@@ -218,7 +217,7 @@ MEASUREMENT_SPECS = {
         "model": ms.Measurement,
         "class": pyms.MeasurementModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
@@ -227,11 +226,11 @@ MEASUREMENT_SPECS = {
             evaluated=True,
         ),
     },
-    "CWEPR" : {
+    "CWEPR": {
         "model": ms.CWEPR,
         "class": pyms.CWEPRModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
@@ -242,11 +241,11 @@ MEASUREMENT_SPECS = {
             attenuation="20dB",
         ),
     },
-    "TREPR" : {
+    "TREPR": {
         "model": ms.TREPR,
         "class": pyms.TREPRModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
@@ -262,35 +261,35 @@ MEASUREMENT_SPECS = {
         "model": ms.PulseEPR,
         "class": pyms.PulseEPRModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
             measured_by=av.Names.richert,
             corrected=True,
             evaluated=True,
-            pulse_experiment=av.PulseExperiments.peldor
-        )
+            pulse_experiment=av.PulseExperiments.peldor,
+        ),
     },
     "UVVis": {
         "model": ms.UVVis,
         "class": pyms.UVVisModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
             measured_by=av.Names.richert,
             corrected=True,
             evaluated=True,
-            dim_cuvette="2x2x5cm"
+            dim_cuvette="2x2x5cm",
         ),
     },
     "Fluorescence": {
         "model": ms.Fluorescence,
         "class": pyms.FluorescenceModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
@@ -305,7 +304,7 @@ MEASUREMENT_SPECS = {
         "model": ms.TA,
         "class": pyms.TAModel,
         "factory": lambda: dict(
-            molecular_id = 5,
+            molecular_id=5,
             temperature=298,
             solvent=av.Solvents.toluene,
             date=date(2026, 5, 5),
@@ -314,7 +313,7 @@ MEASUREMENT_SPECS = {
             evaluated=True,
             timedomain=av.Timedomains.ns,
             excitation_wl="345nm",
-            excitation_energy="10"
+            excitation_energy="10",
         ),
     },
 }

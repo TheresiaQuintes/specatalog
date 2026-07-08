@@ -16,6 +16,7 @@ def test_delete_object(db_with_content, db_session):
     else:
         assert False
 
+
 def test_delete_molecule(db_with_content):
     import specatalog.crud_db.delete as de
 
@@ -25,7 +26,6 @@ def test_delete_molecule(db_with_content):
 
     de.db_session = session_context
 
-    
     de.delete_molecule(1)
     filter_mol = r.MoleculeFilter(id=1)
     filter_ms = r.MeasurementFilter(molecular_id=1)
@@ -48,6 +48,7 @@ def test_delete_non_existent_molecule(db_with_content):
     with pytest.raises(ValueError):
         de.delete_molecule(6)
 
+
 def test_delete_measurement(db_with_content):
     import specatalog.crud_db.delete as de
 
@@ -56,7 +57,7 @@ def test_delete_measurement(db_with_content):
         yield db_with_content
 
     de.db_session = session_context
-    
+
     de.delete_measurement(1)
 
     filter_ms = r.MeasurementFilter(id=1)
@@ -64,11 +65,14 @@ def test_delete_measurement(db_with_content):
 
     assert len(results_ms) == 0
 
+
 def test_delete_non_existent_measurement(db_with_content):
     import specatalog.crud_db.delete as de
+
     @contextmanager
     def session_context():
         yield db_with_content
+
     de.db_session = session_context
 
     with pytest.raises(ValueError):

@@ -145,7 +145,6 @@ def measurement_instance_pyd(measurement_spec):
     return measurement_spec["class"](**measurement_spec["factory"]())
 
 
-
 @pytest.fixture
 def db_with_content(entry_factory, db_session):
     def make_molecule(model, **inputs):
@@ -157,27 +156,34 @@ def db_with_content(entry_factory, db_session):
         return entry_factory(model, **{**base, **inputs})
 
     def make_measurement(model, **inputs):
-        base =  dict(
-        molecule=molecule1,
-        temperature=300,
-        solvent="water",
-        date=date(2025, 5, 6),
-        measured_by="Alice",
-        path="m6",
-        corrected=False,
-        evaluated=False,
-    )
+        base = dict(
+            molecule=molecule1,
+            temperature=300,
+            solvent="water",
+            date=date(2025, 5, 6),
+            measured_by="Alice",
+            path="m6",
+            corrected=False,
+            evaluated=False,
+        )
         return entry_factory(model, **{**base, **inputs})
 
     # create molecules
     molecule1 = make_molecule(mol.Molecule)
 
-    molecule2 = make_molecule(mol.Molecule,
-                              structural_formula="/tmp/test2",
-                              name="TestMol2")
-    make_molecule(mol.Molecule,structural_formula="/tmp/Test3", name="TestMol3")
+    molecule2 = make_molecule(
+        mol.Molecule, structural_formula="/tmp/test2", name="TestMol2"
+    )
+    make_molecule(mol.Molecule, structural_formula="/tmp/Test3", name="TestMol3")
 
-    make_molecule(mol.TDP, structural_formula="/tmp/Test4", doublet="no1", linker="co", chromophore="per", name="per-co-no1")
+    make_molecule(
+        mol.TDP,
+        structural_formula="/tmp/Test4",
+        doublet="no1",
+        linker="co",
+        chromophore="per",
+        name="per-co-no1",
+    )
 
     # create measurements
     make_measurement(ms.Measurement)
