@@ -22,6 +22,7 @@ This is a package to organise an archive of experimental data.
    tutorial_measurements
    tutorial_hdf5object
    tutorial_allowed_values
+   tutorial_multiple_files
 
 .. toctree::
    :maxdepth: 2
