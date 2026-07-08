@@ -58,8 +58,8 @@ class MeasurementModel(BaseModel):
     location: Optional[str] = None
     device: Optional[av.Devices] = None
     series: Optional[str] = None
-    corrected: bool = False
-    evaluated: bool = False
+    corrected: bool
+    evaluated: bool
     additional_info: Optional[str] = None
 
     model_config = ConfigDict(extra="forbid", validate_assignment=True)
@@ -288,6 +288,6 @@ class TAModel(MeasurementModel):
     measurement_class: ClassVar[Type[ms.CWEPR]] = ms.TA
 
     timedomain: av.Timedomains
-    excitation_energy: Optional[str] = None
+    excitation_energy: str
     excitation_wl: str
     od: Optional[str] = None

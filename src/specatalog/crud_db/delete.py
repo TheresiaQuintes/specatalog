@@ -64,7 +64,8 @@ def delete_molecule(mol_id: int):
     None.
 
     """
-    molecule = Molecule.query.filter(Molecule.id == mol_id).first()
+    with db_session() as session:
+        molecule = session.query(Molecule).filter_by(id=mol_id).first()
     if molecule is None:
         raise ValueError(f"No molecule with the ID MOL{mol_id} found.")
     delete_object(molecule)
@@ -91,7 +92,8 @@ def delete_measurement(ms_id: int):
     None.
 
     """
-    measurement = Measurement.query.filter(Measurement.id == ms_id).first()
+    with db_session() as session:
+        measurement = session.query(Measurement).filter_by(id=ms_id).first()
     if measurement is None:
         raise ValueError(f"No measurement with the ID M{ms_id} found.")
     delete_object(measurement)

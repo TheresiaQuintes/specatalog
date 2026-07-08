@@ -52,7 +52,10 @@ def _create_new_measurement(
         the subclass is dependent on the chosen method.
 
     """
-    molecule = mol.Molecule.query.filter(mol.Molecule.id == data.molecular_id).first()
+    # molecule = mol.Molecule.query.filter(mol.Molecule.id == data.molecular_id).first()
+    molecule = (
+        session.query(mol.Molecule).filter(mol.Molecule.id == data.molecular_id).first()
+    )
     if molecule is None:
         raise ValueError(
             f"No molecule with the ID \

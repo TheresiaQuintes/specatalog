@@ -41,7 +41,7 @@ First of all a new entry shall be added to the measurements table and the data-a
 	
 	.. note::
 	
-		Some of the fields have a special type which is neiter a number nor a string but a class from ``allowed_values.py``. For example the parameter ``solvent`` needs to be from the class ``Solvents``. In that case only the values that are specified in ``allowed_values.py`` will be accepted. For more details see the documentation about :doc:`tutorial_allowed_values`.
+		Some of the fields have a special type which is neither a number nor a string but a class from ``allowed_values.py``. For example the parameter ``solvent`` needs to be from the class ``Solvents``. In that case only the values that are specified in ``allowed_values.py`` will be accepted. For more details see the documentation about :doc:`tutorial_allowed_values`.
 
 4. Use the function :func:`create_new_measurement <specatalog.crud_db.create.create_new_measurement>` to add the entry to the table of the database::
 
