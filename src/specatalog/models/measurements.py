@@ -113,7 +113,7 @@ class Measurement(TimeStampedModel):
     molecule = Relationship("Molecule", back_populates="measurements")
 
     # method
-    _method = Column(String(64), nullable=False)
+    _method = Column("method", String(64), nullable=False)
     __mapper_args__ = {
         "polymorphic_on": _method,
         "polymorphic_identity": "base",
