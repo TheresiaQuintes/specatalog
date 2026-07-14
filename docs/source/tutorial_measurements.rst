@@ -9,9 +9,9 @@ Creation of a new entry
 
 First of all a new entry shall be added to the measurements table and the data-archive. As an example we will add a transient EPR spectra of our example molecule :ref:`PER-TEMPO <tutorial-molecules-new-entry>`. 
 
-1. Store your raw data at any folder. Save the path without suffix to a variable::
+1. Store your raw data at any folder. Save the path (without suffix) of every file that is associated with the measurement in a list::
 
-	raw_data = "/path/to/your/folder/trEPR_PER_TEMPO
+	raw_data = ["/path/to/your/folder/trEPR_PER_TEMPO_1", "/path/to/your/folder/trEPR_PER_TEMPO_2"]
 
 2. Find the ID of the corresponding molecule::
 	
@@ -57,7 +57,8 @@ First of all a new entry shall be added to the measurements table and the data-a
 		from specatalog.main import BASE_PATH
 		
 		mm.create_measurement_dir(BASE_PATH, measurement.id)  # create new directory with subfolders
-		mm.raw_data_to_folder(raw_data, "bruker_bes3t", BASE_PATH, measurement.id)  # raw data are copied to /data/M{ms_id}/raw
+        for file in raw_data:
+		    mm.raw_data_to_folder(file, "bruker_bes3t", BASE_PATH, measurement.id)  # raw data are copied to /data/M{ms_id}/raw
 		mm.raw_data_to_hdf5(BASE_PATH, measurement.id, "bruker_bes3t")  # The raw spectra are added to the measurement.h5-file as arrays
 		
 	.. note::

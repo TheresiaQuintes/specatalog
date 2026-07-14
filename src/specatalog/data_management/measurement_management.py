@@ -287,7 +287,7 @@ def _get_next_rawdata_index(hdf5_path, group_name, reference_name):
 
 def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     """
-    Write the data from the raw data datafiles in the archive at
+    Write all data from the raw data datafiles in the archive at
     <base_dir>/data/M<ms_id>/raw/
     to the hdf5-file
     <base_dir>/data/M<ms_id>/measurement.h5
