@@ -97,8 +97,9 @@ def submit_new_entry(self):
         msg.setDetailedText(str(e))
         msg.exec()
         return
-
-    raw_data = self.LineRawDataInput.text()
+    # TODO: Vorher wurde hier das LineRawDataInput ausgelesen.
+    # Mache es auch möglich für Drag-And-Drop!
+    raw_data = self.raw_data_files
 
     if self.RadioMeasurements.isChecked():
         output = create_full_measurement(
@@ -162,10 +163,16 @@ def delete_entry(self):
 
 
 def open_file_dialog(self):
-    file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a file")
-    if file_path:
-        path = Path(file_path)
-        self.LineRawDataInput.setText(str(path.with_suffix("")))
+    file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Choose a file")
+    if file_paths:
+        self.raw_data_files = list(
+            dict.fromkeys(Path(path).with_suffix("") for path in file_paths)
+        )
+        self.LineRawDataInput.setText("multiple files are chosen")
+
+    else:
+        self.raw_data_files = []
+        self.LineRawDataInput.setText("choose a file")
 
 
 def on_tab_changed(self, index):

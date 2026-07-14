@@ -60,6 +60,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.raw_format = "bruker_bes3t"
 
         # Raw data field
+        self.raw_data_files = []
         # Ersetze das normale QLineEdit durch unser DragDropLineEdit
         layout = self.LineRawDataInput.parent().layout()
         # Position des alten Widgets finden

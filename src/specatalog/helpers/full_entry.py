@@ -105,7 +105,7 @@ def _commit_measurement_dir(temp_root: Path, base_dir: Path, ms_id: int):
 
 
 def create_full_measurement(
-    data: cr.measurement_model_pyd, base_dir: Path, raw_data_path: Path, fmt: str
+    data: cr.measurement_model_pyd, base_dir: Path, raw_data_path: list, fmt: str
 ) -> CreateMeasurementResult:
     """
     Create a complete measurement entry including database and file system
@@ -128,8 +128,9 @@ def create_full_measurement(
         Measurement creation model containing all required metadata.
     base_dir : Path
         Base directory of the measurement archive.
-    raw_data_path : Path
-        Path to the raw data file or directory.
+    raw_data_path : list
+        List with the full pathes to each every raw data file that is
+        associated with the measurement entry.
     fmt : str
         Format identifier of the raw data.
 
@@ -147,7 +148,8 @@ def create_full_measurement(
 
             temp_dir = _create_temp_measurement_dir(base_dir)
             mm.create_measurement_dir(temp_dir, measurement.id)
-            mm.raw_data_to_folder(raw_data_path, fmt, temp_dir, measurement.id)
+            for file in raw_data_path:
+                mm.raw_data_to_folder(file, fmt, temp_dir, measurement.id)
             mm.raw_data_to_hdf5(temp_dir, measurement.id, fmt)
 
         _commit_measurement_dir(temp_dir, base_dir, measurement.id)
