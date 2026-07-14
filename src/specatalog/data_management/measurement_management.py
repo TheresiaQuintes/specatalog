@@ -325,28 +325,28 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         bases = sorted({p.with_suffix("") for p in raw_path.glob("*.DSC")})
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
-        
+
         for base in bases:
             if not base.with_suffix(".DTA").exists():
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
             data, x, params = l.load_bruker_bes3t(base, "DSC", "")
-            
+
             # write intensities to dataset
             idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
-    
+
             new_dataset_to_hdf5(data, hdf5_path, "raw_data", f"data_{idx}")
             new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", f"data_real_{idx}")
             new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", f"data_imag_{idx}")
-    
+
             # write axes-data
             if type(x) is list:  # multiple axes
                 for n in range(len(x)):
                     new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{idx}_{n}")
             else:  # only one xaxis
                 new_dataset_to_hdf5(x, hdf5_path, "raw_data", f"xaxis_{idx}")
-    
+
             # add metadata from first DSC-file as attributes
             if idx != 0:
                 with h5py.File(hdf5_path, "a") as f:
@@ -358,21 +358,21 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         bases = sorted({p.with_suffix("") for p in raw_path.glob("*.DSC")})
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
-        
+
         for base in bases:
             if not base.with_suffix(".DTA").exists():
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
-    
+
             spc_real, spc_imag, field, params = l.load_cw_epr(base)
-    
+
             # write intensities to dataset
             idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
             new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", f"data_real_{idx}")
             new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", f"data_imag_{idx}")
             new_dataset_to_hdf5(field, hdf5_path, "raw_data", f"field_{idx}")
-    
+
             # add metadata from first DSC-file as attributes
             if idx != 0:
                 with h5py.File(hdf5_path, "a") as f:
@@ -386,15 +386,15 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         bases = sorted({p.with_suffix("") for p in raw_path.glob("*.txt")})
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
-        
+
         for base in bases:
             wavelength, intensity, meta = l.load_uvvis_ulm(base)
-    
+
             idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
-    
+
             new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
             new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
-    
+
             if idx != 0:
                 with h5py.File(hdf5_path, "a") as f:
                     grp = f.require_group("raw_data")
@@ -405,9 +405,8 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
         bases = sorted({p.with_suffix("") for p in raw_path.glob("*.txt")})
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
-        
-        for base in bases:
 
+        for base in bases:
             wavelength, intensity, meta = l.load_uvvis_freiburg(base.with_suffix(""))
 
             idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")

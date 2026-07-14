@@ -10,6 +10,7 @@ from pathlib import Path
 
 class DragDropLineEdit(QtWidgets.QLineEdit):
     filesDropped = QtCore.pyqtSignal(list)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setAcceptDrops(True)
@@ -23,10 +24,7 @@ class DragDropLineEdit(QtWidgets.QLineEdit):
         urls = event.mimeData().urls()
         if urls:
             self.files = list(
-                dict.fromkeys(
-                    Path(url.toLocalFile()).with_suffix("")
-                    for url in urls
-                )
+                dict.fromkeys(Path(url.toLocalFile()).with_suffix("") for url in urls)
             )
             if len(self.files) == 1:
                 self.setText(str(self.files[0]))
