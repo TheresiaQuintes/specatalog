@@ -168,7 +168,10 @@ def open_file_dialog(self):
         self.raw_data_files = list(
             dict.fromkeys(Path(path).with_suffix("") for path in file_paths)
         )
-        self.LineRawDataInput.setText("multiple files are chosen")
+        if len(self.raw_data_files) == 1:
+            self.LineRawDataInput.setText(str(self.raw_data_files[0]))
+        else:
+            self.LineRawDataInput.setText("multiple files are chosen")
 
     else:
         self.raw_data_files = []
