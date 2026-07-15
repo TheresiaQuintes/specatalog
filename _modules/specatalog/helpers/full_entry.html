@@ -209,7 +209,7 @@
 <div class="viewcode-block" id="create_full_measurement">
 <a class="viewcode-back" href="../../../generated/specatalog.helpers.full_entry.create_full_measurement.html#specatalog.helpers.full_entry.create_full_measurement">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">create_full_measurement</span><span class="p">(</span>
-    <span class="n">data</span><span class="p">:</span> <span class="n">cr</span><span class="o">.</span><span class="n">measurement_model_pyd</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">raw_data_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">cr</span><span class="o">.</span><span class="n">measurement_model_pyd</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">raw_data_path</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CreateMeasurementResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a complete measurement entry including database and file system</span>
@@ -232,8 +232,9 @@
 <span class="sd">        Measurement creation model containing all required metadata.</span>
 <span class="sd">    base_dir : Path</span>
 <span class="sd">        Base directory of the measurement archive.</span>
-<span class="sd">    raw_data_path : Path</span>
-<span class="sd">        Path to the raw data file or directory.</span>
+<span class="sd">    raw_data_path : list</span>
+<span class="sd">        List with the full pathes to each every raw data file that is</span>
+<span class="sd">        associated with the measurement entry.</span>
 <span class="sd">    fmt : str</span>
 <span class="sd">        Format identifier of the raw data.</span>
 
@@ -251,7 +252,8 @@
 
             <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">_create_temp_measurement_dir</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span>
             <span class="n">mm</span><span class="o">.</span><span class="n">create_measurement_dir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-            <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">raw_data_path</span><span class="p">:</span>
+                <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">temp_dir</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
             <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
 
         <span class="n">_commit_measurement_dir</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">,</span> <span class="n">base_dir</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>

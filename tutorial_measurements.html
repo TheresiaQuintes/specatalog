@@ -118,8 +118,8 @@
 <h2>Creation of a new entry<a class="headerlink" href="#creation-of-a-new-entry" title="Link to this heading"></a></h2>
 <p>First of all a new entry shall be added to the measurements table and the data-archive. As an example we will add a transient EPR spectra of our example molecule <a class="reference internal" href="tutorial_molecules.html#tutorial-molecules-new-entry"><span class="std std-ref">PER-TEMPO</span></a>.</p>
 <ol class="arabic">
-<li><p>Store your raw data at any folder. Save the path without suffix to a variable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/folder/trEPR_PER_TEMPO</span>
+<li><p>Store your raw data at any folder. Save the path (without suffix) of every file that is associated with the measurement in a list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;/path/to/your/folder/trEPR_PER_TEMPO_1&quot;</span><span class="p">,</span> <span class="s2">&quot;/path/to/your/folder/trEPR_PER_TEMPO_2&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </li>
@@ -170,10 +170,15 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
 
 <span class="n">mm</span><span class="o">.</span><span class="n">create_measurement_dir</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># create new directory with subfolders</span>
-<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span> <span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># raw data are copied to /data/M{ms_id}/raw</span>
-<span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span><span class="n">BASE_PATH</span><span class="p">,</span> <span class="n">measurement</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">)</span>  <span class="c1"># The raw spectra are added to the measurement.h5-file as arrays</span>
 </pre></div>
 </div>
+<dl>
+<dt>for file in raw_data:</dt><dd><blockquote>
+<div><p>mm.raw_data_to_folder(file, “bruker_bes3t”, BASE_PATH, measurement.id)  # raw data are copied to /data/M{ms_id}/raw</p>
+</div></blockquote>
+<p>mm.raw_data_to_hdf5(BASE_PATH, measurement.id, “bruker_bes3t”)  # The raw spectra are added to the measurement.h5-file as arrays</p>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The functions <code class="docutils literal notranslate"><span class="pre">raw_data_to_foler</span></code> and <code class="docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code> can be used only to specific formats. At the moment the following formats are supported:</p>

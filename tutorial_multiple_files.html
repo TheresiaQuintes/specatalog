@@ -63,7 +63,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Workflow: Multiple Raw Data Measurements</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#workflow-switches">Workflow switches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-the-database-measurement">Creating the database measurement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#adding-additional-raw-measurements">Adding additional raw measurements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-processed-datasets">Adding processed datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-processing-parameters">Adding processing parameters</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#adding-supplementary-analysis-files">Adding supplementary analysis files</a></li>
@@ -147,16 +146,6 @@ creates the HDF5 file.</p></li>
 </ul>
 </div></blockquote>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">multidata</span></code></p>
-<blockquote>
-<div><p>Controls importing additional raw data files belonging to the same measurement.</p>
-<ul class="simple">
-<li><p><cite>True</cite>: All additional raw datasets found in <cite>raw_data_path</cite> are added to
-the same measurement entry.</p></li>
-<li><p><cite>False</cite>: Only the initial raw data file is stored.</p></li>
-</ul>
-</div></blockquote>
-</li>
 <li><p><code class="docutils literal notranslate"><span class="pre">corrected_data</span></code></p>
 <blockquote>
 <div><p>Controls importing processed datasets.</p>
@@ -225,22 +214,20 @@ Pydantic model. In this example, a trEPR measurement is created:</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>If <code class="docutils literal notranslate"><span class="pre">create=True</span></code>, the measurement entry and the first raw dataset are created
+<p>If <code class="docutils literal notranslate"><span class="pre">create=True</span></code>, the measurement entry and the raw datasets are created
 using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data_file</span> <span class="o">=</span> <span class="s2">&quot;/path/to/first/dsc/file/filename&quot;</span>  <span class="c1"># without suffix</span>
-
-<span class="n">raw_data_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/first/dsc/file&quot;</span> <span class="c1"># folder with all measurements</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">raw_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/path/to/folder/with/raw/data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.DSC&quot;</span><span class="p">)]</span>
 
 <span class="n">new_measurement_created</span> <span class="o">=</span> <span class="n">create_full_measurement</span><span class="p">(</span>
     <span class="n">measurement_model</span><span class="p">,</span>
     <span class="n">BASE_PATH</span><span class="p">,</span>
-    <span class="n">Path</span><span class="p">(</span><span class="n">raw_data_file</span><span class="p">),</span>
+    <span class="n">raw_data</span>
     <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 <p>This function creates the database entry, creates the corresponding measurement
-directory and HDF5 file, and imports the first raw measurement.</p>
+directory and HDF5 file, and imports all raw data files.</p>
 <p>The measurement ID is stored for all following operations:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">create</span><span class="p">:</span>
     <span class="n">ms_id</span> <span class="o">=</span> <span class="n">new_measurement_created</span><span class="o">.</span><span class="n">measurement_id</span>
@@ -248,42 +235,6 @@ directory and HDF5 file, and imports the first raw measurement.</p>
     <span class="n">ms_id</span> <span class="o">=</span> <span class="n">manual_id</span>
 </pre></div>
 </div>
-</section>
-<section id="adding-additional-raw-measurements">
-<h2>Adding additional raw measurements<a class="headerlink" href="#adding-additional-raw-measurements" title="Link to this heading"></a></h2>
-<p>A single experiment can consist of several raw data files. These files can be
-added to the same measurement entry.</p>
-<p>First, all additional Bruker BES3T files are collected and the raw file used
-during measurement creation is excluded. If multidata=True, all remaining raw
-datasets are copied to the measurement directory and added to the HDF5 file::</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">list_raw_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span>
-    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">raw_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.DSC&quot;</span><span class="p">)</span>
-<span class="p">]</span>
-
-<span class="n">list_raw_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">list_raw_data</span>
-    <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="n">raw_data_file</span>
-<span class="p">]</span>
-
-<span class="k">if</span> <span class="n">multidata</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">list_raw_data</span><span class="p">:</span>
-        <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_folder</span><span class="p">(</span>
-            <span class="n">entry</span><span class="p">,</span>
-            <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
-            <span class="n">BASE_PATH</span><span class="p">,</span>
-            <span class="n">ms_id</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="n">mm</span><span class="o">.</span><span class="n">raw_data_to_hdf5</span><span class="p">(</span>
-            <span class="n">BASE_PATH</span><span class="p">,</span>
-            <span class="n">ms_id</span><span class="p">,</span>
-            <span class="s2">&quot;bruker_bes3t&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-</pre></div>
-</div>
-<p>Each raw measurement remains separately accessible but is associated with the
-same database measurement entry.</p>
 </section>
 <section id="adding-processed-datasets">
 <h2>Adding processed datasets<a class="headerlink" href="#adding-processed-datasets" title="Link to this heading"></a></h2>
@@ -359,8 +310,7 @@ remains reproducible.</p>
 <p>A typical workflow therefore consists of the following steps:</p>
 <ol class="arabic simple">
 <li><p>Define the measurement metadata.</p></li>
-<li><p>Create the measurement entry and import the first raw dataset.</p></li>
-<li><p>Add additional raw measurements belonging to the same experiment.</p></li>
+<li><p>Create the measurement entry and import the raw datasets.</p></li>
 <li><p>Import processed datasets into the HDF5 file.</p></li>
 <li><p>Store processing parameters if available.</p></li>
 <li><p>Add supplementary analysis files.</p></li>
