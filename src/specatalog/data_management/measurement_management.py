@@ -287,7 +287,7 @@ def _get_next_rawdata_index(hdf5_path, group_name, reference_name):
 
 def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
     """
-    Write the data from the raw data datafiles in the archive at
+    Write all data from the raw data datafiles in the archive at
     <base_dir>/data/M<ms_id>/raw/
     to the hdf5-file
     <base_dir>/data/M<ms_id>/measurement.h5
@@ -322,121 +322,103 @@ def raw_data_to_hdf5(base_dir: str, ms_id: str, fmt: str):
 
     # load and save data from Bruker bes3t format
     if fmt == "bruker_bes3t":
-        dsc = [p for p in raw_path.iterdir() if p.suffix == ".DSC"]
-        dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
+        bases = sorted({p.with_suffix("") for p in raw_path.glob("*.DSC")})
+        if not bases:
+            raise ValueError(f"No raw data at {raw_path}!")
 
-        if not dsc or not dta:
-            raise ValueError(
-                "Exactly one .DSC and one .DTA file have to be\
-                             available"
-            )
-        if dsc[0].stem != dta[0].stem:
-            raise ValueError(
-                "The DSC and the DTA files need to have equal\
-                             basenames."
-            )
+        for base in bases:
+            if not base.with_suffix(".DTA").exists():
+                raise ValueError(f"{base.name}.DTA not available!")
 
-        # load data to arrays using the loader function
-        data, x, params = l.load_bruker_bes3t(dsc[0].with_suffix(""), "DSC", "")
+            # load data to arrays using the loader function
+            data, x, params = l.load_bruker_bes3t(base, "DSC", "")
 
-        # write intensities to dataset
-        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
+            # write intensities to dataset
+            idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
 
-        new_dataset_to_hdf5(data, hdf5_path, "raw_data", f"data_{idx}")
-        new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", f"data_real_{idx}")
-        new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", f"data_imag_{idx}")
+            new_dataset_to_hdf5(data, hdf5_path, "raw_data", f"data_{idx}")
+            new_dataset_to_hdf5(data.real, hdf5_path, "raw_data", f"data_real_{idx}")
+            new_dataset_to_hdf5(data.imag, hdf5_path, "raw_data", f"data_imag_{idx}")
 
-        # write axes-data
-        if type(x) is list:  # multiple axes
-            for n in range(len(x)):
-                new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{idx}_{n}")
-        else:  # only one xaxis
-            new_dataset_to_hdf5(x, hdf5_path, "raw_data", f"xaxis_{idx}")
+            # write axes-data
+            if type(x) is list:  # multiple axes
+                for n in range(len(x)):
+                    new_dataset_to_hdf5(x[n], hdf5_path, "raw_data", f"axis_{idx}_{n}")
+            else:  # only one xaxis
+                new_dataset_to_hdf5(x, hdf5_path, "raw_data", f"xaxis_{idx}")
 
-        # add metadata from first DSC-file as attributes
-        if idx != 0:
-            with h5py.File(hdf5_path, "a") as f:
-                grp = f.require_group("raw_data")
-                for key, value in params.items():
-                    grp.attrs[key] = value
+            # add metadata from first DSC-file as attributes
+            if idx != 0:
+                with h5py.File(hdf5_path, "a") as f:
+                    grp = f.require_group("raw_data")
+                    for key, value in params.items():
+                        grp.attrs[key] = value
 
     elif fmt == "cw_epr":
-        dsc = [p for p in raw_path.iterdir() if p.suffix == ".DSC"]
-        dta = [p for p in raw_path.iterdir() if p.suffix == ".DTA"]
+        bases = sorted({p.with_suffix("") for p in raw_path.glob("*.DSC")})
+        if not bases:
+            raise ValueError(f"No raw data at {raw_path}!")
 
-        if not dsc or not dta:
-            raise ValueError(
-                "Exactly one .DSC and one .DTA file have to be\
-                             available"
-            )
-        if dsc[0].stem != dta[0].stem:
-            raise ValueError(
-                "The DSC and the DTA files need to have equal\
-                             basenames."
-            )
+        for base in bases:
+            if not base.with_suffix(".DTA").exists():
+                raise ValueError(f"{base.name}.DTA not available!")
 
-        # load data to arrays using the loader function
+            # load data to arrays using the loader function
 
-        spc_real, spc_imag, field, params = l.load_cw_epr(dsc[0].with_suffix(""))
+            spc_real, spc_imag, field, params = l.load_cw_epr(base)
 
-        # write intensities to dataset
-        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
-        new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", f"data_real_{idx}")
-        new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", f"data_imag_{idx}")
-        new_dataset_to_hdf5(field, hdf5_path, "raw_data", f"field_{idx}")
+            # write intensities to dataset
+            idx = _get_next_rawdata_index(hdf5_path, "raw_data", "data_real")
+            new_dataset_to_hdf5(spc_real, hdf5_path, "raw_data", f"data_real_{idx}")
+            new_dataset_to_hdf5(spc_imag, hdf5_path, "raw_data", f"data_imag_{idx}")
+            new_dataset_to_hdf5(field, hdf5_path, "raw_data", f"field_{idx}")
 
-        # add metadata from first DSC-file as attributes
-        if idx != 0:
-            with h5py.File(hdf5_path, "a") as f:
-                grp = f.require_group("raw_data")
-                for key, value in params.items():
-                    if key is None or value is None:
-                        continue
-                    grp.attrs[key] = value
+            # add metadata from first DSC-file as attributes
+            if idx != 0:
+                with h5py.File(hdf5_path, "a") as f:
+                    grp = f.require_group("raw_data")
+                    for key, value in params.items():
+                        if key is None or value is None:
+                            continue
+                        grp.attrs[key] = value
 
     elif fmt == "uvvis_ulm":
-        txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
+        bases = sorted({p.with_suffix("") for p in raw_path.glob("*.txt")})
+        if not bases:
+            raise ValueError(f"No raw data at {raw_path}!")
 
-        if not txt:
-            raise ValueError(
-                f"No .txt file is available. Make sure your raw\
-                             data are stored at {raw_path} in the right format."
-            )
+        for base in bases:
+            wavelength, intensity, meta = l.load_uvvis_ulm(base)
 
-        wavelength, intensity, meta = l.load_uvvis_ulm(txt[0].with_suffix(""))
+            idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
 
-        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
+            new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
+            new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
 
-        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
-        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
-
-        if idx != 0:
-            with h5py.File(hdf5_path, "a") as f:
-                grp = f.require_group("raw_data")
-                for key, value in meta.items():
-                    grp.attrs[key] = value
+            if idx != 0:
+                with h5py.File(hdf5_path, "a") as f:
+                    grp = f.require_group("raw_data")
+                    for key, value in meta.items():
+                        grp.attrs[key] = value
 
     elif fmt == "uvvis_freiburg":
-        txt = [p for p in raw_path.iterdir() if p.suffix == ".txt"]
+        bases = sorted({p.with_suffix("") for p in raw_path.glob("*.txt")})
+        if not bases:
+            raise ValueError(f"No raw data at {raw_path}!")
 
-        if not txt:
-            raise ValueError(
-                f"No .txt file is available. Make sure your raw\
-                             data are stored at {raw_path} in the right format."
-            )
+        for base in bases:
+            wavelength, intensity, meta = l.load_uvvis_freiburg(base.with_suffix(""))
 
-        wavelength, intensity, meta = l.load_uvvis_freiburg(txt[0].with_suffix(""))
+            idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
 
-        idx = _get_next_rawdata_index(hdf5_path, "raw_data", "intensity")
+            new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
+            new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
 
-        new_dataset_to_hdf5(intensity, hdf5_path, "raw_data", f"intensity_{idx}")
-        new_dataset_to_hdf5(wavelength, hdf5_path, "raw_data", f"wavelength_{idx}")
-
-        if idx != 0:
-            with h5py.File(hdf5_path, "a") as f:
-                grp = f.require_group("raw_data")
-                for key, value in meta.items():
-                    grp.attrs[key] = value
+            if idx != 0:
+                with h5py.File(hdf5_path, "a") as f:
+                    grp = f.require_group("raw_data")
+                    for key, value in meta.items():
+                        grp.attrs[key] = value
 
     else:
         raise ValueError(f"Data type: {fmt} unknown!")

@@ -97,8 +97,9 @@ def submit_new_entry(self):
         msg.setDetailedText(str(e))
         msg.exec()
         return
-
-    raw_data = self.LineRawDataInput.text()
+    # TODO: Vorher wurde hier das LineRawDataInput ausgelesen.
+    # Mache es auch möglich für Drag-And-Drop!
+    raw_data = self.raw_data_files
 
     if self.RadioMeasurements.isChecked():
         output = create_full_measurement(
@@ -162,10 +163,19 @@ def delete_entry(self):
 
 
 def open_file_dialog(self):
-    file_path, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Choose a file")
-    if file_path:
-        path = Path(file_path)
-        self.LineRawDataInput.setText(str(path.with_suffix("")))
+    file_paths, _ = QtWidgets.QFileDialog.getOpenFileNames(self, "Choose a file")
+    if file_paths:
+        self.raw_data_files = list(
+            dict.fromkeys(Path(path).with_suffix("") for path in file_paths)
+        )
+        if len(self.raw_data_files) == 1:
+            self.LineRawDataInput.setText(str(self.raw_data_files[0]))
+        else:
+            self.LineRawDataInput.setText("multiple files are chosen")
+
+    else:
+        self.raw_data_files = []
+        self.LineRawDataInput.setText("choose a file")
 
 
 def on_tab_changed(self, index):
@@ -290,32 +300,32 @@ def build_form(self, layout, fields, schema: dict):
 
 
 def create_widget_for_type(self, field_type):
-    if isinstance(field_type, str):
+    if field_type is str:
         return QLineEdit()
-    if isinstance(field_type, int):
+    if field_type is int:
         spin = QSpinBox()
         spin.setRange(-1_000_000_000, 1_000_000_000)
         spin.setValue(0)
         return spin
-    if isinstance(field_type, float):
+    if field_type is float:
         dspin = QDoubleSpinBox()
         dspin.setRange(-1e15, 1e15)
         dspin.setDecimals(3)
         dspin.setValue(0.0)
         return dspin
-    if isinstance(field_type, bool):
+    if field_type is bool:
         combo = QComboBox()
         combo.addItem("", userData=None)
         combo.addItem("Yes", True)
         combo.addItem("No", False)
         combo.setCurrentIndex(0)
         return combo
-    if field_type == datetime.date:
+    if field_type is datetime.date:
         widget = QDateEdit()
         widget.setCalendarPopup(True)
         widget.setDate(datetime.date.today())
         return widget
-    if field_type == datetime.datetime:
+    if field_type is datetime.datetime:
         widget = QDateTimeEdit()
         widget.setCalendarPopup(True)
         widget.setDate(datetime.date.today())

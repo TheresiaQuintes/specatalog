@@ -33,14 +33,6 @@ workflow are executed::
     * `False`: No new entry is created. The existing measurement defined by
       `manual_id` is used instead.
 
-#. ``multidata``
-
-    Controls importing additional raw data files belonging to the same measurement.
-
-    * `True`: All additional raw datasets found in `raw_data_path` are added to
-      the same measurement entry.
-    * `False`: Only the initial raw data file is stored.
-
 #. ``corrected_data``
 
     Controls importing processed datasets.
@@ -101,23 +93,20 @@ Pydantic model. In this example, a trEPR measurement is created::
         attenuation="20dB",
     )
 
-If ``create=True``, the measurement entry and the first raw dataset are created
+If ``create=True``, the measurement entry and the raw datasets are created
 using::
 
-
-    raw_data_file = "/path/to/first/dsc/file/filename"  # without suffix
-
-    raw_data_path = "path/to/first/dsc/file" # folder with all measurements
+    raw_data = [p.with_suffix("") for p in Path("/path/to/folder/with/raw/data").glob("*.DSC")]
 
     new_measurement_created = create_full_measurement(
         measurement_model,
         BASE_PATH,
-        Path(raw_data_file),
+        raw_data
         fmt="bruker_bes3t",
     )
 
 This function creates the database entry, creates the corresponding measurement
-directory and HDF5 file, and imports the first raw measurement.
+directory and HDF5 file, and imports all raw data files.
 
 The measurement ID is stored for all following operations::
 
@@ -126,43 +115,6 @@ The measurement ID is stored for all following operations::
     else:
         ms_id = manual_id
 
-Adding additional raw measurements
-----------------------------------
-
-A single experiment can consist of several raw data files. These files can be
-added to the same measurement entry.
-
-First, all additional Bruker BES3T files are collected and the raw file used
-during measurement creation is excluded. If multidata=True, all remaining raw
-datasets are copied to the measurement directory and added to the HDF5 file:::
-
-    list_raw_data = [
-        str(f.with_suffix("").resolve())
-        for f in Path(raw_data_path).glob("*.DSC")
-    ]
-
-    list_raw_data = [
-        f for f in list_raw_data
-        if f != raw_data_file
-    ]
-
-    if multidata:
-        for entry in list_raw_data:
-            mm.raw_data_to_folder(
-                entry,
-                "bruker_bes3t",
-                BASE_PATH,
-                ms_id,
-            )
-
-            mm.raw_data_to_hdf5(
-                BASE_PATH,
-                ms_id,
-                "bruker_bes3t",
-            )
-
-Each raw measurement remains separately accessible but is associated with the
-same database measurement entry.
 
 Adding processed datasets
 -------------------------
@@ -245,8 +197,7 @@ Complete workflow
 A typical workflow therefore consists of the following steps:
 
 #. Define the measurement metadata.
-#. Create the measurement entry and import the first raw dataset.
-#. Add additional raw measurements belonging to the same experiment.
+#. Create the measurement entry and import the raw datasets.
 #. Import processed datasets into the HDF5 file.
 #. Store processing parameters if available.
 #. Add supplementary analysis files.

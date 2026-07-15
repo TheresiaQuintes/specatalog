@@ -244,33 +244,33 @@ class MoleculesTableModel(QAbstractTableModel):
 
 
 def create_editor_for_type(field_type, parent):
-    if isinstance(field_type, str):
+    if field_type is str:
         return QLineEdit(parent)
 
-    if isinstance(field_type, int):
+    if field_type is int:
         spin = QSpinBox(parent)
         spin.setRange(-1_000_000_000, 1_000_000_000)
         return spin
 
-    if isinstance(field_type, float):
+    if field_type is float:
         dspin = QDoubleSpinBox(parent)
         dspin.setRange(-1e15, 1e15)
         dspin.setDecimals(3)
         return dspin
 
-    if isinstance(field_type, bool):
+    if field_type is bool:
         combo = QComboBox(parent)
         combo.addItem("Yes", True)
         combo.addItem("No", False)
         return combo
 
-    if field_type == datetime.date:
+    if field_type is datetime.date:
         widget = QDateEdit(parent)
         widget.setCalendarPopup(True)
         widget.setDisplayFormat("yyyy-MM-dd")
         return widget
 
-    if field_type == datetime.datetime:
+    if field_type is datetime.datetime:
         widget = QDateTimeEdit(parent)
         widget.setCalendarPopup(True)
         widget.setDisplayFormat("yyyy-MM-dd HH:mm:ss")
