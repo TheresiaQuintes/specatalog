@@ -300,32 +300,32 @@ def build_form(self, layout, fields, schema: dict):
 
 
 def create_widget_for_type(self, field_type):
-    if isinstance(field_type, str):
+    if field_type is str:
         return QLineEdit()
-    if isinstance(field_type, int):
+    if field_type is int:
         spin = QSpinBox()
         spin.setRange(-1_000_000_000, 1_000_000_000)
         spin.setValue(0)
         return spin
-    if isinstance(field_type, float):
+    if field_type is float:
         dspin = QDoubleSpinBox()
         dspin.setRange(-1e15, 1e15)
         dspin.setDecimals(3)
         dspin.setValue(0.0)
         return dspin
-    if isinstance(field_type, bool):
+    if field_type is bool:
         combo = QComboBox()
         combo.addItem("", userData=None)
         combo.addItem("Yes", True)
         combo.addItem("No", False)
         combo.setCurrentIndex(0)
         return combo
-    if field_type == datetime.date:
+    if field_type is datetime.date:
         widget = QDateEdit()
         widget.setCalendarPopup(True)
         widget.setDate(datetime.date.today())
         return widget
-    if field_type == datetime.datetime:
+    if field_type is datetime.datetime:
         widget = QDateTimeEdit()
         widget.setCalendarPopup(True)
         widget.setDate(datetime.date.today())
