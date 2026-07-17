@@ -71,7 +71,7 @@ def create_measurement_dir(base_dir: str, ms_id: int) -> Path:
         f.create_group("corrected_data")
         f.create_group("evaluations")
 
-    print(f"Measurement directrory successfully created at {path}.")
+    print(f"Measurement directory successfully created at {path}.")
     return path
 
 

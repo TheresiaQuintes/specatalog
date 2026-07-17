@@ -24,6 +24,12 @@ BASE_PATH = Path(defaults["base_path"]).resolve()
 MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")
 
+# remote login
+HOST = defaults["host"]
+SHARE = defaults["share"]
+USERNAME = defaults["username"]
+PWD = defaults["pwd"]
+
 # create database postgre
 USR_NAME = defaults["usr_name"]
 PASSWORD = defaults["password"]
