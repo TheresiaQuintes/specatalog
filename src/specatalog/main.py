@@ -5,8 +5,8 @@ from contextlib import contextmanager
 import importlib.util
 import sys
 
-from specatalog.config import DATABASE_URL_USR, BASE_PATH
-
+from specatalog.config import DATABASE_URL_USR, BASE_PATH, REMOTE_ARCHIVE
+from specatalog.data_management.remote import SpecatalogArchive
 
 engine = alc.create_engine(
     DATABASE_URL_USR, echo=True, pool_size=10, max_overflow=20, pool_pre_ping=True
@@ -32,6 +32,12 @@ def db_session():
     finally:
         Session.remove()
 
+if REMOTE_ARCHIVE == "True":
+    remote = True
+else:
+    remote = False
+
+archive = SpecatalogArchive(remote)
 
 # Import external allowed_values
 _ALLOWED_VALUES_MODULE = None

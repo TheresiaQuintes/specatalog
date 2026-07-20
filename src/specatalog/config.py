@@ -20,6 +20,8 @@ BASE_PATH = Path(defaults["base_path"]).resolve()
 MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")
 
+REMOTE_ARCHIVE = defaults["remote_archive"]
+
 # remote login
 HOST = defaults["host"]
 SHARE = defaults["share"]

@@ -45,7 +45,7 @@ def create_archive(use_remote_archive:bool):
         archive = Path(BASE_PATH)
         return archive
 
-class SpecatalogContext:
+class SpecatalogArchive:
     def __init__(self, use_remote_archive: bool):
         self.archive = create_archive(use_remote_archive)
         self.use_remote_archive = use_remote_archive
@@ -71,11 +71,9 @@ class SpecatalogContext:
 
     def make_dir(self, p):
         if self.use_remote_archive:
-            # raises SMBOSError if path exists
-            smb.makedirs(self.path_to_unc(p), exist_ok=False)
+            smb.makedirs(self.path_to_unc(p), exist_ok=True)
         else:
-            # raises FileExistsError if path exists
-            (self.archive / p).mkdir(parents=True, exist_ok=False)
+            (self.archive / p).mkdir(parents=True, exist_ok=True)
 
     def copy_to_archive(self, src, dst_p):
         if self.use_remote_archive:
@@ -98,7 +96,6 @@ class SpecatalogContext:
 
     @contextmanager
     def open_file(self, p, mode="r", encoding="utf-8"):
-        print("ah")
         if self.use_remote_archive:
             remote_path = self.path_to_unc(p)
             with smb.open_file(remote_path, mode=mode, encoding=encoding) as file:
@@ -132,10 +129,27 @@ class SpecatalogContext:
     def temporary_path(self, p):
         if self.use_remote_archive:
             with tempfile.TemporaryDirectory() as tmpdir:
-                local_path = Path(tmpdir) / p
-                local_path.parent.mkdir(parents=True, exist_ok=True)
-                if self.exists(p):
-                    smb_shutil.copy2(self.path_to_unc(p), str(local_path))
+                local_path = Path(tmpdir) / Path(p).name
+
+                remote_path = self.path_to_unc(p)
+
+                if smb.path.isdir(remote_path):
+                    smb_shutil.copytree(
+                        remote_path,
+                        str(local_path),
+                    )
+
+                elif smb.path.isfile(remote_path):
+                    smb_shutil.copy2(
+                        remote_path,
+                        str(local_path),
+                    )
+
+                else:
+                    raise FileNotFoundError(
+                        f"Remote path does not exist: {remote_path}"
+                    )
+
                 yield local_path
         else:
             local_path = self.archive / p
@@ -148,15 +162,15 @@ class SpecatalogContext:
             raise FileNotFoundError(f"Measurement folder {self.archive/p} does not exist!")
 
         else:
-            return self.archive / p
+            return Path(p)
 
     def data_loader(self):
         pass
 
 
-test_remote = SpecatalogContext(True)
+test_remote = SpecatalogArchive(True)
 
-test_local = SpecatalogContext(False)
+test_local = SpecatalogArchive(False)
 
 print(test_remote.list_files(Path("data")))
 print(test_local.list_files(Path("data")))
