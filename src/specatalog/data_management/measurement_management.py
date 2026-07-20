@@ -6,7 +6,7 @@ from specatalog.main import archive
 CATEGORIES = ["raw", "scripts", "figures", "additional_info", "literature"]
 
 
-def create_measurement_dir(ms_id: int) -> Path:
+def _create_measurement_dir(archive_obj, ms_id: int) -> Path:
     """
     Create a new directory for a single measurement with the measurement-ID
     ms_id in the folder of the archive (base_dir). Directory and subdirectories
@@ -55,20 +55,20 @@ def create_measurement_dir(ms_id: int) -> Path:
     """
     p = f"data/M{ms_id}"
     
-    if archive.exists(p):
+    if archive_obj.exists(p):
         raise FileExistsError(f"Measurement folder {p} already exists!")
 
     for subdir in CATEGORIES:
         p_sub = f"{p}/{subdir}"
-        archive.make_dir(p_sub)
+        archive_obj.make_dir(p_sub)
 
 
     p_measurement = f"{p}/measurement_M{ms_id}.h5"
 
-    if archive.exists(p_measurement):
+    if archive_obj.exists(p_measurement):
         raise FileExistsError(f"HDF5 file {p_measurement} already exists!")
 
-    with archive.open_measurement_h5_file(p_measurement, "w") as f:
+    with archive_obj.open_measurement_h5_file(p_measurement, "w") as f:
         f.create_group("raw_data")
         f.create_group("corrected_data")
         f.create_group("evaluations")
@@ -77,9 +77,10 @@ def create_measurement_dir(ms_id: int) -> Path:
     return p
 
 
+def create_measurement_dir(ms_id):
+    return _create_measurement_dir(archive, ms_id)
 
-def new_file_to_archive(
-    src: str, ms_id: int, category: str, update=False
+def _new_file_to_archive(archive_obj, src: str, ms_id: int, category: str, update=False
 ):
     """
     Copy a file to the archive. The file is saved at:
@@ -129,21 +130,24 @@ def new_file_to_archive(
         raise FileNotFoundError(f"Source file does not exist at: {src}")
 
     # build target
-    dst_dir = archive.measurement_path(ms_id) / category
+    dst_dir = archive_obj.measurement_path(ms_id) / category
 
-    archive.make_dir(dst_dir)
+    archive_obj.make_dir(dst_dir)
     dst_file = dst_dir/src.name
 
-    if archive.exists(dst_file):
+    if archive_obj.exists(dst_file):
         if not update:
             raise FileExistsError(
                 f"File at {dst_file} already exists! Use new name or update-function instead"
             )
 
-    archive.copy_to_archive(src, dst_file)
+    archive_obj.copy_to_archive(src, dst_file)
     print(f"Copied {src} to {dst_file}")
     return
 
+
+def new_file_to_archive(src: str, ms_id: int, category: str, update=False):
+    _new_file_to_archive(archive, src, ms_id, category, update)
 
 def new_dataset_to_hdf5(
     data: np.ndarray, h5_file, group_name: str, dataset_name: str
@@ -175,8 +179,7 @@ def new_dataset_to_hdf5(
     group.create_dataset(dataset_name, data=data)
     return
 
-
-def raw_data_to_folder(raw_data_path: str, fmt: str, ms_id: int):
+def _raw_data_to_folder(archive_obj, raw_data_path: str, fmt: str, ms_id: int):
     """
     Copy raw datafiles to the archive. Existing data with the same name get
     overwritten. The data are saved at
@@ -217,10 +220,10 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, ms_id: int):
         if not raw_data_2.exists():
             raise FileNotFoundError(f"Raw data not found at {raw_data_2}!")
 
-        new_file_to_archive(raw_data_1, ms_id, "raw", update=True)
-        new_file_to_archive(raw_data_2, ms_id, "raw", update=True)
+        _new_file_to_archive(archive_obj, raw_data_1, ms_id, "raw", update=True)
+        _new_file_to_archive(archive_obj, raw_data_2, ms_id, "raw", update=True)
         if raw_data_3.exists():
-            new_file_to_archive(raw_data_3, ms_id, "raw", update=True)
+            _new_file_to_archive(archive_obj, raw_data_3, ms_id, "raw", update=True)
 
     # copy all UVvis files
     elif fmt == "uvvis_ulm" or fmt == "uvvis_freiburg":
@@ -228,12 +231,45 @@ def raw_data_to_folder(raw_data_path: str, fmt: str, ms_id: int):
         if not raw_data.exists():
             raise FileNotFoundError(f"Raw data not found at {raw_data}!")
 
-        new_file_to_archive(raw_data, ms_id, "raw", update=True)
+        _new_file_to_archive(archive_obj, raw_data, ms_id, "raw", update=True)
 
     else:
         raise ValueError(f"Data type: {fmt} unknown!")
 
     return
+
+def raw_data_to_folder(raw_data_path: str, fmt: str, ms_id: int):
+    """
+    Copy raw datafiles to the archive. Existing data with the same name get
+    overwritten. The data are saved at
+    <base_dir>/data/M<ms_id>/raw/<raw_data_file_name>.
+    Depending on the format (fmt) all important measurement-files are copied.
+
+    Parameters
+    ----------
+    raw_data_path : str
+        Path to the raw data file without suffix.
+    fmt : str
+        Format of the raw_data. One of the supported formats ["bruker_bes3t",
+        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
+    base_dir : str or Path
+        Path to the root-folder of the archive.
+    ms_id : str or int
+        Number of the measurement.
+
+    Raises
+    ------
+    FileNotFoundError
+        An error is raised if the no raw data at the given path can be found.
+    ValueError
+        An error is raised if the fmt-string is not valid.
+
+    Returns
+    -------
+    None.
+
+    """
+    _raw_data_to_folder(archive, raw_data_path, fmt, ms_id)
 
 
 def _get_next_rawdata_index(h5_file, group_name, reference_name):
@@ -255,7 +291,7 @@ def _get_next_rawdata_index(h5_file, group_name, reference_name):
     return i
 
 
-def raw_data_to_hdf5(ms_id: str, fmt: str):
+def _raw_data_to_hdf5(archive_obj, ms_id: str, fmt: str):
     """
     Write all data from the raw data datafiles in the archive at
     <base_dir>/data/M<ms_id>/raw/
@@ -286,26 +322,26 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
 
     """
     # set the path
-    path = archive.measurement_path(ms_id)
+    path = archive_obj.measurement_path(ms_id)
     raw_path = path / "raw"
     hdf5_path = path / f"measurement_M{ms_id}.h5"
 
     # load and save data from Bruker bes3t format
     if fmt == "bruker_bes3t":
-        files = archive.list_files(raw_path)
+        files = archive_obj.list_files(raw_path)
         bases = sorted(Path(filename).with_suffix("") for filename in files if Path(filename).suffix == ".DSC")
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            if not archive.exists(raw_path/base.with_suffix(".DTA")):
+            if not archive_obj.exists(raw_path/base.with_suffix(".DTA")):
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
-            with archive.temporary_path(raw_path) as data_path:
+            with archive_obj.temporary_path(raw_path) as data_path:
                 data, x, params = l.load_bruker_bes3t(data_path/base, "DSC", "")
                 # write intensities to dataset
-                with archive.open_measurement_h5_file(hdf5_path, "a") as h5_file:
+                with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "data_real")
 
                     new_dataset_to_hdf5(data, h5_file, "raw_data", f"data_{idx}")
@@ -325,7 +361,7 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
                         grp.attrs[key] = value
 
     elif fmt == "cw_epr":
-        files = archive.list_files(raw_path)
+        files = archive_obj.list_files(raw_path)
         bases = sorted(
             Path(filename).with_suffix("")
             for filename in files
@@ -335,14 +371,14 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            if not archive.exists(raw_path/base.with_suffix(".DTA")):
+            if not archive_obj.exists(raw_path/base.with_suffix(".DTA")):
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
-            with archive.temporary_path(raw_path) as data_path:
+            with archive_obj.temporary_path(raw_path) as data_path:
                 spc_real, spc_imag, field, params = l.load_cw_epr(data_path/base)
 
-                with archive.open_measurement_h5_file(hdf5_path, "a") as h5_file:
+                with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     # write intensities to dataset
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "data_real")
                     new_dataset_to_hdf5(spc_real, h5_file, "raw_data", f"data_real_{idx}")
@@ -358,7 +394,7 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
                         grp.attrs[key] = value
 
     elif fmt == "uvvis_ulm":
-        files = archive.list_files(raw_path)
+        files = archive_obj.list_files(raw_path)
         bases = sorted(
             Path(filename).with_suffix("")
             for filename in files
@@ -368,10 +404,10 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            with archive.temporary_path(raw_path) as data_path:
+            with archive_obj.temporary_path(raw_path) as data_path:
                 wavelength, intensity, meta = l.load_uvvis_ulm(data_path/base.with_suffix(".txt"))
 
-                with archive.open_measurement_h5_file(hdf5_path, "a") as h5_file:
+                with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "intensity")
 
                     new_dataset_to_hdf5(intensity, h5_file, "raw_data", f"intensity_{idx}")
@@ -382,7 +418,7 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
                         grp.attrs[key] = value
 
     elif fmt == "uvvis_freiburg":
-        files = archive.list_files(raw_path)
+        files = archive_obj.list_files(raw_path)
         bases = sorted(
             Path(filename).with_suffix("")
             for filename in files
@@ -392,10 +428,10 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            with archive.temporary_path(raw_path) as data_path:
+            with archive_obj.temporary_path(raw_path) as data_path:
                 wavelength, intensity, meta = l.load_uvvis_freiburg(data_path/base.with_suffix(".txt"))
 
-                with archive.open_measurement_h5_file(hdf5_path, "a") as h5_file:
+                with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "intensity")
 
                     new_dataset_to_hdf5(intensity, h5_file, "raw_data", f"intensity_{idx}")
@@ -412,9 +448,10 @@ def raw_data_to_hdf5(ms_id: str, fmt: str):
     print("Raw data were successfully added to hdf5.")
     return
 
+def raw_data_to_hdf5(ms_id, fmt):
+    _raw_data_to_hdf5(archive, ms_id, fmt)
 
-def delete_element(
-    ms_id: int, category: str, filename: str, save_delete: bool = True
+def _delete_element(archive_obj, ms_id: int, category: str, filename: str, save_delete: bool = True
 ):
     """
     Delete a file from the archive.
@@ -452,10 +489,10 @@ def delete_element(
                          {CATEGORIES}"
         )
 
-    path = archive.measurement_path(ms_id)
+    path = archive_obj.measurement_path(ms_id)
     file_path = path / category / filename
 
-    if not archive.exists(file_path):
+    if not archive_obj.exists(file_path):
         raise FileNotFoundError(f"{file_path} does not exist.")
 
     if save_delete:
@@ -464,13 +501,15 @@ def delete_element(
             print("Deletion cancelled")
             return
 
-    archive.delete_file(file_path)
+    archive_obj.delete_file(file_path)
     print(f"Deleted: {file_path}")
 
     return
 
+def delete_element(ms_id: int, category: str, filename: str, save_delete: bool = True):
+    _delete_element(archive, ms_id, category, filename, save_delete)
 
-def delete_measurement(ms_id: int, save_delete: bool = True):
+def _delete_measurement(archive_obj, ms_id: int, save_delete: bool = True):
     """
     Delete a whole measurement directory from the archive.
 
@@ -493,8 +532,8 @@ def delete_measurement(ms_id: int, save_delete: bool = True):
     None.
 
     """
-    path = archive.measurement_path(ms_id)
-    if not archive.exists(path):
+    path = archive_obj.measurement_path(ms_id)
+    if not archive_obj.exists(path):
         raise FileNotFoundError(f"Measurement does not exist: {path}")
 
     if save_delete:
@@ -503,12 +542,14 @@ def delete_measurement(ms_id: int, save_delete: bool = True):
             print("Deletion cancelled")
             return
 
-    archive.delete_folder(path)
+    archive_obj.delete_folder(path)
     print(f"Measurement directory deleted: {path}")
     return
 
+def delete_measurement(ms_id: int, save_delete: bool = True):
+    _delete_measurement(archive, ms_id, save_delete)
 
-def list_files(ms_id: str, category: str = "") -> list:
+def _list_files(archive_obj, ms_id: str, category: str = "") -> list:
     """
     List all files in a single measurement directory with the ID ms_id and
     all subdirectorys. If a category is chosen only files of this category
@@ -543,12 +584,15 @@ def list_files(ms_id: str, category: str = "") -> list:
                              Allowed values are: {CATEGORIES}"
             )
 
-    path = archive.measurement_path(ms_id)
+    path = archive_obj.measurement_path(ms_id)
     folder = path / category
 
-    if not archive.exists(folder):  # return empty list
+    if not archive_obj.exists(folder):  # return empty list
         return []
 
-    files = archive.list_files(folder)
+    files = archive_obj.list_files(folder)
 
     return files
+
+def list_files(ms_id: str, category: str = ""):
+    return _list_files(archive, ms_id, category)

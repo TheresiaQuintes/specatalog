@@ -25,6 +25,7 @@ from PyQt6 import QtWidgets
 from pathlib import Path
 from specatalog.config import BASE_PATH
 import specatalog.gui.table_models as tm
+from specatalog.main import archive
 
 MODEL_FILTER_MAPPER = {
     "Measurements": r.MeasurementFilter,
@@ -103,7 +104,7 @@ def submit_new_entry(self):
 
     if self.RadioMeasurements.isChecked():
         output = create_full_measurement(
-            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+            new_entry_model, raw_data, self.ComboRawFormat.currentText()
         )
     else:
         output = create_full_molecule(

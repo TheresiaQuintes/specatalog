@@ -1,8 +1,9 @@
 import h5py
 from specatalog.crud_db import read as r
-from specatalog.config import BASE_PATH
 from typing import Any
 import numpy as np
+from contextlib import contextmanager
+from specatalog.main import archive
 
 
 class H5Object:
@@ -229,6 +230,7 @@ class H5Object:
             self._node.file.flush()
 
 
+@contextmanager
 def load_h5(filename: str, mode: str = "r") -> (H5Object, h5py.File):
     """
     Load a hdf5-file as a H5Object.
@@ -251,11 +253,12 @@ def load_h5(filename: str, mode: str = "r") -> (H5Object, h5py.File):
         done.
 
     """
-    f = h5py.File(filename, mode)
-    obj = H5Object(f, writable=(mode != "r"))
-    return obj, f
+    with archive.open_measurement_h5_file(filename, mode=mode) as f:
+        obj = H5Object(f, writable=(mode != "r"))
+        yield obj, f
 
 
+@contextmanager
 def load_from_id(ms_id: int, mode: str = "r") -> (H5Object, h5py.File):
     """
     Load a hdf5-measurement-file from the archive as a H5Object.
@@ -283,14 +286,21 @@ def load_from_id(ms_id: int, mode: str = "r") -> (H5Object, h5py.File):
         The loaded hdf5-file. Use f.close() after all changes to the file are
         done.
 
+    Example:
+    -------
+    with h.load_from_id(222, mode="a") as (obj, f):
+        obj.corrected_data.set_attr("test2", 1234)
+        obj.sync()
+
+        int = obj.raw_data.intensity_0
+
+    print(int)
     """
     find_measurement = r.MeasurementFilter(id=ms_id)
     m = r.run_query(find_measurement)
-    if len(m) == 0:
+    if len(m) != 0:
         raise ValueError(f"No measurement with the id={ms_id} found.")
 
-    m = m[0]
-    data_path = BASE_PATH / m.path / f"measurement_M{m.id}.h5"
-    obj, f = load_h5(data_path, "a")
+    with load_h5(archive.measurement_path(ms_id)/f"measurement_M{ms_id}.h5", mode=mode) as (obj, f):
+        yield obj, f
 
-    return obj, f

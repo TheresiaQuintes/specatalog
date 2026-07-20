@@ -37,7 +37,7 @@ if REMOTE_ARCHIVE == "True":
 else:
     remote = False
 
-archive = SpecatalogArchive(remote)
+archive = SpecatalogArchive(remote, BASE_PATH)
 
 # Import external allowed_values
 _ALLOWED_VALUES_MODULE = None

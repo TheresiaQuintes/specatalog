@@ -1,5 +1,4 @@
 from smbclient import register_session, listdir, delete_session
-from specatalog.main import BASE_PATH
 from pathlib import Path
 import os
 import smbclient as smb
@@ -36,18 +35,18 @@ class SMBConnectionManager:
     def remote_path(self):
         return Path(f"{self.host}/{self.share}")
 
-def create_archive(use_remote_archive:bool):
+def create_archive(use_remote_archive:bool, local_path=""):
     if use_remote_archive:
         connection = SMBConnectionManager()
         connection.connect()
         return connection.remote_path()
     else:
-        archive = Path(BASE_PATH)
+        archive = Path(local_path)
         return archive
 
 class SpecatalogArchive:
-    def __init__(self, use_remote_archive: bool):
-        self.archive = create_archive(use_remote_archive)
+    def __init__(self, use_remote_archive: bool, local_path=""):
+        self.archive = create_archive(use_remote_archive, local_path)
         self.use_remote_archive = use_remote_archive
         # self.database = create_database()
 
@@ -164,59 +163,24 @@ class SpecatalogArchive:
         else:
             return Path(p)
 
-    def data_loader(self):
-        pass
+    def copy_directory_to_archive(self, src, dst_p):
+        src = Path(src)
 
+        if self.use_remote_archive:
+            dst = self.path_to_unc(dst_p)
 
-test_remote = SpecatalogArchive(True)
+            smb_shutil.copytree(
+                str(src),
+                dst,
+                dirs_exist_ok=False,
+            )
 
-test_local = SpecatalogArchive(False)
+        else:
+            dst = self.archive / dst_p
 
-print(test_remote.list_files(Path("data")))
-print(test_local.list_files(Path("data")))
-print(test_remote.list_files(Path("data/M45")))
-
-print(test_remote.exists("data/M45"))
-print(test_local.exists("data/M45"))
-print(test_remote.exists("data/M46"))
-print(test_local.exists("data/M46"))
-"""
-#test_remote.make_dir("data/test1")
-#test_local.make_dir("data/test2")
-#test_local.make_dir("data/test3/test4")
-#test_remote.make_dir("data/test4/test5")
-
-#with test_local.open_measurement_h5_file("data/test2/ms.h5", "a") as f:
-#    f.create_group("raw_data")
-
-#with test_remote.open_measurement_h5_file("data/test3/test4/ms1.h5", mode="w") as file:
-#    file.create_group("raw_data1")
-#    file.create_group("raw_data2")
-
-#with test_remote.open_measurement_h5_file("data/test3/test4/ms1.h5", mode="a") as file:
-#    file.create_group("raw_data3")
-
-#a = test_remote.measurement_path(4)
-#print(a)
-
-#test_remote.copy_to_archive("/home/quintes/Dokumente/j_nn/model.py", "data/test4/test5")
-#test_local.copy_to_archive("/home/quintes/Dokumente/j_nn/model.py", "data/test1")
-#test_local.delete_file("data/test1/model.py")
-#test_remote.delete_file("data/test4/test5/model.py")
-
-#test_local.delete_folder("data/test2")
-#test_remote.delete_folder("data/test3")
-
-#with test_local.temporary_path("data/M4/raw/02_cPDIc-TEMPO_1-15_tol_0p1mMPDI_1mm.txt") as path:
-#    with open(path) as f:
-#        for line in f:
-#            print(line)
-#    print(path)
-
-#with test_remote.temporary_path("data/M4/raw/02_cPDIc-TEMPO_1-15_tol_0p1mMPDI_1mm.txt") as path:
-#    with open(path) as f:
-#        for line in f:
-#            print(line)
-#    print(path)
-
-"""
+            shutil.copytree(
+                src,
+                dst,
+                dirs_exist_ok=False,
+            )
+    
