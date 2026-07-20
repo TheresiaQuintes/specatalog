@@ -4,7 +4,7 @@ import json
 
 
 def print_welcome():
-    from specatalog.main import BASE_PATH
+    from specatalog.config import BASE_PATH
 
     print(f"""
           Welcome to specatalog! \n

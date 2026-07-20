@@ -6,7 +6,7 @@ from sqlalchemy import pool
 from alembic import context
 
 from specatalog.models.base import Model
-from specatalog.main import DATABASE_URL_ADMIN
+from specatalog.config import DATABASE_URL_ADMIN
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

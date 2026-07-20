@@ -1,6 +1,6 @@
 import h5py
 from specatalog.crud_db import read as r
-from specatalog.main import BASE_PATH
+from specatalog.config import BASE_PATH
 from typing import Any
 import numpy as np
 

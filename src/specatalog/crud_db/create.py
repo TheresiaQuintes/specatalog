@@ -7,7 +7,8 @@ from specatalog.models.creation_pydantic_molecules import MoleculeModel
 from specatalog.models.molecules import Molecule
 from specatalog.helpers.helper_functions import _enum_to_value
 
-from specatalog.main import MOLECULES_PATH, MEASUREMENTS_PATH, db_session
+from specatalog.config import MOLECULES_PATH, MEASUREMENTS_PATH
+from specatalog.main import db_session
 
 
 measurement_model_pyd = TypeVar(

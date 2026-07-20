@@ -54,7 +54,7 @@ def run_alembic_upgrade():
     """
     Apply all migrations (initial schema)
     """
-    from specatalog.main import DATABASE_URL_ADMIN
+    from specatalog.config import DATABASE_URL_ADMIN
 
     alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
     alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
@@ -65,7 +65,7 @@ def run_alembic_upgrade():
 
 
 def specatalog_init_db():
-    from specatalog.main import BASE_PATH
+    from specatalog.config import BASE_PATH
 
     exist = input(f"Does the archive and database already exist at {BASE_PATH}? y/n?")
 

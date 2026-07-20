@@ -8,7 +8,7 @@ import h5py
 import tempfile
 import smbclient.shutil as smb_shutil
 import shutil
-from specatalog.main import HOST, USERNAME, SHARE, PWD
+from specatalog.config import HOST, USERNAME, SHARE, PWD
 
 
 class SMBConnectionManager:
@@ -154,7 +154,6 @@ class SpecatalogContext:
         pass
 
 
-
 test_remote = SpecatalogContext(True)
 
 test_local = SpecatalogContext(False)
@@ -167,7 +166,7 @@ print(test_remote.exists("data/M45"))
 print(test_local.exists("data/M45"))
 print(test_remote.exists("data/M46"))
 print(test_local.exists("data/M46"))
-
+"""
 #test_remote.make_dir("data/test1")
 #test_local.make_dir("data/test2")
 #test_local.make_dir("data/test3/test4")
@@ -205,3 +204,5 @@ print(test_local.exists("data/M46"))
 #        for line in f:
 #            print(line)
 #    print(path)
+
+"""

@@ -23,7 +23,7 @@ from specatalog.helpers.full_entry import (
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
-from specatalog.main import BASE_PATH
+from specatalog.config import BASE_PATH
 import specatalog.gui.table_models as tm
 
 MODEL_FILTER_MAPPER = {
