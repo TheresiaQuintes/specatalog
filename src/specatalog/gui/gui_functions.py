@@ -25,7 +25,7 @@ from PyQt6 import QtWidgets
 from pathlib import Path
 from specatalog.config import BASE_PATH
 import specatalog.gui.table_models as tm
-from specatalog.main import archive
+
 
 MODEL_FILTER_MAPPER = {
     "Measurements": r.MeasurementFilter,
@@ -98,8 +98,7 @@ def submit_new_entry(self):
         msg.setDetailedText(str(e))
         msg.exec()
         return
-    # TODO: Vorher wurde hier das LineRawDataInput ausgelesen.
-    # Mache es auch möglich für Drag-And-Drop!
+
     raw_data = self.raw_data_files
 
     if self.RadioMeasurements.isChecked():
@@ -108,7 +107,7 @@ def submit_new_entry(self):
         )
     else:
         output = create_full_molecule(
-            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+            new_entry_model, raw_data, self.ComboRawFormat.currentText()
         )
 
     if output.success:
@@ -420,7 +419,7 @@ def change_ms_mol(self):
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
         self.ComboRawFormat.addItems(
-            [".pdf", ".cdxml", ".png", ".jpg", ".jpeg", ".svg"]
+            ["all", ".pdf", ".cdxml", ".png", ".jpg", ".jpeg", ".svg"]
         )
 
         self.SpinBoxDelete.setEnabled(False)

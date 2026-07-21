@@ -1,5 +1,4 @@
 import tempfile
-import shutil
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
@@ -162,7 +161,7 @@ def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResu
 
 
 def create_full_molecule(
-    data: cr.molecule_model_pyd, base_dir: Path, molecular_formula_path: Path, fmt: str
+    data: cr.molecule_model_pyd, molecular_formula_path: Path, fmt: str
 ) -> CreateMoleculeResult:
     """
     Create a complete molecule entry including database and file system
@@ -196,28 +195,33 @@ def create_full_molecule(
         In case of success, the molecular ID is provided. In case of failure,
         the raised exception is included.
     """
-    temp_base_dir = None
+
     try:
         with db_session() as session:
             molecule = cr._create_new_molecule(data, session)
 
-            temp_base_dir = Path(tempfile.mkdtemp(dir=base_dir))
-            temp_path = Path(temp_base_dir / molecule.structural_formula)
-            temp_path.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_archive = SpecatalogArchive(False, temp_dir)
+                temp_archive.make_dir(molecule.structural_formula)
 
-            molecular_formula_path = Path(molecular_formula_path)
-            raw = molecular_formula_path.with_suffix(fmt)
-            target = (temp_path / molecule.name).with_suffix(fmt)
-            shutil.copy2(raw, target)
+                if fmt == "all":
+                    for f in [".pdf", ".cdxml", ".png", ".jpeg", ".jpg", ".svg"]:
+                        for raw in molecular_formula_path:
+                            raw_f = Path(raw).with_suffix(f)
+                            if raw_f.exists():
+                                temp_archive.copy_to_archive(raw_f, (Path(molecule.structural_formula) / molecule.name).with_suffix(f))
+                                
+                else:
+                    for raw in molecular_formula_path:
+                        raw = Path(raw).with_suffix(fmt)
+                        temp_archive.copy_to_archive(raw, (Path(molecule.structural_formula)/molecule.name).with_suffix(fmt))
 
-        final_dir = base_dir / molecule.structural_formula
-        temp_path.rename(final_dir)
-        shutil.rmtree(temp_base_dir)
+                src = Path(temp_dir) / molecule.structural_formula
+                archive.copy_directory_to_archive(src, molecule.structural_formula)
 
         return CreateMoleculeResult(success=True, molecular_id=molecule.id)
 
     except Exception as e:
-        if temp_base_dir and temp_base_dir.exists():
-            shutil.rmtree(temp_base_dir)
-
+        if archive.exists(f"molecules/MOL{molecule.id}"):
+            archive.delete_folder(f"molecules/MOL{molecule.id}")
         return CreateMoleculeResult(success=False, error=e)
