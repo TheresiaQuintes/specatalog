@@ -118,7 +118,7 @@ def create_full_measurement(
         return CreateMeasurementResult(success=False, error=e)
 
 
-def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResult:
+def delete_full_measurement(ms_id: int) -> CreateMeasurementResult:
     """
     Delete a complete measurement entry (with the id ms_id) including database
     and file system operations.

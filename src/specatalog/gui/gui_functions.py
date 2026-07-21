@@ -23,7 +23,6 @@ from specatalog.helpers.full_entry import (
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
-from specatalog.config import BASE_PATH
 import specatalog.gui.table_models as tm
 
 
@@ -136,7 +135,7 @@ def delete_entry(self):
         f"Do you really want to delete the measurement with the ID {ms_id} from the archive?",
     )
     if sure == QMessageBox.StandardButton.Yes:
-        output = delete_full_measurement(BASE_PATH, ms_id)
+        output = delete_full_measurement(ms_id)
 
         if output.success:
             msg = QMessageBox(self)

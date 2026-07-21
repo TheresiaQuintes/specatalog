@@ -63,9 +63,12 @@ def load_allowed_values(path: Path):
     return module
 
 
-try:
-    ALLOWED_VALUES = load_allowed_values(BASE_PATH / "allowed_values.py")
-except FileNotFoundError:
+
+if archive.exists("allowed_values.py"):
+    with archive.temporary_path("allowed_values.py") as pt:
+        ALLOWED_VALUES = load_allowed_values(pt)
+
+else:
     print("Please run postinstall to generate your own allowed_values.py.")
     import specatalog.helpers.allowed_values_not_adapted as module
 
