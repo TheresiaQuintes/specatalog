@@ -10,12 +10,23 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 # create archive directory
-def create_archive_directory():
-    """
-    Creates the archive directory structure using the provided SpecatalogArchive object.
+def create_archive_directory() -> bool:
+    """Create the basic archive directory structure.
 
-    Returns:
-        bool: True if successful, False otherwise
+    Creates the required directory structure and configuration files
+    for the measurement archive.
+
+    Returns
+    -------
+    bool
+        True if directory creation was successful, False otherwise
+
+    Notes
+    -----
+    Creates:
+    - data/ directory for measurements
+    - molecules/ directory for molecule data
+    - allowed_values.py configuration file
     """
     # Define path definitions
     measurements_path = "data"
@@ -54,7 +65,18 @@ def create_archive_directory():
     return True
 
 
-def run_alembic_upgrade():
+def run_alembic_upgrade() -> None:
+    """Apply all database migrations to bring schema to current version.
+
+    Uses Alembic to upgrade the database schema to the latest version
+    defined in the migration scripts.
+
+    Notes
+    -----
+    - Requires valid database connection configuration
+    - Will create all tables and apply all migrations
+    - Prints confirmation message upon completion
+    """
     """
     Apply all migrations (initial schema)
     """
@@ -68,7 +90,20 @@ def run_alembic_upgrade():
     return
 
 
-def specatalog_init():
+def specatalog_init() -> None:
+    """Initialize the Specatalog system.
+
+    Checks if archive and database already exist, and if not,
+    creates them by:
+    1. Setting up the directory structure
+    2. Applying database migrations
+
+    Notes
+    -----
+    - Prompts user to confirm if existing setup should be used
+    - Only creates new setup if user answers 'n'
+    - Prints status messages during initialization
+    """
     from specatalog.config import BASE_PATH
 
     exist = input(f"Does the archive and database already exist at {BASE_PATH}? y/n?")

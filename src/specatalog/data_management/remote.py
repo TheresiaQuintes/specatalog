@@ -1,3 +1,5 @@
+from typing import Union
+
 from smbclient import register_session, listdir, delete_session
 from pathlib import Path
 import os
@@ -11,31 +13,58 @@ from specatalog.config import HOST, USERNAME, SHARE, PWD
 
 
 class SMBConnectionManager:
-    def __init__(self):
+    """Manages SMB network connections for the archive."""
+    def __init__(self) -> None:
+        """Initialize the SMB connection manager with configuration."""
         self.host = HOST
         self.username = USERNAME
         self.password = PWD
         self.share = SHARE
         self.connection = None
 
-    def connect(self):
+    def connect(self) -> None:
+        """Establish connection to the SMB server."""
         self.connection = register_session(self.host, username=self.username, password=self.password)
 
-    def disconnect(self):
+    def disconnect(self) -> None:
+        """Close the SMB connection."""
         delete_session(self.host)
 
-    def ensure_connection(self):
+    def ensure_connection(self) -> None:
+        """Ensure an active connection exists, connecting if needed."""
         if self.connection is None:
             self.connect()
 
-    def reconnect(self):
+    def reconnect(self) -> None:
+        """Re-establish the SMB connection."""
         self.disconnect()
         self.connect()
 
-    def remote_path(self):
+    def remote_path(self) -> Path:
+        """Get the remote base path for the archive.
+
+        Returns
+        -------
+        Path
+            The remote base path
+        """
         return Path(f"{self.host}/{self.share}")
 
-def create_archive(use_remote_archive:bool, local_path=""):
+def create_archive(use_remote_archive: bool, local_path: str = "") -> Path:
+    """Create and return an archive path.
+
+    Parameters
+    ----------
+    use_remote_archive : bool
+        Whether to use remote SMB archive
+    local_path : str, optional
+        Local path if not using remote archive
+
+    Returns
+    -------
+    Path
+        Path to the archive
+    """
     if use_remote_archive:
         connection = SMBConnectionManager()
         connection.connect()
@@ -45,55 +74,148 @@ def create_archive(use_remote_archive:bool, local_path=""):
         return archive
 
 class SpecatalogArchive:
-    def __init__(self, use_remote_archive: bool, local_path=""):
+    """Handles file operations for the measurement archive. All file operations
+    run relative to the archive root (self.archive)."""
+    def __init__(self, use_remote_archive: bool, local_path: str = "") -> None:
+        """Initialize the archive handler.
+
+        Parameters
+        ----------
+        use_remote_archive : bool
+            Whether to use remote SMB archive
+        local_path : str, optional
+            Local path if not using remote archive
+        """
         self.archive = create_archive(use_remote_archive, local_path)
         self.use_remote_archive = use_remote_archive
 
-    def path_to_unc(self, p):
+    def path_to_unc(self, p: Union[str, Path]) -> str:
+        """Convert local path to UNC path format.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Local path to convert
+
+        Returns
+        -------
+        str
+            UNC path string
+        """
         path = self.archive / p
         parts = path.parts
         s = "\\".join(parts)
         return rf"\\{s}"
 
-    def list_files(self, p):
+    def list_files(self, p: Union[str, Path]) -> list[str]:
+        """List files in a directory.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Directory path
+
+        Returns
+        -------
+        list[str]
+            List of filenames
+        """
         if self.use_remote_archive:
             return smb.listdir(self.path_to_unc(p))
         else:
             return os.listdir(self.archive / p)
 
-    def exists(self, p):
+    def exists(self, p: Union[str, Path]) -> bool:
+        """Check if path exists.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path to check
+
+        Returns
+        -------
+        bool
+            True if path exists
+        """
         if self.use_remote_archive:
             return smb.path.exists(self.path_to_unc(p))
         else:
             return (self.archive / p).exists()
 
-    def make_dir(self, p):
+    def make_dir(self, p: Union[str, Path]) -> None:
+        """Create directory.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Directory path to create
+        """
         if self.use_remote_archive:
             smb.makedirs(self.path_to_unc(p), exist_ok=True)
         else:
             (self.archive / p).mkdir(parents=True, exist_ok=True)
 
-    def copy_to_archive(self, src, dst_p):
+    def copy_to_archive(self, src: Union[str, Path], dst_p: Union[str, Path]) -> None:
+        """Copy file to archive.
+
+        Parameters
+        ----------
+        src : Union[str, Path]
+            Source file path
+        dst_p : Union[str, Path]
+            Destination path in archive
+        """
         if self.use_remote_archive:
             dst = self.path_to_unc(dst_p)
             smb_shutil.copy2(str(src), dst)
         else:
             shutil.copy2(src, self.archive / dst_p)
 
-    def delete_file(self, p):
+    def delete_file(self, p: Union[str, Path]) -> None:
+        """Delete file from archive.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path of file to delete
+        """
         if self.use_remote_archive:
             smb.unlink(self.path_to_unc(p))
         else:
             (self.archive / p).unlink()
 
-    def delete_folder(self, p):
+    def delete_folder(self, p: Union[str, Path]) -> None:
+        """Delete directory from archive.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path of directory to delete
+        """
         if self.use_remote_archive:
             smb_shutil.rmtree(self.path_to_unc(p))
         else:
             shutil.rmtree(self.archive / p)
 
     @contextmanager
-    def open_file(self, p, mode="r", encoding="utf-8"):
+    def open_file(self, p: Union[str, Path], mode: str = "r", encoding: str = "utf-8"):
+        """Context manager for opening files.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path of file to open
+        mode : str, optional
+            File opening mode
+        encoding : str, optional
+            File encoding
+
+        Yields
+        ------
+        file
+            Open file object
+        """
         if self.use_remote_archive:
             remote_path = self.path_to_unc(p)
             with smb.open_file(remote_path, mode=mode, encoding=encoding) as file:
@@ -104,7 +226,21 @@ class SpecatalogArchive:
                 yield file
 
     @contextmanager
-    def open_measurement_h5_file(self, p, mode):
+    def open_measurement_h5_file(self, p: Union[str, Path], mode: str):
+        """Context manager for HDF5 files with remote sync.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path of HDF5 file
+        mode : str
+            File opening mode
+
+        Yields
+        ------
+        h5py.File
+            Open HDF5 file object
+        """
         if self.use_remote_archive:
             with tempfile.TemporaryDirectory() as tmpdir:
                 remote_path = self.path_to_unc(p)
@@ -124,7 +260,19 @@ class SpecatalogArchive:
                 yield file
 
     @contextmanager
-    def temporary_path(self, p):
+    def temporary_path(self, p: Union[str, Path]):
+        """Context manager for temporary local copies.
+
+        Parameters
+        ----------
+        p : Union[str, Path]
+            Path of remote file/directory
+
+        Yields
+        ------
+        Path
+            Path to local temporary copy
+        """
         if self.use_remote_archive:
             with tempfile.TemporaryDirectory() as tmpdir:
                 local_path = Path(tmpdir) / Path(p).name
@@ -153,7 +301,24 @@ class SpecatalogArchive:
             local_path = self.archive / p
             yield local_path
             
-    def measurement_path(self, ms_id):
+    def measurement_path(self, ms_id: Union[str, int]) -> Path:
+        """Get measurement directory path 'data/M{ms_id}'.
+
+        Parameters
+        ----------
+        ms_id : Union[str, int]
+            Measurement ID
+
+        Returns
+        -------
+        Path
+            Path to measurement directory
+
+        Raises
+        ------
+        FileNotFoundError
+            If measurement directory doesn't exist
+        """
         p =  fr"data/M{ms_id}"
 
         if not self.exists(p):
@@ -162,7 +327,18 @@ class SpecatalogArchive:
         else:
             return Path(p)
 
-    def copy_directory_to_archive(self, src, dst_p):
+    def copy_directory_to_archive(
+        self, src: Union[str, Path], dst_p: Union[str, Path]
+    ) -> None:
+        """Copy directory to archive.
+
+        Parameters
+        ----------
+        src : Union[str, Path]
+            Source directory path
+        dst_p : Union[str, Path]
+            Destination path in archive
+        """
         src = Path(src)
 
         if self.use_remote_archive:

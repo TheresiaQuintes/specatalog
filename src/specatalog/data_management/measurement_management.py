@@ -1,4 +1,8 @@
 from pathlib import Path
+from typing import Union, Optional, Literal
+
+import h5py
+
 import specatalog.data_management.data_loader as l
 import numpy as np
 from specatalog.main import archive
@@ -6,52 +10,33 @@ from specatalog.main import archive
 CATEGORIES = ["raw", "scripts", "figures", "additional_info", "literature"]
 
 
-def _create_measurement_dir(archive_obj, ms_id: int) -> Path:
+def _create_measurement_dir(archive_obj, ms_id: int) -> str:
     """
-    Create a new directory for a single measurement with the measurement-ID
-    ms_id in the folder of the archive (base_dir). Directory and subdirectories
-    are created as well as a hdf5-file for saving the data of the measurement.
-    The hdf5-file has three groups: "raw_data", "corrected_data" and
-    "evaluations".
-
-    The structure is as follows:
-
-    .. code-block:: text
-
-        base_dir/
-        ├── data/
-        │   ├── M1/
-        │   ├── M2/
-        │   ├── M3/
-        │   ├── ...
-        │   └── M{ms_id}/
-        │       ├── additional_info/
-        │       ├── figures/
-        │       ├── literature/
-        │       ├── raw/
-        │       ├── scripts/
-        │       └── measurement_M{ms_id}.h5
-        │
-        └── <other directories of the archive>
-
+    Creates a new measurement directory structure with HDF5 file.
 
     Parameters
     ----------
-    base_dir : str
-        Path to the root-folder of the archive.
+    archive_obj
+        Archive object with directory operations.
     ms_id : int
-        Number of the measurement.
+        Measurement ID number.
 
     Raises
     ------
     FileExistsError
-        An error is raised if the measurement directory already exists.
+        If measurement directory or HDF5 file already exists.
 
     Returns
     -------
-    path: Path
-        Absolute path to the new measurement directory.
+    p : str
+        Relative path to the new measurement directory from the archive root.
 
+    Notes
+    -----
+    Creates directory structure with:
+    - data/M{ms_id}/
+    - Subdirectories: additional_info, figures, literature, raw, scripts
+    - HDF5 file with groups: raw_data, corrected_data, evaluations
     """
     p = f"data/M{ms_id}"
     
@@ -77,43 +62,66 @@ def _create_measurement_dir(archive_obj, ms_id: int) -> Path:
     return p
 
 
-def create_measurement_dir(ms_id):
-    return _create_measurement_dir(archive, ms_id)
-
-def _new_file_to_archive(archive_obj, src: str, ms_id: int, category: str, update=False
-):
+def create_measurement_dir(ms_id: int) -> str:
     """
-    Copy a file to the archive. The file is saved at:
-    <base_dir>/data/M<ms_id>/<category>/<src_file_name>.
+    Creates a new measurement directory structure with HDF5 file in the
+    archive root folder.
 
     Parameters
     ----------
-    src : str or Path
-        Path of the file that is to be saved in the archive.
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
+    ms_id : int
+        Measurement ID number.
+
+    Returns
+    -------
+    p : str
+        Relative path to the new measurement directory from the archive root.
+
+    Notes
+    -----
+    Creates directory structure with:
+    - data/M{ms_id}/
+    - Subdirectories: additional_info, figures, literature, raw, scripts
+    - HDF5 file with groups: raw_data, corrected_data, evaluations
+    """
+    return _create_measurement_dir(archive, ms_id)
+
+def _new_file_to_archive(
+    archive_obj,
+    src: Union[str, Path],
+    ms_id: int,
+    category: str,
+    update: bool = False
+) -> None:
+    """
+    Copies a file to the archive measurement directory.
+
+    Parameters
+    ----------
+    archive_obj
+        Archive object with directory operations.
+    src : Union[str, Path]
+        Source file path to be archived.
+    ms_id : int
+        Measurement ID number.
     category : str
-        One of the categories: ["raw", "scripts", "figures", "additional_info",
-        "literature"]. The file is copied to the corresponding subfolder.
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature).
     update : bool, optional
-        If set to false an error is risen in case the file aleardy exists.
-        The default is False.
+        If False, raises error when file exists (default: False).
 
     Raises
     ------
     ValueError
-        An error is raised if the category is not one out of the list:
-        ["raw", "scripts", "figures", "additional_info", "literature"].
+        If category is invalid.
     FileNotFoundError
-        An error is raised if the source file does not exist.
+        If source file doesn't exist.
     FileExistsError
-        An error is raised if the target file exists and update=False.
+        If target file exists and update=False.
 
     Returns
     -------
-    None.
+    None
     """
 
     src = Path(src)
@@ -146,30 +154,65 @@ def _new_file_to_archive(archive_obj, src: str, ms_id: int, category: str, updat
     return
 
 
-def new_file_to_archive(src: str, ms_id: int, category: str, update=False):
-    _new_file_to_archive(archive, src, ms_id, category, update)
-
-def new_dataset_to_hdf5(
-    data: np.ndarray, h5_file, group_name: str, dataset_name: str
-):
+def new_file_to_archive(
+    src: Union[str, Path],
+    ms_id: int,
+    category: str,
+    update: bool = False
+) -> None:
     """
-    Write a new dataset to a hdf5-file.
+    Copies a file to the archive measurement directory.
 
     Parameters
     ----------
-    data : np.ndarray
-        An array of data points. If data = None nothing is written to the file.
-    hdf5_path : str
-        Path to the hdf5-file.
-    group_name : str
-        Name of the group.
-    dataset_name : str
-        Name of the dataset.
+    src : Union[str, Path]
+        Source file path to be archived.
+    ms_id : int
+        Measurement ID number.
+    category : str
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature).
+    update : bool, optional
+        If False, raises error when file exists (default: False).
+
+    Raises
+    ------
+    ValueError
+        If category is invalid.
+    FileNotFoundError
+        If source file doesn't exist.
+    FileExistsError
+        If target file exists and update=False.
 
     Returns
     -------
-    None.
+    None
+    """
+    _new_file_to_archive(archive, src, ms_id, category, update)
 
+def new_dataset_to_hdf5(
+    data: Optional[np.ndarray],
+    h5_file: h5py.File,
+    group_name: str,
+    dataset_name: str
+) -> None:
+    """
+    Writes a new dataset to an HDF5 file.
+
+    Parameters
+    ----------
+    data : Optional[np.ndarray]
+        Data array to be stored. If None, no action is taken.
+    h5_file : h5py.File
+        Open HDF5 file object.
+    group_name : str
+        Name of the group where dataset will be created.
+    dataset_name : str
+        Name of the new dataset.
+
+    Returns
+    -------
+    None
     """
     if data is None:
         return
@@ -179,36 +222,37 @@ def new_dataset_to_hdf5(
     group.create_dataset(dataset_name, data=data)
     return
 
-def _raw_data_to_folder(archive_obj, raw_data_path: str, fmt: str, ms_id: int):
+def _raw_data_to_folder(
+    archive_obj,
+    raw_data_path: str,
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
+    ms_id: int
+) -> None:
     """
-    Copy raw datafiles to the archive. Existing data with the same name get
-    overwritten. The data are saved at
+    Copies raw data files to the archive directory. Existing data with the same
+    name get overwritten. The data are saved at
     <base_dir>/data/M<ms_id>/raw/<raw_data_file_name>.
     Depending on the format (fmt) all important measurement-files are copied.
 
     Parameters
     ----------
     raw_data_path : str
-        Path to the raw data file without suffix.
-    fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t",
-        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
+        Base path to raw data files (without extension).
+    fmt : Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+        Data format identifier.
+    ms_id : int
+        Measurement ID number.
 
     Raises
     ------
     FileNotFoundError
-        An error is raised if the no raw data at the given path can be found.
+        If required raw data files are missing.
     ValueError
-        An error is raised if the fmt-string is not valid.
+        If format is not supported.
 
     Returns
     -------
-    None.
-
+    None
     """
     # copy all relevant files for Bruker bes3t format (DSC/DTA + optional YGF)
     if fmt == "bruker_bes3t" or fmt == "cw_epr":
@@ -238,48 +282,61 @@ def _raw_data_to_folder(archive_obj, raw_data_path: str, fmt: str, ms_id: int):
 
     return
 
-def raw_data_to_folder(raw_data_path: str, fmt: str, ms_id: int):
+def raw_data_to_folder(
+    raw_data_path: str,
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
+    ms_id: int
+) -> None:
     """
-    Copy raw datafiles to the archive. Existing data with the same name get
-    overwritten. The data are saved at
+    Copies raw data files to the archive directory. Existing data with the same
+    name get overwritten. The data are saved at
     <base_dir>/data/M<ms_id>/raw/<raw_data_file_name>.
     Depending on the format (fmt) all important measurement-files are copied.
 
     Parameters
     ----------
     raw_data_path : str
-        Path to the raw data file without suffix.
-    fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t",
-        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
+        Base path to raw data files (without extension).
+    fmt : Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+        Data format identifier.
+    ms_id : int
+        Measurement ID number.
 
     Raises
     ------
     FileNotFoundError
-        An error is raised if the no raw data at the given path can be found.
+        If required raw data files are missing.
     ValueError
-        An error is raised if the fmt-string is not valid.
+        If format is not supported.
 
     Returns
     -------
-    None.
-
+    None
     """
     _raw_data_to_folder(archive, raw_data_path, fmt, ms_id)
 
 
-def _get_next_rawdata_index(h5_file, group_name, reference_name):
+def _get_next_rawdata_index(
+    h5_file: h5py.File,
+    group_name: str,
+    reference_name: str
+) -> int:
     """
-    Determine next free index for a raw dataset series.
+    Determines the next available index for a raw dataset series.
+
+    Parameters
+    ----------
+    h5_file : h5py.File
+        Open HDF5 file object.
+    group_name : str
+        Name of the group containing the datasets.
+    reference_name : str
+        Base name of the dataset series.
 
     Returns
     -------
-    0 -> first dataset (no suffix)
-    int  -> suffix number
+    int
+        Next available index (0 for first dataset, increments for subsequent ones).
     """
 
     grp = h5_file.require_group(group_name)
@@ -291,7 +348,11 @@ def _get_next_rawdata_index(h5_file, group_name, reference_name):
     return i
 
 
-def _raw_data_to_hdf5(archive_obj, ms_id: str, fmt: str):
+def _raw_data_to_hdf5(
+    archive_obj,
+    ms_id: Union[str, int],
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+) -> None:
     """
     Write all data from the raw data datafiles in the archive at
     <base_dir>/data/M<ms_id>/raw/
@@ -302,24 +363,21 @@ def _raw_data_to_hdf5(archive_obj, ms_id: str, fmt: str):
 
     Parameters
     ----------
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
-    fmt : str
-        Format of the raw_data. One of the supported formats ["bruker_bes3t",
-        "cw_epr", "uvvis_ulm", "uvvis_freiburg"].
+    archive_obj
+        Archive object with file operations.
+    ms_id : Union[str, int]
+        Measurement ID number.
+    fmt : Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+        Data format identifier.
 
     Raises
     ------
     ValueError
-        An error is raised if the fileformat is not known or if not all
-        necessary datafiles are available under the same name.
+        If format is unknown or required files are missing.
 
     Returns
     -------
-    None.
-
+    None
     """
     # set the path
     path = archive_obj.measurement_path(ms_id)
@@ -448,40 +506,70 @@ def _raw_data_to_hdf5(archive_obj, ms_id: str, fmt: str):
     print("Raw data were successfully added to hdf5.")
     return
 
-def raw_data_to_hdf5(ms_id, fmt):
-    _raw_data_to_hdf5(archive, ms_id, fmt)
-
-def _delete_element(archive_obj, ms_id: int, category: str, filename: str, save_delete: bool = True
-):
+def raw_data_to_hdf5(
+    ms_id: Union[str, int],
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+) -> None:
     """
-    Delete a file from the archive.
+    Write all data from the raw data datafiles in the archive at
+    <base_dir>/data/M<ms_id>/raw/
+    to the hdf5-file
+    <base_dir>/data/M<ms_id>/measurement.h5
+
+    The datasets are saved as arrays in the group 'raw_data'.
 
     Parameters
     ----------
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
-    category : str
-        One of the categories: ["raw", "scripts", "figures", "additional_info",
-        "literature"]. The file is deleted from the corresponding subfolder.
-    filename : str
-        Name of the file to be deleted
-    save_delete : bool, optional
-        Ask for confirmation before deletion. The default is True.
+    ms_id : Union[str, int]
+        Measurement ID number.
+    fmt : Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+        Data format identifier.
 
     Raises
     ------
     ValueError
-        An error is raised if the category is not one out of the list:
-        ["raw", "scripts", "figures", "additional_info", "literature"].
-    FileNotFoundError
-        An error is raised if the file does not exist.
+        If format is unknown or required files are missing.
 
     Returns
     -------
-    None.
+    None
+    """
+    _raw_data_to_hdf5(archive, ms_id, fmt)
 
+def _delete_element(
+    archive_obj,
+    ms_id: int,
+    category: str,
+    filename: str,
+    save_delete: bool = True
+) -> None:
+    """
+    Deletes a file from the archive measurement directory.
+
+    Parameters
+    ----------
+    archive_obj
+        Archive object with file operations.
+    ms_id : int
+        Measurement ID number.
+    category : str
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature).
+    filename : str
+        Name of the file to delete.
+    save_delete : bool, optional
+        If True, requires confirmation before deletion (default: True).
+
+    Raises
+    ------
+    ValueError
+        If category is invalid.
+    FileNotFoundError
+        If file doesn't exist.
+
+    Returns
+    -------
+    None
     """
     if category not in CATEGORIES:
         raise ValueError(
@@ -506,31 +594,64 @@ def _delete_element(archive_obj, ms_id: int, category: str, filename: str, save_
 
     return
 
-def delete_element(ms_id: int, category: str, filename: str, save_delete: bool = True):
-    _delete_element(archive, ms_id, category, filename, save_delete)
-
-def _delete_measurement(archive_obj, ms_id: int, save_delete: bool = True):
+def delete_element(
+    ms_id: int,
+    category: str,
+    filename: str,
+    save_delete: bool = True):
     """
-    Delete a whole measurement directory from the archive.
+    Deletes a file from the archive measurement directory.
 
     Parameters
     ----------
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
+    ms_id : int
+        Measurement ID number.
+    category : str
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature).
+    filename : str
+        Name of the file to delete.
     save_delete : bool, optional
-        Ask for confirmation before deletion. The default is True.
+        If True, requires confirmation before deletion (default: True).
+
+    Raises
+    ------
+    ValueError
+        If category is invalid.
+    FileNotFoundError
+        If file doesn't exist.
+
+    Returns
+    -------
+    None
+    """
+    _delete_element(archive, ms_id, category, filename, save_delete)
+
+def _delete_measurement(
+    archive_obj,
+    ms_id: int,
+    save_delete: bool = True
+) -> None:
+    """
+    Deletes an entire measurement directory from the archive.
+
+    Parameters
+    ----------
+    archive_obj
+        Archive object with directory operations.
+    ms_id : int
+        Measurement ID number.
+    save_delete : bool, optional
+        If True, requires confirmation before deletion (default: True).
 
     Raises
     ------
     FileNotFoundError
-        An error is raised if the measurement does not exist.
+        If measurement directory doesn't exist.
 
     Returns
     -------
-    None.
-
+    None
     """
     path = archive_obj.measurement_path(ms_id)
     if not archive_obj.exists(path):
@@ -546,36 +667,59 @@ def _delete_measurement(archive_obj, ms_id: int, save_delete: bool = True):
     print(f"Measurement directory deleted: {path}")
     return
 
-def delete_measurement(ms_id: int, save_delete: bool = True):
-    _delete_measurement(archive, ms_id, save_delete)
-
-def _list_files(archive_obj, ms_id: str, category: str = "") -> list:
+def delete_measurement(
+    ms_id: int,
+    save_delete: bool = True
+) -> None:
     """
-    List all files in a single measurement directory with the ID ms_id and
-    all subdirectorys. If a category is chosen only files of this category
-    are listed.
+    Deletes an entire measurement directory from the archive.
 
     Parameters
     ----------
-    base_dir : str or Path
-        Path to the root-folder of the archive.
-    ms_id : str or int
-        Number of the measurement.
+    ms_id : int
+        Measurement ID number.
+    save_delete : bool, optional
+        If True, requires confirmation before deletion (default: True).
+
+    Raises
+    ------
+    FileNotFoundError
+        If measurement directory doesn't exist.
+
+    Returns
+    -------
+    None
+    """
+    _delete_measurement(archive, ms_id, save_delete)
+
+def _list_files(
+    archive_obj,
+    ms_id: Union[str, int],
+    category: str = ""
+) -> list[Path]:
+    """
+    Lists files in a measurement directory or subdirectory.
+
+    Parameters
+    ----------
+    archive_obj
+        Archive object with directory operations.
+    ms_id : Union[str, int]
+        Measurement ID number.
     category : str, optional
-        One of the categories: ["raw", "scripts", "figures", "additional_info",
-        "literature"] or empty. The contents of the subdirectory is listed.
-        The default is "".
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature) or empty for all files.
+        Default is "" (all files).
 
     Raises
     ------
     ValueError
-        An error is raised if the category is not known.
+        If category is invalid.
 
     Returns
     -------
-    filelist : list
-        List with absolute paths to all files in the (sub-)directory.
-
+    list[Path]
+        List of absolute file paths in the directory.
     """
     if category != "":
         if category not in CATEGORIES:
@@ -594,5 +738,30 @@ def _list_files(archive_obj, ms_id: str, category: str = "") -> list:
 
     return files
 
-def list_files(ms_id: str, category: str = ""):
+def list_files(
+    ms_id: Union[str, int],
+    category: str = ""
+) -> list[Path]:
+    """
+    Lists files in a measurement directory or subdirectory.
+
+    Parameters
+    ----------
+    ms_id : Union[str, int]
+        Measurement ID number.
+    category : str, optional
+        File category (must be one of: raw, scripts, figures,
+        additional_info, literature) or empty for all files.
+        Default is "" (all files).
+
+    Raises
+    ------
+    ValueError
+        If category is invalid.
+
+    Returns
+    -------
+    list[Path]
+        List of absolute file paths in the directory.
+    """
     return _list_files(archive, ms_id, category)

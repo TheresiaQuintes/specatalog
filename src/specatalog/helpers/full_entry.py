@@ -56,41 +56,41 @@ class CreateMoleculeResult:
 
 
 def create_full_measurement(
-    data: cr.measurement_model_pyd, raw_data_path: list, fmt: str
+    data: cr.measurement_model_pyd,
+    raw_data_path: list[str],
+    fmt: str
 ) -> CreateMeasurementResult:
-    """
-    Create a complete measurement entry including database and file system
-    operations.
+    """Create a complete measurement entry with atomic database and file operations.
 
-    The creation process is performed in an atomic manner with respect to
-    the database. File system operations are first carried out in a temporary
-    directory and are only committed to the final archive location after the
-    database transaction has been completed successfully.
-
-    The following steps are executed:
-    1) Creation of the database entry
-    2) Creation of the measurement directory
-    3) Copying raw data into the measurement directory
-    4) Conversion of raw data to HDF5 format
+    Performs all measurement creation steps in a transaction-safe manner:
+    1. Creates database entry
+    2. Sets up temporary directory
+    3. Copies raw data files
+    4. Converts to HDF5 format
+    5. Commits to final archive location
 
     Parameters
     ----------
-    data: measurement_model
-        Measurement creation model containing all required metadata.
-    base_dir : Path
-        Base directory of the measurement archive.
-    raw_data_path : list
-        List with the full pathes to each every raw data file that is
-        associated with the measurement entry.
+    data : cr.measurement_model_pyd
+        Measurement metadata model
+    raw_data_path : list[str]
+        List of paths to raw data files
     fmt : str
-        Format identifier of the raw data.
+        Format identifier for raw data
 
     Returns
     -------
     CreateMeasurementResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the measurement ID is provided. In case of failure,
-        the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - measurement_id: int (on success)
+        - error: Exception (on failure)
+
+    Notes
+    -----
+    - Uses temporary directory for atomic file operations
+    - Rolls back database and file operations if any step fails
+    - Cleans up temporary files on completion
     """
     try:
         with db_session() as session:
@@ -119,31 +119,36 @@ def create_full_measurement(
 
 
 def delete_full_measurement(ms_id: int) -> CreateMeasurementResult:
-    """
-    Delete a complete measurement entry (with the id ms_id) including database
-    and file system operations.
+    """Delete a complete measurement entry with atomic database and file operations.
 
-    The deletion process is performed in an atomic manner with respect to
-    the database. Only if the database and the file deletion can be carried
-    out without errors the changes are committed to the database.
-
-    The following steps are executed:
-    1) Deletion of the database entry
-    2) Deletion of the measurement directory
+    Performs all deletion steps in a transaction-safe manner:
+    1. Deletes database entry
+    2. Removes measurement directory
+    3. Commits changes only if both operations succeed
 
     Parameters
     ----------
-    base_dir : Path
-        Base directory of the measurement archive.
     ms_id : int
-        ID of the measurement.
+        ID of the measurement to delete
 
     Returns
     -------
     CreateMeasurementResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the former measurement ID is provided.
-        In case of failure, the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - measurement_id: int (deleted measurement ID on success)
+        - error: Exception (on failure)
+
+    Raises
+    ------
+    ValueError
+        If measurement with given ID doesn't exist
+
+    Notes
+    -----
+    - Uses database transaction for atomic operations
+    - Rolls back file operations if database deletion fails
+    - Skips confirmation prompt for file deletion
     """
     try:
         with db_session() as session:
@@ -161,39 +166,41 @@ def delete_full_measurement(ms_id: int) -> CreateMeasurementResult:
 
 
 def create_full_molecule(
-    data: cr.molecule_model_pyd, molecular_formula_path: Path, fmt: str
+    data: cr.molecule_model_pyd,
+    molecular_formula_path: list[str],
+    fmt: str
 ) -> CreateMoleculeResult:
-    """
-    Create a complete molecule entry including database and file system
-    operations.
+    """Create a complete molecule entry with atomic database and file operations.
 
-    The creation process is performed in an atomic manner with respect to
-    the database. File system operations are first carried out in a temporary
-    directory and are only committed to the final archive location after the
-    database transaction has been completed successfully.
-
-    The following steps are executed:
-    1) Creation of the database entry
-    2) Creation of the measurement directory
-    3) Copying molecular structure file into the measurement directory
+    Performs all molecule creation steps in a transaction-safe manner:
+    1. Creates database entry
+    2. Sets up temporary directory
+    3. Copies molecular structure files
+    4. Commits to final archive location
 
     Parameters
     ----------
-    data: molecule_model
-        Molecule creation model containing all required metadata.
-    base_dir : Path
-        Base directory of the measurement archive.
-    molecular_formula_path : Path
-        Path to the molecular formula file without suffix.
+    data : cr.molecule_model_pyd
+        Molecule metadata model
+    molecular_formula_path : list[str]
+        List of paths to structural formula files
     fmt : str
-        Suffix of the molecular formula file. E.g. ".pdf" or ".cdxml"
+        File format suffix (e.g., ".pdf") or "all" for multiple formats
 
     Returns
     -------
     CreateMoleculeResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the molecular ID is provided. In case of failure,
-        the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - molecular_id: int (on success)
+        - error: Exception (on failure)
+
+    Notes
+    -----
+    - Uses temporary directory for atomic file operations
+    - Supports multiple file formats when fmt="all"
+    - Rolls back database and file operations if any step fails
+    - Cleans up temporary files on completion
     """
 
     try:
