@@ -32,7 +32,7 @@ def db_session():
     finally:
         Session.remove()
 
-if REMOTE_ARCHIVE == "True":
+if REMOTE_ARCHIVE:
     remote = True
 else:
     remote = False

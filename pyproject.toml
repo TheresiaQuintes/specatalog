@@ -38,7 +38,7 @@ specatalog = ["user/*.json"]
 
 [project.scripts]
 specatalog-welcome = "specatalog.cli:print_welcome"
-specatalog-configuration = "specatalog.cli:configure_db"
+specatalog-configuration = "specatalog.cli:configure_defaults"
 specatalog-init-db = "specatalog.helpers.create_database:specatalog_init_db"
 specatalog-init-dir = "specatalog.helpers.create_database:create_archive_directory"
 specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"

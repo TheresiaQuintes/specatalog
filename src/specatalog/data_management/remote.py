@@ -48,7 +48,6 @@ class SpecatalogArchive:
     def __init__(self, use_remote_archive: bool, local_path=""):
         self.archive = create_archive(use_remote_archive, local_path)
         self.use_remote_archive = use_remote_archive
-        # self.database = create_database()
 
     def path_to_unc(self, p):
         path = self.archive / p

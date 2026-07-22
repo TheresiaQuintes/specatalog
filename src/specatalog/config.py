@@ -16,7 +16,7 @@ with home_defaults.open("r") as f:
 f.close()
 
 # set path definitions
-BASE_PATH = Path(defaults["base_path"]).resolve()
+BASE_PATH = Path(defaults["archive_path"]).resolve()
 MEASUREMENTS_PATH = Path("data")
 MOLECULES_PATH = Path("molecules")
 
@@ -25,12 +25,12 @@ REMOTE_ARCHIVE = defaults["remote_archive"]
 # remote login
 HOST = defaults["host"]
 SHARE = defaults["share"]
-USERNAME = defaults["username"]
-PWD = defaults["pwd"]
+USERNAME = defaults["archive_usr_name"]
+PWD = defaults["archive_password"]
 
 # create database postgre
-USR_NAME = defaults["usr_name"]
-PASSWORD = defaults["password"]
+USR_NAME = defaults["db_usr_name"]
+PASSWORD = defaults["db_password"]
 database = defaults["database_url"]
 DATABASE_URL_USR = f"postgresql+psycopg2://{USR_NAME}:{PASSWORD}@{database}"
 DATABASE_URL_ADMIN = (

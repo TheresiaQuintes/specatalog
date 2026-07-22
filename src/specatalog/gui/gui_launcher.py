@@ -1,9 +1,9 @@
 from pathlib import Path
 import json
 import shutil
-import importlib
 import sqlalchemy as alc
 from importlib.resources import files
+from specatalog.main import archive
 
 
 def start_gui():
@@ -13,8 +13,8 @@ def start_gui():
     """
     try:
         defaults = _ensure_and_load_defaults()
-        base_path = _validate_base_path(defaults)
-        _validate_allowed_values(base_path)
+        _validate_archive(defaults)
+        _validate_allowed_values()
         _check_database_connection(defaults)
     except Exception as exc:
         _show_startup_error(exc)
@@ -47,44 +47,35 @@ def _ensure_and_load_defaults() -> dict:
         ) from exc
 
 
-def _validate_base_path(defaults: dict) -> Path:
+def _validate_archive(defaults: dict) -> Path:
     try:
-        base_path = Path(defaults["base_path"]).expanduser().resolve()
-    except KeyError as exc:
-        raise RuntimeError("`base_path` fehlt in defaults.json") from exc
-
-    if not base_path.exists():
-        raise RuntimeError(f"Base-Pfad existiert nicht:\n{base_path}")
-
-    if not base_path.is_dir():
-        raise RuntimeError(f"Base-Pfad ist kein Ordner:\n{base_path}")
-
-    return base_path
-
-
-def _validate_allowed_values(base_path: Path):
-    allowed_values = base_path / "allowed_values.py"
-
-    if not allowed_values.exists():
-        raise RuntimeError(f"allowed_values.py wurde nicht gefunden:\n{allowed_values}")
-
-    # Optional: Import-Test
-    spec = importlib.util.spec_from_file_location("allowed_values", allowed_values)
-    module = importlib.util.module_from_spec(spec)
-
-    try:
-        spec.loader.exec_module(module)
+        base_path = Path(archive.archive).expanduser().resolve()
     except Exception as exc:
-        raise RuntimeError("allowed_values.py konnte nicht importiert werden") from exc
+        raise RuntimeError(f"An exception occured during loading of the archive: {exc}")
+
+    if not archive.exists(""):
+        raise RuntimeError(f"No archive folder at:\n{base_path}")
+
+
+
+def _validate_allowed_values():
+
+    if not archive.exists("allowed_values.py"):
+        raise RuntimeError(f"allowed_values.py could not be found at:\n{archive.archive}")
+
+    try:
+        from specatalog.main import ALLOWED_VALUES
+    except Exception as exc:
+        raise RuntimeError(f"An exception occured during loading of the allowed values: {exc}")
 
 
 def _check_database_connection(defaults: dict):
     try:
-        usr = defaults["usr_name"]
-        pwd = defaults["password"]
+        usr = defaults["db_usr_name"]
+        pwd = defaults["db_password"]
         db = defaults["database_url"]
     except KeyError as exc:
-        raise RuntimeError("Datenbank-Zugangsdaten fehlen in defaults.json") from exc
+        raise RuntimeError("Database information is missing in defaults.json") from exc
 
     url = f"postgresql+psycopg2://{usr}:{pwd}@{db}"
 
@@ -98,8 +89,7 @@ def _check_database_connection(defaults: dict):
             pass
     except Exception as exc:
         raise RuntimeError(
-            "Keine Verbindung zur Datenbank möglich.\n"
-            "Bitte Zugangsdaten und Server prüfen."
+            "No connection to database is possible.\n"
         ) from exc
 
 
@@ -114,5 +104,5 @@ def _show_startup_error(exc: Exception):
     fällt auf print() zurück, wenn Qt nicht verfügbar ist.
     """
 
-    print("❌ Specatalog konnte nicht gestartet werden:\n")
+    print("❌ Specatalog could not be started:\n")
     print(exc)
