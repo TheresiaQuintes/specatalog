@@ -1,12 +1,12 @@
 {
-  "archive_path": "/pfad/zum/lokalen/archiv",
-  "db_usr_name": "benutzername_für_datenbank",
-  "db_password": "datenbank_passwort",
+  "archive_path": "/path/to/local/archive",
+  "db_usr_name": "database_username",
+  "db_password": "database_password",
   "database_url": "localhost:5432/specatalog",
-  "host": "server_adresse",
-  "share": "gruppe/archiv_pfad",
-  "archive_usr_name": "archiv_benutzername",
-  "archive_password": "archiv_passwort",
+  "host": "server_address",
+  "share": "group/archive_path",
+  "archive_usr_name": "archive_username",
+  "archive_password": "archive_password",
   "remote_archive": false
 }
 

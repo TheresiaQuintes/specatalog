@@ -8,51 +8,54 @@ Installation and Setup
    - Open a terminal
    
    - Make sure that your database admin has given you the following information: username, password and the url of the database.
+   - If you want to use a remote archive you will further need: address of the server (open SMB-port), share-path, username and password
 
 
-1. Optional but recommended: Create and activate a virtual environment
 
-- via python-venv::
+#. Optional but recommended: Create and activate a virtual environment
 
-      python -m venv ./.specatalog_venv
-      source ./.specatalog_venv/bin/activate
-      
-- via anaconda::
-	  
-	  conda create -n specatalog_venv python=3.11
-	  conda activate specatalog_venv
+    - via python-venv::
+
+          python -m venv ./.specatalog_venv
+          source ./.specatalog_venv/bin/activate
+
+    - via anaconda::
+
+          conda create -n specatalog_venv python=3.11
+          conda activate specatalog_venv
  
-2. Install the package via pip::
+#. Install the package
 
-      pip install specatalog
+    Use pip::
 
-Alternatively: Clone the repository from GitHub::
+          pip install specatalog
 
-      git clone https://github.com/TheresiaQuintes/specatalog.git
+    Alternatively: Clone the repository from GitHub::
 
-Navigate into the cloned directory::
+          git clone https://github.com/TheresiaQuintes/specatalog.git
 
-      cd specatalog
+    Navigate into the cloned directory::
 
-Install the package via pip::
-		
-      pip install .
+          cd specatalog
 
-3. Configure your database by defining a (local) root-path for your archive folder and a username/password::
+    Install the package via pip::
+
+          pip install .
+
+#. Configure your database::
 
 	  specatalog-configuration
 
-4.a If you are part of a group with an existing shared base directory:
 
-Follow the instructions on at :doc:`working_with_remote_folders` before you proceed.
+#. Only if no archive-folder and no database exist::
 
-4.b If no shared directory exists:
+    specatalog-init
 
-Run::
+#. Only if no archive-folder exists and the database exists::
 
-   specatalog-init-dir
+    specatalog-init-dir
 
-5. Check the installation::
+#. Check the installation::
 
       specatalog-welcome
 
@@ -62,6 +65,6 @@ Run::
 
 .. tip::
 	
-	A GUI is also available via::
+	A GUI is available via::
 	
 		specatalog-gui
