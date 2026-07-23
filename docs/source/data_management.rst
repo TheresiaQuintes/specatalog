@@ -21,7 +21,6 @@ measurement_management
    delete_element
    delete_measurement
    list_files
-   measurement_path
 
 hdf5_reader
 -----------

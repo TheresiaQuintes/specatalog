@@ -57,10 +57,13 @@ First of all a new entry shall be added to the measurements table and the data-a
 		from specatalog.main import BASE_PATH
 		
 		mm.create_measurement_dir(BASE_PATH, measurement.id)  # create new directory with subfolders
+
         for file in raw_data:
 		    mm.raw_data_to_folder(file, "bruker_bes3t", BASE_PATH, measurement.id)  # raw data are copied to /data/M{ms_id}/raw
-		mm.raw_data_to_hdf5(BASE_PATH, measurement.id, "bruker_bes3t")  # The raw spectra are added to the measurement.h5-file as arrays
-		
+
+        mm.raw_data_to_hdf5(BASE_PATH, measurement.id, "bruker_bes3t")  # The raw spectra are added to the measurement.h5-file as arrays
+
+
 	.. note::
 	
 		The functions ``raw_data_to_foler`` and ``raw_data_to_hdf5`` can be used only to specific formats. At the moment the following formats are supported:

@@ -69,6 +69,7 @@ Creating the database measurement
 
 The first step is to define the measurement metadata using the corresponding
 Pydantic model. In this example, a trEPR measurement is created::
+
     from datetime import date
     import numpy as np
     from pathlib import Path
@@ -92,6 +93,7 @@ Pydantic model. In this example, a trEPR measurement is created::
         excitation_energy=0.8,
         attenuation="20dB",
     )
+
 
 If ``create=True``, the measurement entry and the raw datasets are created
 using::
