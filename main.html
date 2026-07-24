@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>main &mdash; specatalog 2025 documentation</title>
+  <title>Main Module &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/main.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="crud_db" href="crud_db.html" />
-    <link rel="prev" title="Workflow: Multiple Raw Data Measurements" href="tutorial_multiple_files.html" /> 
+    <link rel="prev" title="Allowed values" href="tutorial_allowed_values.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,13 +59,26 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">main</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#path-definitions">Path definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#session">Session</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Main Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#database-and-archive-management">Database and Archive Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-components">Key Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-connection">Database Connection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#archive-access">Archive Access</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-parameters">Configuration Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#database-operations">Database Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#archive-operations">Archive Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#allowed-values">Allowed Values</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
@@ -96,12 +108,12 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">main</li>
+      <li class="breadcrumb-item active">Main Module</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/main.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="tutorial_multiple_files.html" class="btn btn-neutral float-left" title="Workflow: Multiple Raw Data Measurements" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-left" title="Allowed values" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="crud_db.html" class="btn btn-neutral float-right" title="crud_db" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -109,35 +121,107 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="main">
-<h1>main<a class="headerlink" href="#main" title="Link to this heading"></a></h1>
-<p>The database is referenced in main and the session is opened.</p>
-<section id="path-definitions">
-<h2>Path definitions<a class="headerlink" href="#path-definitions" title="Link to this heading"></a></h2>
-<p>The following global pathes are defined in main:</p>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">BASE_PATH</span></code></dt><dd><p>This is the root path of the archive-directory as defined in <code class="docutils literal notranslate"><span class="pre">~/.specatalog/defaults.json</span></code>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">MEASUREMENTS_PATH</span></code></dt><dd><p>This is the foldername in the archive containing all measurement data: <code class="docutils literal notranslate"><span class="pre">&quot;data&quot;</span></code>.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">MOLECULES_PATH</span></code></dt><dd><p>This is the foldername in the archive containing all molecule structural formulas: <code class="docutils literal notranslate"><span class="pre">&quot;molecules&quot;</span></code>.</p>
-</dd>
-</dl>
-<p>The pathes can be imported and used by:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASEPATH</span><span class="p">,</span> <span class="n">MEASUREMENTS_PATH</span>
+  <section id="main-module">
+<span id="id1"></span><h1>Main Module<a class="headerlink" href="#main-module" title="Link to this heading"></a></h1>
+<p>The <cite>main</cite> module provides core functionality for database and archive management in Specatalog. It handles database connections, archive file system access, and configuration loading.</p>
+<section id="database-and-archive-management">
+<h2>Database and Archive Management<a class="headerlink" href="#database-and-archive-management" title="Link to this heading"></a></h2>
+<p>This module provides:</p>
+<ul class="simple">
+<li><p>Database connection management</p></li>
+<li><p>Archive file system access</p></li>
+<li><p>Allowed values configuration loading</p></li>
+<li><p>Session handling for database operations</p></li>
+</ul>
+<section id="key-components">
+<h3>Key Components<a class="headerlink" href="#key-components" title="Link to this heading"></a></h3>
+<section id="database-connection">
+<h4>Database Connection<a class="headerlink" href="#database-connection" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>SQLAlchemy engine with connection pooling (10-30 connections)</p></li>
+<li><p>Scoped session factory for thread-safe database operations</p></li>
+<li><p>Automatic connection health checking</p></li>
+<li><p>Context manager for transaction handling</p></li>
+</ul>
+</section>
+<section id="archive-access">
+<h4>Archive Access<a class="headerlink" href="#archive-access" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>SpecatalogArchive instance for file operations</p></li>
+<li><p>Support for both local and remote archive configurations</p></li>
+<li><p>Temporary file handling through context managers</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Allowed values loading from external module</p></li>
+<li><p>Fallback to default values if configuration missing</p></li>
+<li><p>Remote/local archive selection based on configuration</p></li>
+</ul>
+</section>
+</section>
+<section id="configuration-parameters">
+<h3>Configuration Parameters<a class="headerlink" href="#configuration-parameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATABASE_URL_USR</span></code></p></td>
+<td><p>Database connection URL from configuration</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BASE_PATH</span></code></p></td>
+<td><p>Base path for archive from configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">REMOTE_ARCHIVE</span></code></p></td>
+<td><p>Flag for remote archive usage from configuration</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="usage-examples">
+<h3>Usage Examples<a class="headerlink" href="#usage-examples" title="Link to this heading"></a></h3>
+<section id="database-operations">
+<h4>Database Operations<a class="headerlink" href="#database-operations" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_session</span>
 
-<span class="c1"># e.g. path to the measurement_1-directory in the archive</span>
-<span class="n">measurement_1</span> <span class="o">=</span> <span class="n">BASEPATH</span> <span class="o">/</span> <span class="n">MEASUREMENTS_PATH</span> <span class="o">/</span> <span class="s2">&quot;M1&quot;</span>
+<span class="k">with</span> <span class="n">db_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+    <span class="c1"># Perform database operations</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="session">
-<h2>Session<a class="headerlink" href="#session" title="Link to this heading"></a></h2>
-<p>The SQLAlchemy-session is started in main and can be imported and used by:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">db_session</span>
-<span class="n">session</span> <span class="o">=</span> <span class="n">db_session</span><span class="p">()</span>
+<section id="archive-operations">
+<h4>Archive Operations<a class="headerlink" href="#archive-operations" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">archive</span>
+
+<span class="c1"># List files in archive</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">archive</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span><span class="s2">&quot;data/M1&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create temporary path</span>
+<span class="k">with</span> <span class="n">archive</span><span class="o">.</span><span class="n">temporary_path</span><span class="p">(</span><span class="s2">&quot;data/M1/measurement.h5&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">temp_path</span><span class="p">:</span>
+    <span class="c1"># Work with temporary file</span>
+    <span class="n">process_file</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="allowed-values">
+<h4>Allowed Values<a class="headerlink" href="#allowed-values" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALLOWED_VALUES</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Graceful fallback for missing configurations</p></li>
+</ul>
+</section>
+</section>
 </section>
 </section>
 
@@ -145,14 +229,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorial_multiple_files.html" class="btn btn-neutral float-left" title="Workflow: Multiple Raw Data Measurements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial_allowed_values.html" class="btn btn-neutral float-left" title="Allowed values" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="crud_db.html" class="btn btn-neutral float-right" title="crud_db" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

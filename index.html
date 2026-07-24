@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to specatalogs documentation! &mdash; specatalog 2025 documentation</title>
+  <title>Welcome to specatalogs documentation! &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/index.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -49,7 +49,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -59,11 +58,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
@@ -110,12 +108,6 @@
 <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="working_with_remote_folders.html#prerequisites">Prerequisites:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="working_with_remote_folders.html#install-and-activate-syncthing">Install and activate syncthing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="working_with_remote_folders.html#synchronise-the-archive-directory">Synchronise the archive directory</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 </div>
@@ -146,23 +138,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#workflow-switches">Workflow switches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#creating-the-database-measurement">Creating the database measurement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#adding-processed-datasets">Adding processed datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#adding-processing-parameters">Adding processing parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#adding-supplementary-analysis-files">Adding supplementary analysis files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial_multiple_files.html#complete-workflow">Complete workflow</a></li>
-</ul>
-</li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="main.html#path-definitions">Path definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="main.html#session">Session</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#database-and-archive-management">Database and Archive Management</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a><ul>
@@ -183,9 +165,12 @@
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="data_management.html#measurement-management">measurement_management</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data_management.html#hdf5-reader">hdf5_reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_management.html#archive-manager">archive_manager</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="helpers.html">helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#create-database">create_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helpers.html#allowed-values-not-adapted-py">allowed_values_not_adapted.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html#full-entry">full_entry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="helpers.html#helper-functions">helper_functions</a></li>
 </ul>
@@ -221,7 +206,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

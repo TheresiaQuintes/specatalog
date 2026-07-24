@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>create_full_measurement &mdash; specatalog 2025 documentation</title>
+  <title>create_full_measurement &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.helpers.full_entry.create_full_measurement.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/documentation_options.js?v=c6db1b62"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="delete_full_measurement" href="specatalog.helpers.full_entry.delete_full_measurement.html" />
-    <link rel="prev" title="helpers" href="../helpers.html" /> 
+    <link rel="prev" title="specatalog_init" href="specatalog.helpers.create_database.specatalog_init.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,15 +59,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../data_management.html">data_management</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../helpers.html">helpers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../helpers.html#create-database">create_database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../helpers.html#allowed-values-not-adapted-py">allowed_values_not_adapted.py</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../helpers.html#full-entry">full_entry</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">create_full_measurement</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#specatalog.helpers.full_entry.create_full_measurement"><code class="docutils literal notranslate"><span class="pre">create_full_measurement()</span></code></a></li>
@@ -110,7 +110,7 @@
             <a href="../_sources/generated/specatalog.helpers.full_entry.create_full_measurement.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="../helpers.html" class="btn btn-neutral float-left" title="helpers" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.helpers.create_database.specatalog_init.html" class="btn btn-neutral float-left" title="specatalog_init" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specatalog.helpers.full_entry.delete_full_measurement.html" class="btn btn-neutral float-right" title="delete_full_measurement" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -122,37 +122,38 @@
 <h1>create_full_measurement<a class="headerlink" href="#create-full-measurement" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="specatalog.helpers.full_entry.create_full_measurement">
-<span class="sig-prename descclassname"><span class="pre">specatalog.helpers.full_entry.</span></span><span class="sig-name descname"><span class="pre">create_full_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/helpers/full_entry.html#create_full_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.helpers.full_entry.create_full_measurement" title="Link to this definition"></a></dt>
-<dd><p>Create a complete measurement entry including database and file system
-operations.</p>
-<p>The creation process is performed in an atomic manner with respect to
-the database. File system operations are first carried out in a temporary
-directory and are only committed to the final archive location after the
-database transaction has been completed successfully.</p>
-<p>The following steps are executed:
-1) Creation of the database entry
-2) Creation of the measurement directory
-3) Copying raw data into the measurement directory
-4) Conversion of raw data to HDF5 format</p>
+<span class="sig-prename descclassname"><span class="pre">specatalog.helpers.full_entry.</span></span><span class="sig-name descname"><span class="pre">create_full_measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/helpers/full_entry.html#create_full_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.helpers.full_entry.create_full_measurement" title="Link to this definition"></a></dt>
+<dd><p>Create a complete measurement entry with atomic database and file operations.</p>
+<p>Performs all measurement creation steps in a transaction-safe manner:
+1. Creates database entry
+2. Sets up temporary directory
+3. Copies raw data files
+4. Converts to HDF5 format
+5. Commits to final archive location</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>measurement_model</em>) – Measurement creation model containing all required metadata.</p></li>
-<li><p><strong>base_dir</strong> (<em>Path</em>) – Base directory of the measurement archive.</p></li>
-<li><p><strong>raw_data_path</strong> (<em>list</em>) – List with the full pathes to each every raw data file that is
-associated with the measurement entry.</p></li>
-<li><p><strong>fmt</strong> (<em>str</em>) – Format identifier of the raw data.</p></li>
+<li><p><strong>data</strong> (<em>cr.measurement_model_pyd</em>) – Measurement metadata model</p></li>
+<li><p><strong>raw_data_path</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of paths to raw data files</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – Format identifier for raw data</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Result object indicating success or failure of the creation process.
-In case of success, the measurement ID is provided. In case of failure,
-the raised exception is included.</p>
+<dd class="field-even"><p>Result object containing:
+- success: bool indicating operation status
+- measurement_id: int (on success)
+- error: Exception (on failure)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>CreateMeasurementResult</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses temporary directory for atomic file operations</p></li>
+<li><p>Rolls back database and file operations if any step fails</p></li>
+<li><p>Cleans up temporary files on completion</p></li>
+</ul>
 </dd></dl>
 
 </section>
@@ -161,14 +162,14 @@ the raised exception is included.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../helpers.html" class="btn btn-neutral float-left" title="helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.helpers.create_database.specatalog_init.html" class="btn btn-neutral float-left" title="specatalog_init" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specatalog.helpers.full_entry.delete_full_measurement.html" class="btn btn-neutral float-right" title="delete_full_measurement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

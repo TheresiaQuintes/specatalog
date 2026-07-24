@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>helpers &mdash; specatalog 2025 documentation</title>
+  <title>helpers &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/helpers.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -23,8 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="create_full_measurement" href="generated/specatalog.helpers.full_entry.create_full_measurement.html" />
-    <link rel="prev" title="H5Object" href="generated/specatalog.data_management.hdf5_reader.H5Object.html" /> 
+    <link rel="next" title="create_archive_directory" href="generated/specatalog.helpers.create_database.create_archive_directory.html" />
+    <link rel="prev" title="SpecatalogArchive" href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,15 +59,21 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-database">create_database</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.create_database.create_archive_directory.html">create_archive_directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.create_database.run_alembic_upgrade.html">run_alembic_upgrade</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.create_database.specatalog_init.html">specatalog_init</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#allowed-values-not-adapted-py">allowed_values_not_adapted.py</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#full-entry">full_entry</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_measurement.html">create_full_measurement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.helpers.full_entry.delete_full_measurement.html">delete_full_measurement</a></li>
@@ -111,8 +116,8 @@
             <a href="_sources/helpers.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="generated/specatalog.data_management.hdf5_reader.H5Object.html" class="btn btn-neutral float-left" title="H5Object" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/specatalog.helpers.full_entry.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html" class="btn btn-neutral float-left" title="SpecatalogArchive" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/specatalog.helpers.create_database.create_archive_directory.html" class="btn btn-neutral float-right" title="create_archive_directory" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -121,29 +126,66 @@
              
   <section id="helpers">
 <h1>helpers<a class="headerlink" href="#helpers" title="Link to this heading"></a></h1>
-<p>This package contains functions that make the workflow more easy for the user:
-- <code class="docutils literal notranslate"><span class="pre">create_database</span></code> can be used for the first setup of a new database.
-- <code class="docutils literal notranslate"><span class="pre">allowed_values_not_adapted.py</span></code> contains the file with allowed values as it is copied to the archive root during the installation process.
-- The functions in <code class="docutils literal notranslate"><span class="pre">helper_functions</span></code> are internally used for the dynamic  cration of models
-- The module <code class="docutils literal notranslate"><span class="pre">full_entry</span></code> provides functions that combine the workflow for the creation or deletion of a new measurement entry and the creation/deletion of the corresponding directory in the archive folder.</p>
-<section id="full-entry">
-<h2>full_entry<a class="headerlink" href="#full-entry" title="Link to this heading"></a></h2>
+<p>This package contains utility functions that simplify the workflow for users:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">create_database</span></code>: Handles initial database setup and configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">allowed_values_not_adapted.py</span></code>: Contains predefined allowed values that are copied to the archive during installation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">helper_functions</span></code>: Provides internal utility functions for dynamic model creation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">full_entry</span></code>: Combines database and file operations for complete measurement and molecule entries</p></li>
+</ul>
+<section id="create-database">
+<h2>create_database<a class="headerlink" href="#create-database" title="Link to this heading"></a></h2>
+<p>This module handles the initial setup of the database and archive directory structure. It includes functions for:</p>
+<ul class="simple">
+<li><p>Creating the basic directory structure</p></li>
+<li><p>Applying database migrations</p></li>
+<li><p>Initializing the complete system</p></li>
+</ul>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_measurement.html#specatalog.helpers.full_entry.create_full_measurement" title="specatalog.helpers.full_entry.create_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_measurement</span></code></a>(data, base_dir, ...)</p></td>
-<td><p>Create a complete measurement entry including database and file system operations.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.create_database.create_archive_directory.html#specatalog.helpers.create_database.create_archive_directory" title="specatalog.helpers.create_database.create_archive_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_archive_directory</span></code></a>()</p></td>
+<td><p>Create the basic archive directory structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.delete_full_measurement.html#specatalog.helpers.full_entry.delete_full_measurement" title="specatalog.helpers.full_entry.delete_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_full_measurement</span></code></a>(base_dir, ms_id)</p></td>
-<td><p>Delete a complete measurement entry (with the id ms_id) including database and file system operations.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.helpers.create_database.run_alembic_upgrade.html#specatalog.helpers.create_database.run_alembic_upgrade" title="specatalog.helpers.create_database.run_alembic_upgrade"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_alembic_upgrade</span></code></a>()</p></td>
+<td><p>Apply all database migrations to bring schema to current version.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_molecule.html#specatalog.helpers.full_entry.create_full_molecule" title="specatalog.helpers.full_entry.create_full_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_molecule</span></code></a>(data, base_dir, ...)</p></td>
-<td><p>Create a complete molecule entry including database and file system operations.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.create_database.specatalog_init.html#specatalog.helpers.create_database.specatalog_init" title="specatalog.helpers.create_database.specatalog_init"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specatalog_init</span></code></a>()</p></td>
+<td><p>Initialize the Specatalog system.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="allowed-values-not-adapted-py">
+<h2>allowed_values_not_adapted.py<a class="headerlink" href="#allowed-values-not-adapted-py" title="Link to this heading"></a></h2>
+<p>This module contains predefined enumerations of allowed values for various measurement parameters.
+These values are used for data validation and are copied to the archive during installation.</p>
+</section>
+<section id="full-entry">
+<h2>full_entry<a class="headerlink" href="#full-entry" title="Link to this heading"></a></h2>
+<p>This module provides atomic operations for creating and deleting complete measurement and molecule entries.
+It ensures that both database and file operations are performed in a transaction-safe manner.</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_measurement.html#specatalog.helpers.full_entry.create_full_measurement" title="specatalog.helpers.full_entry.create_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_measurement</span></code></a>(data, raw_data_path, fmt)</p></td>
+<td><p>Create a complete measurement entry with atomic database and file operations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.delete_full_measurement.html#specatalog.helpers.full_entry.delete_full_measurement" title="specatalog.helpers.full_entry.delete_full_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_full_measurement</span></code></a>(ms_id)</p></td>
+<td><p>Delete a complete measurement entry with atomic database and file operations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.full_entry.create_full_molecule.html#specatalog.helpers.full_entry.create_full_molecule" title="specatalog.helpers.full_entry.create_full_molecule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_full_molecule</span></code></a>(data, ...)</p></td>
+<td><p>Create a complete molecule entry with atomic database and file operations.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="helper-functions">
 <h2>helper_functions<a class="headerlink" href="#helper-functions" title="Link to this heading"></a></h2>
+<p>This module contains internal utility functions that dynamically create Pydantic models for:</p>
+<ul class="simple">
+<li><p>Filtering database queries</p></li>
+<li><p>Ordering query results</p></li>
+<li><p>Updating database records</p></li>
+</ul>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.helpers.helper_functions.make_filter_model.html#specatalog.helpers.helper_functions.make_filter_model" title="specatalog.helpers.helper_functions.make_filter_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_filter_model</span></code></a>(model, creation_model)</p></td>
@@ -164,14 +206,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="generated/specatalog.data_management.hdf5_reader.H5Object.html" class="btn btn-neutral float-left" title="H5Object" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/specatalog.helpers.full_entry.create_full_measurement.html" class="btn btn-neutral float-right" title="create_full_measurement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html" class="btn btn-neutral float-left" title="SpecatalogArchive" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/specatalog.helpers.create_database.create_archive_directory.html" class="btn btn-neutral float-right" title="create_archive_directory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

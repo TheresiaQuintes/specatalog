@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>data_management &mdash; specatalog 2025 documentation</title>
+  <title>data_management &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/data_management.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,11 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">data_management</a><ul>
@@ -77,13 +75,18 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html">delete_element</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html">delete_measurement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html">list_files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html">measurement_path</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#hdf5-reader">hdf5_reader</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_h5.html">load_h5</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html">load_from_id</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html">H5Object</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#archive-manager">archive_manager</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.archive_manager.create_archive.html">create_archive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html">SMBConnectionManager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html">SpecatalogArchive</a></li>
 </ul>
 </li>
 </ul>
@@ -127,37 +130,37 @@
              
   <section id="data-management">
 <h1>data_management<a class="headerlink" href="#data-management" title="Link to this heading"></a></h1>
-<p>The package data_management provides modules for the interaction with the datafiles stored in the archive. The module measurement_management provides CRUD-Functions for the archive, while the hdf5_reader module can be used for reading and updating the measurement.h5-files.</p>
+<p>The package data_management provides modules for the interaction with the datafiles
+stored in the archive. The module measurement_management provides CRUD-Functions
+for the archive, while the hdf5_reader module can be used for reading and updating
+the measurement.h5-files.</p>
 <section id="measurement-management">
 <span id="data-management-measurement-management"></span><h2>measurement_management<a class="headerlink" href="#measurement-management" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html#specatalog.data_management.measurement_management.create_measurement_dir" title="specatalog.data_management.measurement_management.create_measurement_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_measurement_dir</span></code></a>(base_dir, ms_id)</p></td>
-<td><p>Create a new directory for a single measurement with the measurement-ID ms_id in the folder of the archive (base_dir).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html#specatalog.data_management.measurement_management.create_measurement_dir" title="specatalog.data_management.measurement_management.create_measurement_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_measurement_dir</span></code></a>(ms_id)</p></td>
+<td><p>Creates a new measurement directory structure with HDF5 file in the archive root folder.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_file_to_archive.html#specatalog.data_management.measurement_management.new_file_to_archive" title="specatalog.data_management.measurement_management.new_file_to_archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_file_to_archive</span></code></a>(src, base_dir, ms_id, ...)</p></td>
-<td><p>Copy a file to the archive.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_file_to_archive.html#specatalog.data_management.measurement_management.new_file_to_archive" title="specatalog.data_management.measurement_management.new_file_to_archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_file_to_archive</span></code></a>(src, ms_id, category[, ...])</p></td>
+<td><p>Copies a file to the archive measurement directory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_dataset_to_hdf5.html#specatalog.data_management.measurement_management.new_dataset_to_hdf5" title="specatalog.data_management.measurement_management.new_dataset_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_dataset_to_hdf5</span></code></a>(data, hdf5_path, ...)</p></td>
-<td><p>Write a new dataset to a hdf5-file.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.new_dataset_to_hdf5.html#specatalog.data_management.measurement_management.new_dataset_to_hdf5" title="specatalog.data_management.measurement_management.new_dataset_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_dataset_to_hdf5</span></code></a>(data, h5_file, ...)</p></td>
+<td><p>Writes a new dataset to an HDF5 file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_folder.html#specatalog.data_management.measurement_management.raw_data_to_folder" title="specatalog.data_management.measurement_management.raw_data_to_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_folder</span></code></a>(raw_data_path, fmt, ...)</p></td>
-<td><p>Copy raw datafiles to the archive.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_folder.html#specatalog.data_management.measurement_management.raw_data_to_folder" title="specatalog.data_management.measurement_management.raw_data_to_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_folder</span></code></a>(raw_data_path, fmt, ms_id)</p></td>
+<td><p>Copies raw data files to the archive directory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5" title="specatalog.data_management.measurement_management.raw_data_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code></a>(base_dir, ms_id, fmt)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5" title="specatalog.data_management.measurement_management.raw_data_to_hdf5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_data_to_hdf5</span></code></a>(ms_id, fmt)</p></td>
 <td><p>Write all data from the raw data datafiles in the archive at &lt;base_dir&gt;/data/M&lt;ms_id&gt;/raw/ to the hdf5-file &lt;base_dir&gt;/data/M&lt;ms_id&gt;/measurement.h5</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element" title="specatalog.data_management.measurement_management.delete_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_element</span></code></a>(base_dir, ms_id, category, ...)</p></td>
-<td><p>Delete a file from the archive.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element" title="specatalog.data_management.measurement_management.delete_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_element</span></code></a>(ms_id, category, filename[, ...])</p></td>
+<td><p>Deletes a file from the archive measurement directory.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html#specatalog.data_management.measurement_management.delete_measurement" title="specatalog.data_management.measurement_management.delete_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_measurement</span></code></a>(base_dir, ms_id[, ...])</p></td>
-<td><p>Delete a whole measurement directory from the archive.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.delete_measurement.html#specatalog.data_management.measurement_management.delete_measurement" title="specatalog.data_management.measurement_management.delete_measurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_measurement</span></code></a>(ms_id[, save_delete])</p></td>
+<td><p>Deletes an entire measurement directory from the archive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html#specatalog.data_management.measurement_management.list_files" title="specatalog.data_management.measurement_management.list_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_files</span></code></a>(base_dir, ms_id[, category])</p></td>
-<td><p>List all files in a single measurement directory with the ID ms_id and all subdirectorys.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.measurement_path.html#specatalog.data_management.measurement_management.measurement_path" title="specatalog.data_management.measurement_management.measurement_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">measurement_path</span></code></a>(base_dir, ms_id)</p></td>
-<td><p>Create the absolute path to a measurement folder with the ID ms_id.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.measurement_management.list_files.html#specatalog.data_management.measurement_management.list_files" title="specatalog.data_management.measurement_management.list_files"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_files</span></code></a>(ms_id[, category])</p></td>
+<td><p>Lists files in a measurement directory or subdirectory.</p></td>
 </tr>
 </tbody>
 </table>
@@ -167,7 +170,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_h5.html#specatalog.data_management.hdf5_reader.load_h5" title="specatalog.data_management.hdf5_reader.load_h5"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_h5</span></code></a>(filename[, mode])</p></td>
-<td><p>Load a hdf5-file as a H5Object.</p></td>
+<td><p>Loads an HDF5 file and returns it as an H5Object along with the underlying h5py.File.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id" title="specatalog.data_management.hdf5_reader.load_from_id"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_from_id</span></code></a>(ms_id[, mode])</p></td>
 <td><p>Load a hdf5-measurement-file from the archive as a H5Object.</p></td>
@@ -178,6 +181,26 @@
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H5Object</span></code></a>(h5node[, writable, auto_flush])</p></td>
 <td><p>Represents a hdf5-file with its internal structure and all attributes/ datasets as a python object.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="archive-manager">
+<h2>archive_manager<a class="headerlink" href="#archive-manager" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.archive_manager.create_archive.html#specatalog.data_management.archive_manager.create_archive" title="specatalog.data_management.archive_manager.create_archive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_archive</span></code></a>(use_remote_archive[, local_path])</p></td>
+<td><p>Create and return an archive path.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager" title="specatalog.data_management.archive_manager.SMBConnectionManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SMBConnectionManager</span></code></a>()</p></td>
+<td><p>Manages SMB network connections for the archive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive" title="specatalog.data_management.archive_manager.SpecatalogArchive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpecatalogArchive</span></code></a>(use_remote_archive[, ...])</p></td>
+<td><p>Handles file operations for the measurement archive.</p></td>
 </tr>
 </tbody>
 </table>
@@ -195,7 +218,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

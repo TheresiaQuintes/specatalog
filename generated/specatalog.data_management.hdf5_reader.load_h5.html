@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>load_h5 &mdash; specatalog 2025 documentation</title>
+  <title>load_h5 &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.data_management.hdf5_reader.load_h5.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/documentation_options.js?v=c6db1b62"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="load_from_id" href="specatalog.data_management.hdf5_reader.load_from_id.html" />
-    <link rel="prev" title="measurement_path" href="specatalog.data_management.measurement_management.measurement_path.html" /> 
+    <link rel="prev" title="list_files" href="specatalog.data_management.measurement_management.list_files.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,11 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../data_management.html">data_management</a><ul class="current">
@@ -78,6 +76,7 @@
 <li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.hdf5_reader.H5Object.html">H5Object</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../data_management.html#archive-manager">archive_manager</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
@@ -110,7 +109,7 @@
             <a href="../_sources/generated/specatalog.data_management.hdf5_reader.load_h5.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="specatalog.data_management.measurement_management.measurement_path.html" class="btn btn-neutral float-left" title="measurement_path" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.data_management.measurement_management.list_files.html" class="btn btn-neutral float-left" title="list_files" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specatalog.data_management.hdf5_reader.load_from_id.html" class="btn btn-neutral float-right" title="load_from_id" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
@@ -123,26 +122,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="specatalog.data_management.hdf5_reader.load_h5">
 <span class="sig-prename descclassname"><span class="pre">specatalog.data_management.hdf5_reader.</span></span><span class="sig-name descname"><span class="pre">load_h5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/hdf5_reader.html#load_h5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.hdf5_reader.load_h5" title="Link to this definition"></a></dt>
-<dd><p>Load a hdf5-file as a H5Object.</p>
+<dd><p>Loads an HDF5 file and returns it as an H5Object along with the underlying h5py.File.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Path to the hdf5-file.</p></li>
-<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Decides whether the file should be writable. If mode=”r” no changes can
-be done to the file. If mode=”a”, the file is also writable.
-The default is “r”.</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Path to the HDF5 file.</p></li>
+<li><p><strong>mode</strong> (<em>Literal</em><em>[</em><em>&quot;r&quot;</em><em>, </em><em>&quot;a&quot;</em><em>, </em><em>&quot;w&quot;</em><em>]</em><em>, </em><em>optional</em>) – File access mode:
+- “r”: Read-only (default)
+- “a”: Append to existing file
+- “w”: Overwrite existing file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>obj</strong> (<em>H5Object</em>) – The contents of the hdf5-file as a H5Object.</p></li>
-<li><p><strong>f</strong> (<em>h5py.File</em>) – The loaded hdf5-file. Use f.close() after all changes to the file are
-done.</p></li>
-</ul>
-</p>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>tuple[H5Object, h5py.File]</em> – The H5Object wrapper and the raw h5py.File object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(&lt;class ‘specatalog.data_management.hdf5_reader.H5Object’&gt;, &lt;class ‘h5py._hl.files.File’&gt;)</p>
+<dd class="field-odd"><p>tuple[<a class="reference internal" href="specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><em>H5Object</em></a>, <em>File</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -153,14 +148,14 @@ done.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="specatalog.data_management.measurement_management.measurement_path.html" class="btn btn-neutral float-left" title="measurement_path" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="specatalog.data_management.measurement_management.list_files.html" class="btn btn-neutral float-left" title="list_files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="specatalog.data_management.hdf5_reader.load_from_id.html" class="btn btn-neutral float-right" title="load_from_id" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

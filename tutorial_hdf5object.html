@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Measurement.h5 file &mdash; specatalog 2025 documentation</title>
+  <title>Measurement.h5 file &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_hdf5object.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -63,17 +62,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#open">open</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#update">update</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#delete">delete</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#sync-and-close">sync and close</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sync">sync</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
@@ -116,7 +114,8 @@
              
   <section id="measurement-h5-file">
 <h1>Measurement.h5 file<a class="headerlink" href="#measurement-h5-file" title="Link to this heading"></a></h1>
-<p>To enable clean archiving of the processing and analysis of raw data, a measurement_{ms_id}.h5 file is created for each measurement. The file has the following structure:</p>
+<p>To enable clean archiving of the processing and analysis of raw data, a measurement_{ms_id}.h5 file is created
+for each measurement. The file has the following structure:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>measurement_{ms_id}.h5
 ├── raw_data
 │   ├── data
@@ -126,56 +125,91 @@
 ├── corrected_data
 │   └── &lt;can be added&gt;
 └── evaluations
-    └── &lt;can be added&gt;
+        └── &lt;can be added&gt;
 </pre></div>
 </div>
-<p>When a new measurement is created using the <code class="docutils literal notranslate"><span class="pre">data_management</span></code>-package, the file is automatically created and the raw data are added to the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code>-group. When you work with the data and correct them or do analysis, like fitting, it is advised to add the results to the groups of the measurement.h5-file, so that they are systematically archived.</p>
+<p>When a new measurement is created using the <code class="docutils literal notranslate"><span class="pre">data_management</span></code>-package, the file is automatically created and
+the raw data are added to the <code class="docutils literal notranslate"><span class="pre">raw_data</span></code>-group. When you work with the data and correct them or do analysis,
+like fitting, it is advised to add the results to the groups of the measurement.h5-file, so that they are systematically
+archived.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
-<p>As the file is a HDF5-file, it can be inspected by any reader for HDF5-files e.g. the online tool <a class="reference external" href="https://myhdf5.hdfgroup.org/">myHDF5</a>. The data can be loaded to python by the <a class="reference external" href="https://docs.h5py.org/en/stable/">h5py package</a> and to matlab using the <a class="reference external" href="https://de.mathworks.com/help/matlab/import_export/import-hdf5-files.html">HDF5 Functions</a>.</p>
+<p>As the file is a HDF5-file, it can be inspected by any reader for HDF5-files e.g. the online tool <a class="reference external" href="https://myhdf5.hdfgroup.org/">myHDF5</a>.
+The data can be loaded to python by the <a class="reference external" href="https://docs.h5py.org/en/stable/">h5py package</a> and to matlab using the <a class="reference external" href="https://de.mathworks.com/help/matlab/import_export/import-hdf5-files.html">HDF5 Functions</a>.</p>
 </div>
-<p>For easy interactions with the HDF5-file in python specatalog provides the <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a>. In the following, the usage of this class is explained.</p>
+<p>For easy interactions with the HDF5-file in python specatalog provides the
+<a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a>.
+In the following, the usage of this class is explained.</p>
 <section id="hdf5object">
 <h2>HDF5Object<a class="headerlink" href="#hdf5object" title="Link to this heading"></a></h2>
 <section id="open">
 <h3>open<a class="headerlink" href="#open" title="Link to this heading"></a></h3>
-<p>It is possible to load the data to an HDF5Object by using the function <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id" title="specatalog.data_management.hdf5_reader.load_from_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_from_id</span></code></a>. All datasets are attributes to the data-object and can be easilly called as shown in the example below. Set the optional argument <code class="docutils literal notranslate"><span class="pre">mode</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> if you want to change the contens of the file and to <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> if you only want to read the file:</p>
+<p>It is possible to load the data to an HDF5Object by using the function
+<a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id" title="specatalog.data_management.hdf5_reader.load_from_id"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_from_id</span></code></a>.
+All datasets are attributes to the data-object and can be easily called as shown in the example below.
+Set the optional argument <code class="docutils literal notranslate"><span class="pre">mode</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code> if you want to change the contens of the file and to <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> if you only want
+to read the file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.data_management.hdf5_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_from_id</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="n">dat</span><span class="p">,</span> <span class="n">file</span> <span class="o">=</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
-<span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">data</span>
+<span class="c1"># load data from ms_id=1 (UV-vis)</span>
+<span class="k">with</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+        <span class="c1"># raw data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">data</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">intensity</span><span class="p">))</span>
+        <span class="c1"># plot data</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">intensity</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;intensity&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;raw measurement&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="update">
 <h3>update<a class="headerlink" href="#update" title="Link to this heading"></a></h3>
-<p>If you have new data and want to add them or want to update existing attributes you can use the <code class="docutils literal notranslate"><span class="pre">set_attr</span></code> method for attributes (= numbers / strings) and the <code class="docutils literal notranslate"><span class="pre">set_dataset</span></code> method for datasets (= arrays):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">offset</span> <span class="o">=</span> <span class="mf">2.3</span>
-<span class="n">corrected</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span>
-<span class="n">fit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">12000</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2500</span>
+<p>If you have new data and want to add them or want to update existing attributes you can use the
+<code class="docutils literal notranslate"><span class="pre">set_attr</span></code> method for attributes (= numbers / strings) and the <code class="docutils literal notranslate"><span class="pre">set_dataset</span></code> method for datasets (= arrays):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+        <span class="c1"># Load original data</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">data</span>
 
-<span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s2">&quot;x-offset&quot;</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span>
-<span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;xaxis&quot;</span><span class="p">,</span> <span class="n">corrected</span><span class="p">)</span>
-<span class="n">dat</span><span class="o">.</span><span class="n">evaluations</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;fit1&quot;</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>
+        <span class="c1"># Perform correction</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="mf">2.3</span>
+        <span class="n">corrected</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">offset</span>
+
+        <span class="c1"># Calculate fit function</span>
+        <span class="n">fit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">12000</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2500</span>
+
+        <span class="c1"># Store new data</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_attr</span><span class="p">(</span><span class="s2">&quot;x-offset&quot;</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>  <span class="c1"># Store offset as attribute</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">corrected_data</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;xaxis&quot;</span><span class="p">,</span> <span class="n">corrected</span><span class="p">)</span>  <span class="c1"># Store corrected axis as dataset</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">evaluations</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">(</span><span class="s2">&quot;fit1&quot;</span><span class="p">,</span> <span class="n">fit</span><span class="p">)</span>  <span class="c1"># Store fit result as dataset</span>
+
+        <span class="c1"># Immediately write changes to file</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="delete">
 <h3>delete<a class="headerlink" href="#delete" title="Link to this heading"></a></h3>
 <p>If you want to delete attributes you can use the <code class="docutils literal notranslate"><span class="pre">delete_attr</span></code> method, for datasets you can use the <code class="docutils literal notranslate"><span class="pre">delete_dataset</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="s2">&quot;data_imag&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+        <span class="c1"># Delete an imaginary data dataset from raw_data group</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">delete_dataset</span><span class="p">(</span><span class="s2">&quot;data_imag&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Immediately write changes to file</span>
+        <span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="sync-and-close">
-<h3>sync and close<a class="headerlink" href="#sync-and-close" title="Link to this heading"></a></h3>
-<p>All changes are written to the file using the <code class="docutils literal notranslate"><span class="pre">sync</span></code> method. Call this method ath the end of your script and close the file:</p>
+<section id="sync">
+<h3>sync<a class="headerlink" href="#sync" title="Link to this heading"></a></h3>
+<p>All changes are written to the file using the <code class="docutils literal notranslate"><span class="pre">sync</span></code> method. Call this method ath the end of your script:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dat</span><span class="o">.</span><span class="n">sync</span><span class="p">()</span>
-<span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -193,7 +227,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

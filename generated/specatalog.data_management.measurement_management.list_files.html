@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>list_files &mdash; specatalog 2025 documentation</title>
+  <title>list_files &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.data_management.measurement_management.list_files.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/documentation_options.js?v=c6db1b62"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -23,7 +23,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="measurement_path" href="specatalog.data_management.measurement_management.measurement_path.html" />
+    <link rel="next" title="load_h5" href="specatalog.data_management.hdf5_reader.load_h5.html" />
     <link rel="prev" title="delete_measurement" href="specatalog.data_management.measurement_management.delete_measurement.html" /> 
 </head>
 
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,11 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../data_management.html">data_management</a><ul class="current">
@@ -80,10 +78,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#specatalog.data_management.measurement_management.list_files"><code class="docutils literal notranslate"><span class="pre">list_files()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.measurement_management.measurement_path.html">measurement_path</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../data_management.html#hdf5-reader">hdf5_reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_management.html#archive-manager">archive_manager</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
@@ -117,7 +115,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
         <a href="specatalog.data_management.measurement_management.delete_measurement.html" class="btn btn-neutral float-left" title="delete_measurement" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="specatalog.data_management.measurement_management.measurement_path.html" class="btn btn-neutral float-right" title="measurement_path" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="specatalog.data_management.hdf5_reader.load_h5.html" class="btn btn-neutral float-right" title="load_h5" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -128,28 +126,25 @@
 <h1>list_files<a class="headerlink" href="#list-files" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="specatalog.data_management.measurement_management.list_files">
-<span class="sig-prename descclassname"><span class="pre">specatalog.data_management.measurement_management.</span></span><span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/measurement_management.html#list_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.measurement_management.list_files" title="Link to this definition"></a></dt>
-<dd><p>List all files in a single measurement directory with the ID ms_id and
-all subdirectorys. If a category is chosen only files of this category
-are listed.</p>
+<span class="sig-prename descclassname"><span class="pre">specatalog.data_management.measurement_management.</span></span><span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ms_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/measurement_management.html#list_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.measurement_management.list_files" title="Link to this definition"></a></dt>
+<dd><p>Lists files in a measurement directory or subdirectory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>base_dir</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to the root-folder of the archive.</p></li>
-<li><p><strong>ms_id</strong> (<em>str</em><em> or </em><em>int</em>) – Number of the measurement.</p></li>
-<li><p><strong>category</strong> (<em>str</em><em>, </em><em>optional</em>) – One of the categories: [“raw”, “scripts”, “figures”, “additional_info”,
-“literature”] or empty. The contents of the subdirectory is listed.
-The default is “”.</p></li>
+<li><p><strong>ms_id</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>) – Measurement ID number.</p></li>
+<li><p><strong>category</strong> (<em>str</em><em>, </em><em>optional</em>) – File category (must be one of: raw, scripts, figures,
+additional_info, literature) or empty for all files.
+Default is “” (all files).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – An error is raised if the category is not known.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If category is invalid.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filelist</strong> – List with absolute paths to all files in the (sub-)directory.</p>
+<dd class="field-odd"><p>List of absolute file paths in the directory.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dd class="field-even"><p>list[Path]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -161,13 +156,13 @@ The default is “”.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="specatalog.data_management.measurement_management.delete_measurement.html" class="btn btn-neutral float-left" title="delete_measurement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="specatalog.data_management.measurement_management.measurement_path.html" class="btn btn-neutral float-right" title="measurement_path" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="specatalog.data_management.hdf5_reader.load_h5.html" class="btn btn-neutral float-right" title="load_h5" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

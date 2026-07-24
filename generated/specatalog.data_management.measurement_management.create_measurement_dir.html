@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>create_measurement_dir &mdash; specatalog 2025 documentation</title>
+  <title>create_measurement_dir &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/generated/specatalog.data_management.measurement_management.create_measurement_dir.html" />
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=e66a8189"></script>
+      <script src="../_static/documentation_options.js?v=c6db1b62"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -60,11 +59,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">models</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../data_management.html">data_management</a><ul class="current">
@@ -80,10 +78,10 @@
 <li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.measurement_management.delete_element.html">delete_element</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.measurement_management.delete_measurement.html">delete_measurement</a></li>
 <li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.measurement_management.list_files.html">list_files</a></li>
-<li class="toctree-l3"><a class="reference internal" href="specatalog.data_management.measurement_management.measurement_path.html">measurement_path</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../data_management.html#hdf5-reader">hdf5_reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data_management.html#archive-manager">archive_manager</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../helpers.html">helpers</a></li>
@@ -128,47 +126,25 @@
 <h1>create_measurement_dir<a class="headerlink" href="#create-measurement-dir" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="specatalog.data_management.measurement_management.create_measurement_dir">
-<span class="sig-prename descclassname"><span class="pre">specatalog.data_management.measurement_management.</span></span><span class="sig-name descname"><span class="pre">create_measurement_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ms_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/measurement_management.html#create_measurement_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.measurement_management.create_measurement_dir" title="Link to this definition"></a></dt>
-<dd><p>Create a new directory for a single measurement with the measurement-ID
-ms_id in the folder of the archive (base_dir). Directory and subdirectories
-are created as well as a hdf5-file for saving the data of the measurement.
-The hdf5-file has three groups: “raw_data”, “corrected_data” and
-“evaluations”.</p>
-<p>The structure is as follows:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>base_dir/
-├── data/
-│   ├── M1/
-│   ├── M2/
-│   ├── M3/
-│   ├── ...
-│   └── M{ms_id}/
-│       ├── additional_info/
-│       ├── figures/
-│       ├── literature/
-│       ├── raw/
-│       ├── scripts/
-│       └── measurement_M{ms_id}.h5
-│
-└── &lt;other directories of the archive&gt;
-</pre></div>
-</div>
+<span class="sig-prename descclassname"><span class="pre">specatalog.data_management.measurement_management.</span></span><span class="sig-name descname"><span class="pre">create_measurement_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ms_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/measurement_management.html#create_measurement_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.measurement_management.create_measurement_dir" title="Link to this definition"></a></dt>
+<dd><p>Creates a new measurement directory structure with HDF5 file in the
+archive root folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>base_dir</strong> (<em>str</em>) – Path to the root-folder of the archive.</p></li>
-<li><p><strong>ms_id</strong> (<em>int</em>) – Number of the measurement.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>ms_id</strong> (<em>int</em>) – Measurement ID number.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>FileExistsError</strong> – An error is raised if the measurement directory already exists.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>p</strong> – Relative path to the new measurement directory from the archive root.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> – Absolute path to the new measurement directory.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Path</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Creates directory structure with:
+- data/M{ms_id}/
+- Subdirectories: additional_info, figures, literature, raw, scripts
+- HDF5 file with groups: raw_data, corrected_data, evaluations</p>
 </dd></dl>
 
 </section>
@@ -184,7 +160,7 @@ The hdf5-file has three groups: “raw_data”, “corrected_data” and
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

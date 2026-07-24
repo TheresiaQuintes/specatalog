@@ -32,7 +32,8 @@ When using specatalog, your data are organised systematically in an archive dire
 
 base_dir/
 ^^^^^^^^^
-This is the basis folder in which all data are stored. The absolute path to the folder can be set by the user in ``~/.specatalog/defaults.json``. The whole directory can be created by ``specatalog-init-db``.
+This is the basis folder in which all data are stored. The absolute path to the folder can be set by the user in ``~/.specatalog/defaults.json``. If ``remote_archive`` is set to ``false`` assign the total path to your archive directory to ``archive_path``. If ``remote_archive`` is ``true`` set the ``host`` (available via SMB), ``share``, ``archive_user_name`` and ``archive_password``.
+The whole directory can be created by ``specatalog-init-dir``.
 
 data/
 ^^^^^
@@ -46,7 +47,7 @@ In the directory of a measurement the files are organised:
 - **additional_info/ :** save additional information like metadata
 - **literature/ :** save literature concerning the measurement here
 
-In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the :class:`HDF5Object <specatalog.data_management.hdf5_reader.H5Object>` and in the Tutorial for the :doc:`tutorial_hdf5object`.
+In each Folder you will find an automatically generated hdf5-file: **measurement_M{ms_id}.h5**. This file contains the raw data as arrays. They can be easily loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the :class:`HDF5Object <specatalog.data_management.hdf5_reader.H5Object>` and in the Tutorial for the :doc:`tutorial_hdf5object`.
 
 
 molecules/
@@ -63,11 +64,13 @@ This file is created, when the archive-directory is set up by specatalog for the
 The database
 ------------
 
-The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin and referenced in the code. After setup the database consists of two main tables *molecules* and *measurements*.
+The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin. It has to be initialized by ``specatalog-init``.
+Then, the database consists of two main tables *molecules* and *measurements*. The connection parameters to the database are saved in the defaults.json
+in ``database_url``, ``db_user_name`` and ``db_password``.
 
 .. note::
 
-   The database can be queried using the :ref:`crud-db-read` module. Additionally the database can be opened by any programm that is able to read PostgreSQL databases (e.g. `DBeaver <https://dbeaver.com/docs/dbeaver/>`_). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.
+   The database can be queried using the :ref:`crud-db-read` module or using the GUI (``specatalog-gui``). Additionally the database can be opened by any program that is able to read PostgreSQL databases (e.g. `DBeaver <https://dbeaver.com/docs/dbeaver/>`_). It is not recommended to change entries in the database using external programs but to add and update entries only using specatalog to avoid inconsistencies.
    
 
 molecules table
@@ -76,4 +79,4 @@ The table contains the main information on the molecules. Each molecule belongs 
 
 measurements table
 ^^^^^^^^^^^^^^^^^^
-Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= epxerimental method, e.g. TREPR). In this addtional table metatdata that are specific to the method are stored. For detaild information on the fields of the table have a look at the documentation of the :ref:`models-measurements` module. Each measurement getas an unique ID which references the measurement directory in the archive (at `/data/M{ms_id}`). 
+Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= experimental method, e.g. TREPR). In this additional table metadata that are specific to the method are stored. For detailed information on the fields of the table have a look at the documentation of the :ref:`models-measurements` module. Each measurement getas an unique ID which references the measurement directory in the archive (at `/data/M{ms_id}`).

@@ -1,7 +1,10 @@
 data_management
 ===============
 
-The package data_management provides modules for the interaction with the datafiles stored in the archive. The module measurement_management provides CRUD-Functions for the archive, while the hdf5_reader module can be used for reading and updating the measurement.h5-files.
+The package data_management provides modules for the interaction with the datafiles
+stored in the archive. The module measurement_management provides CRUD-Functions
+for the archive, while the hdf5_reader module can be used for reading and updating
+the measurement.h5-files.
 
 .. _data-management-measurement-management:
 
@@ -21,7 +24,6 @@ measurement_management
    delete_element
    delete_measurement
    list_files
-   measurement_path
 
 hdf5_reader
 -----------
@@ -43,3 +45,22 @@ hdf5_reader
    H5Object
    
 
+archive_manager
+---------------
+
+.. currentmodule:: specatalog.data_management.archive_manager
+
+.. autosummary::
+   :toctree: generated/
+   :recursive:
+
+   create_archive
+
+
+.. autosummary::
+   :toctree: generated/
+   :recursive:
+   :template: full_class.rst
+
+   SMBConnectionManager
+   SpecatalogArchive

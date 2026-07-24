@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The organisation of the archive &mdash; specatalog 2025 documentation</title>
+  <title>The organisation of the archive &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/tutorial_structure.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -74,11 +73,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
@@ -150,7 +148,8 @@
 </div>
 <section id="base-dir">
 <h3>base_dir/<a class="headerlink" href="#base-dir" title="Link to this heading"></a></h3>
-<p>This is the basis folder in which all data are stored. The absolute path to the folder can be set by the user in <code class="docutils literal notranslate"><span class="pre">~/.specatalog/defaults.json</span></code>. The whole directory can be created by <code class="docutils literal notranslate"><span class="pre">specatalog-init-db</span></code>.</p>
+<p>This is the basis folder in which all data are stored. The absolute path to the folder can be set by the user in <code class="docutils literal notranslate"><span class="pre">~/.specatalog/defaults.json</span></code>. If <code class="docutils literal notranslate"><span class="pre">remote_archive</span></code> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code> assign the total path to your archive directory to <code class="docutils literal notranslate"><span class="pre">archive_path</span></code>. If <code class="docutils literal notranslate"><span class="pre">remote_archive</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> set the <code class="docutils literal notranslate"><span class="pre">host</span></code> (available via SMB), <code class="docutils literal notranslate"><span class="pre">share</span></code>, <code class="docutils literal notranslate"><span class="pre">archive_user_name</span></code> and <code class="docutils literal notranslate"><span class="pre">archive_password</span></code>.
+The whole directory can be created by <code class="docutils literal notranslate"><span class="pre">specatalog-init-dir</span></code>.</p>
 </section>
 <section id="data">
 <h3>data/<a class="headerlink" href="#data" title="Link to this heading"></a></h3>
@@ -163,7 +162,7 @@
 <li><p><strong>additional_info/ :</strong> save additional information like metadata</p></li>
 <li><p><strong>literature/ :</strong> save literature concerning the measurement here</p></li>
 </ul>
-<p>In each Folder you will find an automatically generated hdf5-file: <strong>measurement_M{ms_id}.h5</strong>. This file contains the raw data as arrays. They can be easilly loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a> and in the Tutorial for the <a class="reference internal" href="tutorial_hdf5object.html"><span class="doc">Measurement.h5 file</span></a>.</p>
+<p>In each Folder you will find an automatically generated hdf5-file: <strong>measurement_M{ms_id}.h5</strong>. This file contains the raw data as arrays. They can be easily loaded from this file and evaluations and corrections can also be saved in the hdf5-file using the HDF5Object-class. Find more details at the documentation of the <a class="reference internal" href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object" title="specatalog.data_management.hdf5_reader.H5Object"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Object</span></code></a> and in the Tutorial for the <a class="reference internal" href="tutorial_hdf5object.html"><span class="doc">Measurement.h5 file</span></a>.</p>
 </section>
 <section id="molecules">
 <h3>molecules/<a class="headerlink" href="#molecules" title="Link to this heading"></a></h3>
@@ -176,10 +175,12 @@
 </section>
 <section id="the-database">
 <h2>The database<a class="headerlink" href="#the-database" title="Link to this heading"></a></h2>
-<p>The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin and referenced in the code. After setup the database consists of two main tables <em>molecules</em> and <em>measurements</em>.</p>
+<p>The metadata is organised in a PostgreSQL database. An empty database has to be created by an admin. It has to be initialized by <code class="docutils literal notranslate"><span class="pre">specatalog-init</span></code>.
+Then, the database consists of two main tables <em>molecules</em> and <em>measurements</em>. The connection parameters to the database are saved in the defaults.json
+in <code class="docutils literal notranslate"><span class="pre">database_url</span></code>, <code class="docutils literal notranslate"><span class="pre">db_user_name</span></code> and <code class="docutils literal notranslate"><span class="pre">db_password</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The database can be queried using the <a class="reference internal" href="crud_db.html#crud-db-read"><span class="std std-ref">read</span></a> module. Additionally the database can be opened by any programm that is able to read PostgreSQL databases (e.g. <a class="reference external" href="https://dbeaver.com/docs/dbeaver/">DBeaver</a>). It is not recommended to change entries in the database using external programms but to add and update entries only using specatalog to avoid inconsistencies.</p>
+<p>The database can be queried using the <a class="reference internal" href="crud_db.html#crud-db-read"><span class="std std-ref">read</span></a> module or using the GUI (<code class="docutils literal notranslate"><span class="pre">specatalog-gui</span></code>). Additionally the database can be opened by any program that is able to read PostgreSQL databases (e.g. <a class="reference external" href="https://dbeaver.com/docs/dbeaver/">DBeaver</a>). It is not recommended to change entries in the database using external programs but to add and update entries only using specatalog to avoid inconsistencies.</p>
 </div>
 <section id="molecules-table">
 <h3>molecules table<a class="headerlink" href="#molecules-table" title="Link to this heading"></a></h3>
@@ -187,7 +188,7 @@
 </section>
 <section id="measurements-table">
 <h3>measurements table<a class="headerlink" href="#measurements-table" title="Link to this heading"></a></h3>
-<p>Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= epxerimental method, e.g. TREPR). In this addtional table metatdata that are specific to the method are stored. For detaild information on the fields of the table have a look at the documentation of the <a class="reference internal" href="models.html#models-measurements"><span class="std std-ref">measurements</span></a> module. Each measurement getas an unique ID which references the measurement directory in the archive (at <cite>/data/M{ms_id}</cite>).</p>
+<p>Each entry in the measurements table corresponds to a single measurement. In the table important metadata like the concentration, the date of the measurement or the temperature are stored. The measurement belongs to a method (= experimental method, e.g. TREPR). In this additional table metadata that are specific to the method are stored. For detailed information on the fields of the table have a look at the documentation of the <a class="reference internal" href="models.html#models-measurements"><span class="std std-ref">measurements</span></a> module. Each measurement getas an unique ID which references the measurement directory in the archive (at <cite>/data/M{ms_id}</cite>).</p>
 </section>
 </section>
 </section>
@@ -203,7 +204,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

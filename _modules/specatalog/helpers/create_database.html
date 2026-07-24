@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>specatalog.helpers.create_database &mdash; specatalog 2026 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+    <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/_modules/specatalog/helpers/create_database.html" />
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6db1b62"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            specatalog
+              <img src="../../../_static/logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation and Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../update.html">Update</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_structure.html">The organisation of the archive</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_molecules.html">Molecules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_measurements.html">Measurements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_hdf5object.html">Measurement.h5 file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial_allowed_values.html">Allowed values</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Packages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../main.html">Main Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../crud_db.html">crud_db</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../data_management.html">data_management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../helpers.html">helpers</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Administration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_database.html">Database administration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_models.html">Adding new models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_new_data_loader.html">Adding new loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin_backup.html">Backup</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">specatalog</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">specatalog.helpers.create_database</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for specatalog.helpers.create_database</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;run only once to create the databases&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">alembic.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">alembic</span><span class="w"> </span><span class="kn">import</span> <span class="n">command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">archive</span>
+
+<span class="n">CURRENT_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+
+<span class="c1"># create archive directory</span>
+<div class="viewcode-block" id="create_archive_directory">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.create_database.create_archive_directory.html#specatalog.helpers.create_database.create_archive_directory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_archive_directory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the basic archive directory structure.</span>
+
+<span class="sd">    Creates the required directory structure and configuration files</span>
+<span class="sd">    for the measurement archive.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if directory creation was successful, False otherwise</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Creates:</span>
+<span class="sd">    - data/ directory for measurements</span>
+<span class="sd">    - molecules/ directory for molecule data</span>
+<span class="sd">    - allowed_values.py configuration file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define path definitions</span>
+    <span class="n">measurements_path</span> <span class="o">=</span> <span class="s2">&quot;data&quot;</span>
+    <span class="n">molecules_path</span> <span class="o">=</span> <span class="s2">&quot;molecules&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Create molecules folder</span>
+        <span class="n">archive</span><span class="o">.</span><span class="n">make_dir</span><span class="p">(</span><span class="n">molecules_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Molecules folder created at </span><span class="si">{</span><span class="n">archive</span><span class="o">.</span><span class="n">archive</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">molecules_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Create measurements folder</span>
+        <span class="n">archive</span><span class="o">.</span><span class="n">make_dir</span><span class="p">(</span><span class="n">measurements_path</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Measurements folder created at </span><span class="si">{</span><span class="n">archive</span><span class="o">.</span><span class="n">archive</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">measurements_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Directory could not be created: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Create allowed_values.py if it doesn&#39;t exist</span>
+        <span class="n">allowed_values_path</span> <span class="o">=</span> <span class="s2">&quot;allowed_values.py&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">archive</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">allowed_values_path</span><span class="p">):</span>
+            <span class="c1"># Get the path to the template file</span>
+            <span class="n">template_path</span> <span class="o">=</span> <span class="n">CURRENT_DIR</span> <span class="o">/</span> <span class="s2">&quot;allowed_values_not_adapted.py&quot;</span>
+
+            <span class="c1"># Copy the template file to the archive</span>
+            <span class="n">archive</span><span class="o">.</span><span class="n">copy_to_archive</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">allowed_values_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">archive</span><span class="o">.</span><span class="n">archive</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">allowed_values_path</span><span class="si">}</span><span class="s2"> created.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">archive</span><span class="o">.</span><span class="n">archive</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">allowed_values_path</span><span class="si">}</span><span class="s2"> exists.&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;allowed_values.py could not be created: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="run_alembic_upgrade">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.create_database.run_alembic_upgrade.html#specatalog.helpers.create_database.run_alembic_upgrade">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_alembic_upgrade</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply all database migrations to bring schema to current version.</span>
+
+<span class="sd">    Uses Alembic to upgrade the database schema to the latest version</span>
+<span class="sd">    defined in the migration scripts.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Requires valid database connection configuration</span>
+<span class="sd">    - Will create all tables and apply all migrations</span>
+<span class="sd">    - Prints confirmation message upon completion</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply all migrations (initial schema)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">DATABASE_URL_ADMIN</span>
+
+    <span class="n">alembic_cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">&quot;alembic.ini&quot;</span><span class="p">))</span>
+    <span class="n">alembic_cfg</span><span class="o">.</span><span class="n">set_main_option</span><span class="p">(</span><span class="s2">&quot;sqlalchemy.url&quot;</span><span class="p">,</span> <span class="n">DATABASE_URL_ADMIN</span><span class="p">)</span>
+    <span class="n">alembic_cfg</span><span class="o">.</span><span class="n">set_main_option</span><span class="p">(</span><span class="s2">&quot;script_location&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">PROJECT_ROOT</span> <span class="o">/</span> <span class="s2">&quot;migrations&quot;</span><span class="p">))</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">alembic_cfg</span><span class="p">,</span> <span class="s2">&quot;head&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Database is up to date.&quot;</span><span class="p">)</span>
+    <span class="k">return</span></div>
+
+
+
+<div class="viewcode-block" id="specatalog_init">
+<a class="viewcode-back" href="../../../generated/specatalog.helpers.create_database.specatalog_init.html#specatalog.helpers.create_database.specatalog_init">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">specatalog_init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the Specatalog system.</span>
+
+<span class="sd">    Checks if archive and database already exist, and if not,</span>
+<span class="sd">    creates them by:</span>
+<span class="sd">    1. Setting up the directory structure</span>
+<span class="sd">    2. Applying database migrations</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - Prompts user to confirm if existing setup should be used</span>
+<span class="sd">    - Only creates new setup if user answers &#39;n&#39;</span>
+<span class="sd">    - Prints status messages during initialization</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">BASE_PATH</span>
+
+    <span class="n">exist</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Does the archive and database already exist at </span><span class="si">{</span><span class="n">BASE_PATH</span><span class="si">}</span><span class="s2">? y/n?&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">exist</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+        <span class="n">create_archive_directory</span><span class="p">()</span>
+        <span class="n">run_alembic_upgrade</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No new archive created.&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,10 +1,17 @@
 Allowed values
 ==============
 
-In the root folder of the archive directory the file ``allowed_values.py`` is created. This file creates classes that generate the permitted values for specific columns in the database in order to keep them consistent and enable searchability for specific terms.
-For example, uniform abbreviations should always be used for chromophores, or water as a solvent should always be referred to as "water" and not "H20".
+In the root folder of the archive directory the file ``allowed_values.py`` is created.
+This file creates classes that generate the permitted values for specific columns in the database
+in order to keep them consistent and enable searchability for specific terms.
+For example, uniform abbreviations should always be used for chromophores,
+or water as a solvent should always be referred to as "water" and not "H20".
 
-This file is placed in the root of the archive directory in order to make it available to all users. The file should be adapted once by the admin in the beginning to set the initial values. Later all members of the team may add allowed values to the classes (if this shall be not allowed change the os-writing permissions so that only the admin has the permission an the rest of the team can only read the file) . For example, a new chormophore is measured or a new solvent is used.
+This file is placed in the root of the archive directory in order to make it available to all users.
+The file should be adapted in the beginning by the admin to set the initial values.
+Later, all members of the team may add allowed values to the classes (if this shall be not allowed change
+the os-writing permissions so that only the admin has the permission an the rest of the team can only read the file).
+For example, a new chromophore is measured or a new solvent is used.
 
 .. danger::
 	
@@ -42,6 +49,9 @@ The following classes exist:
    * - PulseExperiments
      - ``pulse_experiment`` attribute in the ``PulseEPR`` class. 
      	Add abbreviations for the names of pulse experiments.
+   * - Timedomains
+     - ``timedomain`` attribute in the ``TA`` class.
+         Add time domains for measurements like ns/ms.
    * - Chromophores
      - ``chromophore`` attribute in the ``TDP`` and ``TTP`` classes. 
      	Add a systematic nomenclature for the chromophores of the molecules

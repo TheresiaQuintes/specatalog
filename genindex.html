@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; specatalog 2025 documentation</title>
+  <title>Index &mdash; specatalog 2026 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
     <link rel="canonical" href="https://theresiaquintes.github.io/specatalog/genindex.html" />
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=e66a8189"></script>
+      <script src="_static/documentation_options.js?v=c6db1b62"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -47,7 +47,6 @@
               <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation and Setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working_with_remote_folders.html">Working with remote directories</a></li>
 <li class="toctree-l1"><a class="reference internal" href="update.html">Update</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
@@ -57,11 +56,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial_measurements.html">Measurements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_hdf5object.html">Measurement.h5 file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial_allowed_values.html">Allowed values</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial_multiple_files.html">Workflow: Multiple Raw Data Measurements</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Packages</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crud_db.html">crud_db</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="data_management.html">data_management</a></li>
@@ -166,18 +164,28 @@
         <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.concentration">(specatalog.models.measurements.Measurement attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager.connect">connect() (specatalog.data_management.archive_manager.SMBConnectionManager method)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.copy_directory_to_archive">copy_directory_to_archive() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.copy_to_archive">copy_to_archive() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel.corrected">corrected (specatalog.models.creation_pydantic_measurements.MeasurementModel attribute)</a>
 
       <ul>
         <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.corrected">(specatalog.models.measurements.Measurement attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.data_management.archive_manager.create_archive.html#specatalog.data_management.archive_manager.create_archive">create_archive() (in module specatalog.data_management.archive_manager)</a>
+</li>
+      <li><a href="generated/specatalog.helpers.create_database.create_archive_directory.html#specatalog.helpers.create_database.create_archive_directory">create_archive_directory() (in module specatalog.helpers.create_database)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.helpers.full_entry.create_full_measurement.html#specatalog.helpers.full_entry.create_full_measurement">create_full_measurement() (in module specatalog.helpers.full_entry)</a>
 </li>
       <li><a href="generated/specatalog.helpers.full_entry.create_full_molecule.html#specatalog.helpers.full_entry.create_full_molecule">create_full_molecule() (in module specatalog.helpers.full_entry)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.data_management.measurement_management.create_measurement_dir.html#specatalog.data_management.measurement_management.create_measurement_dir">create_measurement_dir() (in module specatalog.data_management.measurement_management)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.create.create_new_measurement.html#specatalog.crud_db.create.create_new_measurement">create_new_measurement() (in module specatalog.crud_db.create)</a>
@@ -214,6 +222,10 @@
 </li>
       <li><a href="generated/specatalog.data_management.measurement_management.delete_element.html#specatalog.data_management.measurement_management.delete_element">delete_element() (in module specatalog.data_management.measurement_management)</a>
 </li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.delete_file">delete_file() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.delete_folder">delete_folder() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
       <li><a href="generated/specatalog.helpers.full_entry.delete_full_measurement.html#specatalog.helpers.full_entry.delete_full_measurement">delete_full_measurement() (in module specatalog.helpers.full_entry)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.delete.delete_measurement.html#specatalog.crud_db.delete.delete_measurement">delete_measurement() (in module specatalog.crud_db.delete)</a>
@@ -240,6 +252,8 @@
         <li><a href="generated/specatalog.models.measurements.UVVis.html#specatalog.models.measurements.UVVis.dim_cuvette">(specatalog.models.measurements.UVVis attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager.disconnect">disconnect() (specatalog.data_management.archive_manager.SMBConnectionManager method)</a>
+</li>
       <li><a href="generated/specatalog.models.creation_pydantic_molecules.TDPModel.html#specatalog.models.creation_pydantic_molecules.TDPModel.doublet">doublet (specatalog.models.creation_pydantic_molecules.TDPModel attribute)</a>
 
       <ul>
@@ -252,6 +266,8 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager.ensure_connection">ensure_connection() (specatalog.data_management.archive_manager.SMBConnectionManager method)</a>
+</li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel.evaluated">evaluated (specatalog.models.creation_pydantic_measurements.MeasurementModel attribute)</a>
 
       <ul>
@@ -294,6 +310,8 @@
         <li><a href="generated/specatalog.models.measurements.TREPR.html#specatalog.models.measurements.TREPR.excitation_wl">(specatalog.models.measurements.TREPR attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.exists">exists() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -397,7 +415,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.data_management.measurement_management.list_files.html#specatalog.data_management.measurement_management.list_files">list_files() (in module specatalog.data_management.measurement_management)</a>
+
+      <ul>
+        <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.list_files">(specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
 </li>
+      </ul></li>
       <li><a href="generated/specatalog.data_management.hdf5_reader.load_from_id.html#specatalog.data_management.hdf5_reader.load_from_id">load_from_id() (in module specatalog.data_management.hdf5_reader)</a>
 </li>
       <li><a href="generated/specatalog.data_management.hdf5_reader.load_h5.html#specatalog.data_management.hdf5_reader.load_h5">load_h5() (in module specatalog.data_management.hdf5_reader)</a>
@@ -414,6 +436,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.make_dir">make_dir() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
       <li><a href="generated/specatalog.helpers.helper_functions.make_filter_model.html#specatalog.helpers.helper_functions.make_filter_model">make_filter_model() (in module specatalog.helpers.helper_functions)</a>
 </li>
       <li><a href="generated/specatalog.helpers.helper_functions.make_ordering_model.html#specatalog.helpers.helper_functions.make_ordering_model">make_ordering_model() (in module specatalog.helpers.helper_functions)</a>
@@ -442,7 +466,7 @@
         <li><a href="generated/specatalog.models.creation_pydantic_measurements.UVVisModel.html#specatalog.models.creation_pydantic_measurements.UVVisModel.measurement_class">(specatalog.models.creation_pydantic_measurements.UVVisModel attribute)</a>
 </li>
       </ul></li>
-      <li><a href="generated/specatalog.data_management.measurement_management.measurement_path.html#specatalog.data_management.measurement_management.measurement_path">measurement_path() (in module specatalog.data_management.measurement_management)</a>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.measurement_path">measurement_path() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.read.MeasurementFilter.html#specatalog.crud_db.read.MeasurementFilter">MeasurementFilter (class in specatalog.crud_db.read)</a>
 </li>
@@ -450,10 +474,10 @@
 </li>
       <li><a href="generated/specatalog.crud_db.read.MeasurementOrdering.html#specatalog.crud_db.read.MeasurementOrdering">MeasurementOrdering (class in specatalog.crud_db.read)</a>
 </li>
-      <li><a href="generated/specatalog.models.molecules.Molecule.html#specatalog.models.molecules.Molecule.measurements">measurements (specatalog.models.molecules.Molecule attribute)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/specatalog.models.molecules.Molecule.html#specatalog.models.molecules.Molecule.measurements">measurements (specatalog.models.molecules.Molecule attribute)</a>
+</li>
       <li><a href="generated/specatalog.crud_db.update.MeasurementUpdate.html#specatalog.crud_db.update.MeasurementUpdate">MeasurementUpdate (class in specatalog.crud_db.update)</a>
 </li>
       <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.method">method (specatalog.models.measurements.Measurement attribute)</a>
@@ -551,6 +575,12 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.open_file">open_file() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.open_measurement_h5_file">open_measurement_h5_file() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="P">P</h2>
@@ -558,16 +588,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.path">path (specatalog.models.measurements.Measurement attribute)</a>
 </li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.path_to_unc">path_to_unc() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.PulseEPRModel.html#specatalog.models.creation_pydantic_measurements.PulseEPRModel.pulse_experiment">pulse_experiment (specatalog.models.creation_pydantic_measurements.PulseEPRModel attribute)</a>
 
       <ul>
         <li><a href="generated/specatalog.models.measurements.PulseEPR.html#specatalog.models.measurements.PulseEPR.pulse_experiment">(specatalog.models.measurements.PulseEPR attribute)</a>
 </li>
       </ul></li>
-      <li><a href="generated/specatalog.models.measurements.PulseEPR.html#specatalog.models.measurements.PulseEPR">PulseEPR (class in specatalog.models.measurements)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/specatalog.models.measurements.PulseEPR.html#specatalog.models.measurements.PulseEPR">PulseEPR (class in specatalog.models.measurements)</a>
+</li>
       <li><a href="generated/specatalog.crud_db.read.PulseEPRFilter.html#specatalog.crud_db.read.PulseEPRFilter">PulseEPRFilter (class in specatalog.crud_db.read)</a>
 </li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.PulseEPRModel.html#specatalog.models.creation_pydantic_measurements.PulseEPRModel">PulseEPRModel (class in specatalog.models.creation_pydantic_measurements)</a>
@@ -598,14 +630,18 @@
 </li>
       <li><a href="generated/specatalog.data_management.measurement_management.raw_data_to_hdf5.html#specatalog.data_management.measurement_management.raw_data_to_hdf5">raw_data_to_hdf5() (in module specatalog.data_management.measurement_management)</a>
 </li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager.reconnect">reconnect() (specatalog.data_management.archive_manager.SMBConnectionManager method)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager.remote_path">remote_path() (specatalog.data_management.archive_manager.SMBConnectionManager method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.TREPRModel.html#specatalog.models.creation_pydantic_measurements.TREPRModel.repetitionrate">repetitionrate (specatalog.models.creation_pydantic_measurements.TREPRModel attribute)</a>
 
       <ul>
         <li><a href="generated/specatalog.models.measurements.TREPR.html#specatalog.models.measurements.TREPR.repetitionrate">(specatalog.models.measurements.TREPR attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.models.molecules.RP.html#specatalog.models.molecules.RP">RP (class in specatalog.models.molecules)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.read.RPFilter.html#specatalog.crud_db.read.RPFilter">RPFilter (class in specatalog.crud_db.read)</a>
@@ -615,6 +651,8 @@
       <li><a href="generated/specatalog.crud_db.read.RPOrdering.html#specatalog.crud_db.read.RPOrdering">RPOrdering (class in specatalog.crud_db.read)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.update.RPUpdate.html#specatalog.crud_db.update.RPUpdate">RPUpdate (class in specatalog.crud_db.update)</a>
+</li>
+      <li><a href="generated/specatalog.helpers.create_database.run_alembic_upgrade.html#specatalog.helpers.create_database.run_alembic_upgrade">run_alembic_upgrade() (in module specatalog.helpers.create_database)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.read.run_query.html#specatalog.crud_db.read.run_query">run_query() (in module specatalog.crud_db.read)</a>
 </li>
@@ -638,13 +676,15 @@
 </li>
       <li><a href="generated/specatalog.crud_db.read.SingleMoleculeFilter.html#specatalog.crud_db.read.SingleMoleculeFilter">SingleMoleculeFilter (class in specatalog.crud_db.read)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.models.creation_pydantic_molecules.SingleMoleculeModel.html#specatalog.models.creation_pydantic_molecules.SingleMoleculeModel">SingleMoleculeModel (class in specatalog.models.creation_pydantic_molecules)</a>
 </li>
       <li><a href="generated/specatalog.crud_db.read.SingleMoleculeOrdering.html#specatalog.crud_db.read.SingleMoleculeOrdering">SingleMoleculeOrdering (class in specatalog.crud_db.read)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/specatalog.crud_db.update.SingleMoleculeUpdate.html#specatalog.crud_db.update.SingleMoleculeUpdate">SingleMoleculeUpdate (class in specatalog.crud_db.update)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SMBConnectionManager.html#specatalog.data_management.archive_manager.SMBConnectionManager">SMBConnectionManager (class in specatalog.data_management.archive_manager)</a>
 </li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.MeasurementModel.html#specatalog.models.creation_pydantic_measurements.MeasurementModel.solvent">solvent (specatalog.models.creation_pydantic_measurements.MeasurementModel attribute)</a>
 
@@ -652,6 +692,10 @@
         <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.solvent">(specatalog.models.measurements.Measurement attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.helpers.create_database.specatalog_init.html#specatalog.helpers.create_database.specatalog_init">specatalog_init() (in module specatalog.helpers.create_database)</a>
+</li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive">SpecatalogArchive (class in specatalog.data_management.archive_manager)</a>
+</li>
       <li><a href="generated/specatalog.models.molecules.Molecule.html#specatalog.models.molecules.Molecule.structural_formula">structural_formula (specatalog.models.molecules.Molecule attribute)</a>
 </li>
       <li><a href="generated/specatalog.data_management.hdf5_reader.H5Object.html#specatalog.data_management.hdf5_reader.H5Object.sync">sync() (specatalog.data_management.hdf5_reader.H5Object method)</a>
@@ -688,6 +732,8 @@
         <li><a href="generated/specatalog.models.measurements.Measurement.html#specatalog.models.measurements.Measurement.temperature">(specatalog.models.measurements.Measurement attribute)</a>
 </li>
       </ul></li>
+      <li><a href="generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.temporary_path">temporary_path() (specatalog.data_management.archive_manager.SpecatalogArchive method)</a>
+</li>
       <li><a href="generated/specatalog.models.creation_pydantic_measurements.TAModel.html#specatalog.models.creation_pydantic_measurements.TAModel.timedomain">timedomain (specatalog.models.creation_pydantic_measurements.TAModel attribute)</a>
 
       <ul>
@@ -764,7 +810,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2025 Theresia Quintes.</p>
+    <p>&#169; Copyright 2026 Theresia Quintes.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
