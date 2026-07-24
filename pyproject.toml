@@ -18,8 +18,18 @@ dependencies = [
   "pandas~=2.3",
   "PyQt6~=6.10",
   "pyqtdarktheme~=2.1",
-  "pytest>=9.1.0",
   "smbprotocol~=1.17",
+]
+[project.optional-dependencies]
+dev = [
+    "ruff==0.14.11",
+    "pytest",
+]
+
+[tool.ruff]
+required-version = "0.14.11"
+extend-exclude = [
+    "migrations/",
 ]
 
 [build-system]
