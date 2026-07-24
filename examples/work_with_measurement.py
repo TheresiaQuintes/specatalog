@@ -4,7 +4,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from specatalog.crud_db import read as r
 from specatalog.data_management import hdf5_reader as hf
 from specatalog.data_management import measurement_management as mm
 

@@ -1,8 +1,6 @@
 import numpy as np
 
 from specatalog.data_management import hdf5_reader as hf
-from specatalog.helpers.full_entry import delete_full_measurement
-from specatalog.crud_db.delete import delete_molecule
 
 
 # Attributes und Datasets einer HDF5-Messdatei bearbeiten
