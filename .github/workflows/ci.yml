@@ -19,8 +19,6 @@ jobs:
       - name: Install package
         run: |
           pip install -e ".[dev]"
-          pip install ruff
-          pip install pytest
             
 
       - name: Run linting
