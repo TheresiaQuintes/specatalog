@@ -23,8 +23,8 @@ from specatalog.helpers.full_entry import (
 from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
-from specatalog.main import BASE_PATH
 import specatalog.gui.table_models as tm
+
 
 MODEL_FILTER_MAPPER = {
     "Measurements": r.MeasurementFilter,
@@ -97,17 +97,16 @@ def submit_new_entry(self):
         msg.setDetailedText(str(e))
         msg.exec()
         return
-    # TODO: Vorher wurde hier das LineRawDataInput ausgelesen.
-    # Mache es auch möglich für Drag-And-Drop!
+
     raw_data = self.raw_data_files
 
     if self.RadioMeasurements.isChecked():
         output = create_full_measurement(
-            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+            new_entry_model, raw_data, self.ComboRawFormat.currentText()
         )
     else:
         output = create_full_molecule(
-            new_entry_model, BASE_PATH, raw_data, self.ComboRawFormat.currentText()
+            new_entry_model, raw_data, self.ComboRawFormat.currentText()
         )
 
     if output.success:
@@ -136,7 +135,7 @@ def delete_entry(self):
         f"Do you really want to delete the measurement with the ID {ms_id} from the archive?",
     )
     if sure == QMessageBox.StandardButton.Yes:
-        output = delete_full_measurement(BASE_PATH, ms_id)
+        output = delete_full_measurement(ms_id)
 
         if output.success:
             msg = QMessageBox(self)
@@ -419,7 +418,7 @@ def change_ms_mol(self):
         self.ComboRawFormat.clear()
         self.ComboRawFormat.blockSignals(False)
         self.ComboRawFormat.addItems(
-            [".pdf", ".cdxml", ".png", ".jpg", ".jpeg", ".svg"]
+            ["all", ".pdf", ".cdxml", ".png", ".jpg", ".jpeg", ".svg"]
         )
 
         self.SpinBoxDelete.setEnabled(False)

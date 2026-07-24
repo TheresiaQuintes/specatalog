@@ -1,8 +1,9 @@
 import h5py
 from specatalog.crud_db import read as r
-from specatalog.main import BASE_PATH
-from typing import Any
+from typing import Any, Literal
 import numpy as np
+from contextlib import contextmanager
+from specatalog.main import archive
 
 
 class H5Object:
@@ -229,34 +230,37 @@ class H5Object:
             self._node.file.flush()
 
 
-def load_h5(filename: str, mode: str = "r") -> (H5Object, h5py.File):
+@contextmanager
+def load_h5(
+    filename: str, mode: Literal["r", "a", "w"] = "r"
+) -> tuple[H5Object, h5py.File]:
     """
-    Load a hdf5-file as a H5Object.
+    Loads an HDF5 file and returns it as an H5Object along with the underlying h5py.File.
 
     Parameters
     ----------
     filename : str
-        Path to the hdf5-file.
-    mode : str, optional
-        Decides whether the file should be writable. If mode="r" no changes can
-        be done to the file. If mode="a", the file is also writable.
-        The default is "r".
+        Path to the HDF5 file.
+    mode : Literal["r", "a", "w"], optional
+        File access mode:
+        - "r": Read-only (default)
+        - "a": Append to existing file
+        - "w": Overwrite existing file
 
-    Returns
-    -------
-    obj : H5Object
-        The contents of the hdf5-file as a H5Object.
-    f : h5py.File
-        The loaded hdf5-file. Use f.close() after all changes to the file are
-        done.
-
+    Yields
+    ------
+    tuple[H5Object, h5py.File]
+        The H5Object wrapper and the raw h5py.File object.
     """
-    f = h5py.File(filename, mode)
-    obj = H5Object(f, writable=(mode != "r"))
-    return obj, f
+    with archive.open_measurement_h5_file(filename, mode=mode) as f:
+        obj = H5Object(f, writable=(mode != "r"))
+        yield obj, f
 
 
-def load_from_id(ms_id: int, mode: str = "r") -> (H5Object, h5py.File):
+@contextmanager
+def load_from_id(
+    ms_id: int, mode: Literal["r", "a"] = "r"
+) -> tuple[H5Object, h5py.File]:
     """
     Load a hdf5-measurement-file from the archive as a H5Object.
 
@@ -264,33 +268,36 @@ def load_from_id(ms_id: int, mode: str = "r") -> (H5Object, h5py.File):
     ----------
     ms_id : int
         Number of the measurement.
-    mode : str, optional
-        Decides whether the file should be writable. If mode="r" no changes can
-        be done to the file. If mode="a", the file is also writable.
-        The default is "r".
+    mode : Literal["r", "a", "w"], optional
+        File access mode:
+        - "r": Read-only (default)
+        - "a": Append to existing file
+        - "w": Overwrite existing file
 
     Raises
     ------
     ValueError
-        An error is raised if no measurement with the given ID can be found
-        in the archive.
+        If no measurement with the given ID exists in the archive.
 
-    Returns
+    Yields
+    ------
+    tuple[H5Object, h5py.File]
+        The H5Object wrapper and the raw h5py.File object.
+
+    Example
     -------
-    obj : H5Object
-        The contents of the hdf5-file as a H5Object.
-    f : h5py.File
-        The loaded hdf5-file. Use f.close() after all changes to the file are
-        done.
-
+    >>> with load_from_id(222, mode="a") as (obj, f):
+    >>>    obj.corrected_data.set_attr("test2", 1234)
+    >>>    obj.sync()
+    >>>    int = obj.raw_data.intensity_0
+    >>> print(int)
     """
     find_measurement = r.MeasurementFilter(id=ms_id)
     m = r.run_query(find_measurement)
-    if len(m) == 0:
+    if len(m) != 0:
         raise ValueError(f"No measurement with the id={ms_id} found.")
 
-    m = m[0]
-    data_path = BASE_PATH / m.path / f"measurement_M{m.id}.h5"
-    obj, f = load_h5(data_path, "a")
-
-    return obj, f
+    with load_h5(
+        archive.measurement_path(ms_id) / f"measurement_M{ms_id}.h5", mode=mode
+    ) as (obj, f):
+        yield obj, f

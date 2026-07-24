@@ -1,6 +1,12 @@
 {
-  "base_path": "/home/USER/archive_specatalog",
-  "usr_name": "theresia",
-  "password": "th_pwd",
-  "database_url": "localhost:5432/specatalog"
+  "archive_path": "/path/to/local/archive",
+  "db_usr_name": "database_username",
+  "db_password": "database_password",
+  "database_url": "localhost:5432/specatalog",
+  "host": "server_address",
+  "share": "group/archive_path",
+  "archive_usr_name": "archive_username",
+  "archive_password": "archive_password",
+  "remote_archive": false
 }
+

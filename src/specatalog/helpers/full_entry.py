@@ -1,13 +1,14 @@
 import tempfile
-import shutil
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional
 import specatalog.data_management.measurement_management as mm
 import specatalog.crud_db.create as cr
+from specatalog.data_management.archive_manager import SpecatalogArchive
 from specatalog.main import db_session
 from specatalog.models.measurements import Measurement
 from specatalog.crud_db.delete import _delete_object
+from specatalog.main import archive
 
 
 @dataclass
@@ -54,141 +55,99 @@ class CreateMoleculeResult:
     error: Optional[Exception] = None
 
 
-def _create_temp_measurement_dir(base_dir: str):
-    """
-    Create a temporary directory for a measurement.
-
-    The directory is created inside the ``data`` subdirectory of the given
-    base directory and is intended to hold all files related to the
-    measurement during the creation process.
-
-    Parameters
-    ----------
-    base_dir : str
-        Base directory of the measurement archive.
-
-    Returns
-    -------
-    Path
-        Path to the newly created temporary directory.
-
-    """
-    path = Path(base_dir) / "data"
-    temp_dir = Path(tempfile.mkdtemp(dir=path))
-    return temp_dir
-
-
-def _commit_measurement_dir(temp_root: Path, base_dir: Path, ms_id: int):
-    """
-    Move a temporary measurement directory to its final location.
-
-    Only the directory ``data/M{ms_id}`` is moved from the temporary root
-    directory to the final archive directory. The move operation is atomic
-    as long as it is performed within the same filesystem.
-
-    Parameters
-    ----------
-    temp_root : Path
-        Root directory of the temporary measurement structure.
-    base_dir : Path
-        Base directory of the final measurement archive.
-    ms_id : int
-        ID of the measurement entry.
-
-    """
-    temp_measurement_dir = temp_root / "data" / f"M{ms_id}"
-    final_measurement_dir = base_dir / "data" / f"M{ms_id}"
-
-    final_measurement_dir.parent.mkdir(parents=True, exist_ok=True)
-    temp_measurement_dir.rename(final_measurement_dir)
-    shutil.rmtree(temp_root)
-
-
 def create_full_measurement(
-    data: cr.measurement_model_pyd, base_dir: Path, raw_data_path: list, fmt: str
+    data: cr.measurement_model_pyd, raw_data_path: list[str], fmt: str
 ) -> CreateMeasurementResult:
-    """
-    Create a complete measurement entry including database and file system
-    operations.
+    """Create a complete measurement entry with atomic database and file operations.
 
-    The creation process is performed in an atomic manner with respect to
-    the database. File system operations are first carried out in a temporary
-    directory and are only committed to the final archive location after the
-    database transaction has been completed successfully.
-
-    The following steps are executed:
-    1) Creation of the database entry
-    2) Creation of the measurement directory
-    3) Copying raw data into the measurement directory
-    4) Conversion of raw data to HDF5 format
+    Performs all measurement creation steps in a transaction-safe manner:
+    1. Creates database entry
+    2. Sets up temporary directory
+    3. Copies raw data files
+    4. Converts to HDF5 format
+    5. Commits to final archive location
 
     Parameters
     ----------
-    data: measurement_model
-        Measurement creation model containing all required metadata.
-    base_dir : Path
-        Base directory of the measurement archive.
-    raw_data_path : list
-        List with the full pathes to each every raw data file that is
-        associated with the measurement entry.
+    data : cr.measurement_model_pyd
+        Measurement metadata model
+    raw_data_path : list[str]
+        List of paths to raw data files
     fmt : str
-        Format identifier of the raw data.
+        Format identifier for raw data
 
     Returns
     -------
     CreateMeasurementResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the measurement ID is provided. In case of failure,
-        the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - measurement_id: int (on success)
+        - error: Exception (on failure)
+
+    Notes
+    -----
+    - Uses temporary directory for atomic file operations
+    - Rolls back database and file operations if any step fails
+    - Cleans up temporary files on completion
     """
-    temp_dir = None
     try:
         with db_session() as session:
             measurement = cr._create_new_measurement(data, session)
+            ms_id = measurement.id
 
-            temp_dir = _create_temp_measurement_dir(base_dir)
-            mm.create_measurement_dir(temp_dir, measurement.id)
-            for file in raw_data_path:
-                mm.raw_data_to_folder(file, fmt, temp_dir, measurement.id)
-            mm.raw_data_to_hdf5(temp_dir, measurement.id, fmt)
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_archive = SpecatalogArchive(False, temp_dir)
+                mm._create_measurement_dir(temp_archive, ms_id)
 
-        _commit_measurement_dir(temp_dir, base_dir, measurement.id)
+                for file in raw_data_path:
+                    mm._raw_data_to_folder(temp_archive, file, fmt, measurement.id)
+
+                mm._raw_data_to_hdf5(temp_archive, ms_id, fmt)
+
+                src = Path(temp_dir) / str(temp_archive.measurement_path(ms_id))
+                archive.copy_directory_to_archive(
+                    src, temp_archive.measurement_path(ms_id)
+                )
 
         return CreateMeasurementResult(success=True, measurement_id=measurement.id)
 
     except Exception as e:
-        if temp_dir and temp_dir.exists():
-            shutil.rmtree(temp_dir)
-
+        if archive.exists(f"data/M{ms_id}"):
+            archive.delete_folder(f"data/M{ms_id}")
         return CreateMeasurementResult(success=False, error=e)
 
 
-def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResult:
-    """
-    Delete a complete measurement entry (with the id ms_id) including database
-    and file system operations.
+def delete_full_measurement(ms_id: int) -> CreateMeasurementResult:
+    """Delete a complete measurement entry with atomic database and file operations.
 
-    The deletion process is performed in an atomic manner with respect to
-    the database. Only if the database and the file deletion can be carried
-    out without errors the changes are committed to the database.
-
-    The following steps are executed:
-    1) Deletion of the database entry
-    2) Deletion of the measurement directory
+    Performs all deletion steps in a transaction-safe manner:
+    1. Deletes database entry
+    2. Removes measurement directory
+    3. Commits changes only if both operations succeed
 
     Parameters
     ----------
-    base_dir : Path
-        Base directory of the measurement archive.
     ms_id : int
-        ID of the measurement.
+        ID of the measurement to delete
 
     Returns
     -------
     CreateMeasurementResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the former measurement ID is provided.
-        In case of failure, the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - measurement_id: int (deleted measurement ID on success)
+        - error: Exception (on failure)
+
+    Raises
+    ------
+    ValueError
+        If measurement with given ID doesn't exist
+
+    Notes
+    -----
+    - Uses database transaction for atomic operations
+    - Rolls back file operations if database deletion fails
+    - Skips confirmation prompt for file deletion
     """
     try:
         with db_session() as session:
@@ -197,7 +156,7 @@ def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResu
                 raise ValueError(f"No measurement with the ID M{ms_id} found.")
             _delete_object(measurement, session)
 
-            mm.delete_measurement(base_dir, ms_id, save_delete=False)
+            mm.delete_measurement(ms_id, save_delete=False)
 
         return CreateMeasurementResult(success=True, measurement_id=ms_id)
 
@@ -206,62 +165,78 @@ def delete_full_measurement(base_dir: Path, ms_id: int) -> CreateMeasurementResu
 
 
 def create_full_molecule(
-    data: cr.molecule_model_pyd, base_dir: Path, molecular_formula_path: Path, fmt: str
+    data: cr.molecule_model_pyd, molecular_formula_path: list[str], fmt: str
 ) -> CreateMoleculeResult:
-    """
-    Create a complete molecule entry including database and file system
-    operations.
+    """Create a complete molecule entry with atomic database and file operations.
 
-    The creation process is performed in an atomic manner with respect to
-    the database. File system operations are first carried out in a temporary
-    directory and are only committed to the final archive location after the
-    database transaction has been completed successfully.
-
-    The following steps are executed:
-    1) Creation of the database entry
-    2) Creation of the measurement directory
-    3) Copying molecular structure file into the measurement directory
+    Performs all molecule creation steps in a transaction-safe manner:
+    1. Creates database entry
+    2. Sets up temporary directory
+    3. Copies molecular structure files
+    4. Commits to final archive location
 
     Parameters
     ----------
-    data: molecule_model
-        Molecule creation model containing all required metadata.
-    base_dir : Path
-        Base directory of the measurement archive.
-    molecular_formula_path : Path
-        Path to the molecular formula file without suffix.
+    data : cr.molecule_model_pyd
+        Molecule metadata model
+    molecular_formula_path : list[str]
+        List of paths to structural formula files
     fmt : str
-        Suffix of the molecular formula file. E.g. ".pdf" or ".cdxml"
+        File format suffix (e.g., ".pdf") or "all" for multiple formats
 
     Returns
     -------
     CreateMoleculeResult
-        Result object indicating success or failure of the creation process.
-        In case of success, the molecular ID is provided. In case of failure,
-        the raised exception is included.
+        Result object containing:
+        - success: bool indicating operation status
+        - molecular_id: int (on success)
+        - error: Exception (on failure)
+
+    Notes
+    -----
+    - Uses temporary directory for atomic file operations
+    - Supports multiple file formats when fmt="all"
+    - Rolls back database and file operations if any step fails
+    - Cleans up temporary files on completion
     """
-    temp_base_dir = None
+
     try:
         with db_session() as session:
             molecule = cr._create_new_molecule(data, session)
 
-            temp_base_dir = Path(tempfile.mkdtemp(dir=base_dir))
-            temp_path = Path(temp_base_dir / molecule.structural_formula)
-            temp_path.mkdir(parents=True, exist_ok=True)
+            with tempfile.TemporaryDirectory() as temp_dir:
+                temp_archive = SpecatalogArchive(False, temp_dir)
+                temp_archive.make_dir(molecule.structural_formula)
 
-            molecular_formula_path = Path(molecular_formula_path)
-            raw = molecular_formula_path.with_suffix(fmt)
-            target = (temp_path / molecule.name).with_suffix(fmt)
-            shutil.copy2(raw, target)
+                if fmt == "all":
+                    for f in [".pdf", ".cdxml", ".png", ".jpeg", ".jpg", ".svg"]:
+                        for raw in molecular_formula_path:
+                            raw_f = Path(raw).with_suffix(f)
+                            if raw_f.exists():
+                                temp_archive.copy_to_archive(
+                                    raw_f,
+                                    (
+                                        Path(molecule.structural_formula)
+                                        / molecule.name
+                                    ).with_suffix(f),
+                                )
 
-        final_dir = base_dir / molecule.structural_formula
-        temp_path.rename(final_dir)
-        shutil.rmtree(temp_base_dir)
+                else:
+                    for raw in molecular_formula_path:
+                        raw = Path(raw).with_suffix(fmt)
+                        temp_archive.copy_to_archive(
+                            raw,
+                            (
+                                Path(molecule.structural_formula) / molecule.name
+                            ).with_suffix(fmt),
+                        )
+
+                src = Path(temp_dir) / molecule.structural_formula
+                archive.copy_directory_to_archive(src, molecule.structural_formula)
 
         return CreateMoleculeResult(success=True, molecular_id=molecule.id)
 
     except Exception as e:
-        if temp_base_dir and temp_base_dir.exists():
-            shutil.rmtree(temp_base_dir)
-
+        if archive.exists(f"molecules/MOL{molecule.id}"):
+            archive.delete_folder(f"molecules/MOL{molecule.id}")
         return CreateMoleculeResult(success=False, error=e)

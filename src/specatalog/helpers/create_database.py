@@ -3,58 +3,84 @@
 from pathlib import Path
 from alembic.config import Config
 from alembic import command
-import json
+from specatalog.main import archive
 
 CURRENT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 
 # create archive directory
-def create_archive_directory():
-    import os
-    import shutil
+def create_archive_directory() -> bool:
+    """Create the basic archive directory structure.
 
-    home_defaults = Path.home() / ".specatalog" / "defaults.json"
-    with home_defaults.open("r") as f:
-        defaults = json.load(f)
-    f.close()
+    Creates the required directory structure and configuration files
+    for the measurement archive.
 
-    # set path definitions
-    BASE_PATH = Path(defaults["base_path"]).resolve()
-    MEASUREMENTS_PATH = Path("data")
-    MOLECULES_PATH = Path("molecules")
+    Returns
+    -------
+    bool
+        True if directory creation was successful, False otherwise
+
+    Notes
+    -----
+    Creates:
+    - data/ directory for measurements
+    - molecules/ directory for molecule data
+    - allowed_values.py configuration file
+    """
+    # Define path definitions
+    measurements_path = "data"
+    molecules_path = "molecules"
 
     try:
-        os.makedirs(BASE_PATH / MOLECULES_PATH, exist_ok=True)
-        print(f"Molecules folder created. at {BASE_PATH} / {MOLECULES_PATH}")
+        # Create molecules folder
+        archive.make_dir(molecules_path)
+        print(f"Molecules folder created at {archive.archive}/{molecules_path}")
 
-        os.makedirs(BASE_PATH / MEASUREMENTS_PATH, exist_ok=True)
-        print(f"Measurements folder created. at {BASE_PATH} / {MEASUREMENTS_PATH}")
+        # Create measurements folder
+        archive.make_dir(measurements_path)
+        print(f"Measurements folder created at {archive.archive}/{measurements_path}")
+
     except Exception as e:
-        print(f"Directory could not be created: {e}.")
+        print(f"Directory could not be created: {e}")
         return False
 
     try:
-        if not (BASE_PATH / "allowed_values.py").exists():
-            shutil.copy(
-                CURRENT_DIR / "allowed_values_not_adapted.py",
-                BASE_PATH / "allowed_values.py",
-            )
-            print(f"{BASE_PATH / 'allowed_values.py'} created.")
+        # Create allowed_values.py if it doesn't exist
+        allowed_values_path = "allowed_values.py"
+        if not archive.exists(allowed_values_path):
+            # Get the path to the template file
+            template_path = CURRENT_DIR / "allowed_values_not_adapted.py"
+
+            # Copy the template file to the archive
+            archive.copy_to_archive(template_path, allowed_values_path)
+            print(f"{archive.archive}/{allowed_values_path} created.")
         else:
-            print(f"{BASE_PATH / 'allowed_values.py'} exists.")
+            print(f"{archive.archive}/{allowed_values_path} exists.")
+
     except Exception as e:
-        print(f"allowed_values.py could not be created: {e}.")
+        print(f"allowed_values.py could not be created: {e}")
         return False
 
     return True
 
 
-def run_alembic_upgrade():
+def run_alembic_upgrade() -> None:
+    """Apply all database migrations to bring schema to current version.
+
+    Uses Alembic to upgrade the database schema to the latest version
+    defined in the migration scripts.
+
+    Notes
+    -----
+    - Requires valid database connection configuration
+    - Will create all tables and apply all migrations
+    - Prints confirmation message upon completion
+    """
     """
     Apply all migrations (initial schema)
     """
-    from specatalog.main import DATABASE_URL_ADMIN
+    from specatalog.config import DATABASE_URL_ADMIN
 
     alembic_cfg = Config(str(PROJECT_ROOT / "alembic.ini"))
     alembic_cfg.set_main_option("sqlalchemy.url", DATABASE_URL_ADMIN)
@@ -64,8 +90,21 @@ def run_alembic_upgrade():
     return
 
 
-def specatalog_init_db():
-    from specatalog.main import BASE_PATH
+def specatalog_init() -> None:
+    """Initialize the Specatalog system.
+
+    Checks if archive and database already exist, and if not,
+    creates them by:
+    1. Setting up the directory structure
+    2. Applying database migrations
+
+    Notes
+    -----
+    - Prompts user to confirm if existing setup should be used
+    - Only creates new setup if user answers 'n'
+    - Prints status messages during initialization
+    """
+    from specatalog.config import BASE_PATH
 
     exist = input(f"Does the archive and database already exist at {BASE_PATH}? y/n?")
 

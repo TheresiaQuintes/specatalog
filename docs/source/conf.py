@@ -12,20 +12,26 @@
 #
 import os
 import sys
+import tomllib
+from pathlib import Path
 
+project_root = Path(__file__).resolve().parents[2]
 sys.path.insert(0, os.path.abspath("../../src"))
+
+with (project_root / "pyproject.toml").open("rb") as file:
+    pyproject = tomllib.load(file)
 
 numpydoc_show_class_members = False
 
 # -- Project information -----------------------------------------------------
 
 project = "specatalog"
-copyright = "2025 Theresia Quintes"
+copyright = "2026 Theresia Quintes"
 author = "Theresia Quintes"
 
 # The full version, including alpha/beta/rc tags
-release = "2025"
-version = "1.0"
+release = "2026"
+version = pyproject["project"]["version"]
 
 # -- General configuration ---------------------------------------------------
 
@@ -82,5 +88,5 @@ html_logo = "logo.png"
 
 
 # Autosummary-Einstellungen
-autosummary_generate = True  # <-- hier einfügen
+autosummary_generate = True
 autodoc_typehints = "description"
