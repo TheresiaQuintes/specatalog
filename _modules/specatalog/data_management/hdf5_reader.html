@@ -417,7 +417,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">find_measurement</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">MeasurementFilter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">ms_id</span><span class="p">)</span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="n">find_measurement</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No measurement with the id=</span><span class="si">{</span><span class="n">ms_id</span><span class="si">}</span><span class="s2"> found.&quot;</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">load_h5</span><span class="p">(</span>
