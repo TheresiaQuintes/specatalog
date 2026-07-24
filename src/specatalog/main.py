@@ -40,7 +40,7 @@ import importlib.util
 import sys
 
 from specatalog.config import DATABASE_URL_USR, BASE_PATH, REMOTE_ARCHIVE
-from specatalog.data_management.remote import SpecatalogArchive
+from specatalog.data_management.archive_manager import SpecatalogArchive
 
 # Database Engine Configuration
 engine = alc.create_engine(

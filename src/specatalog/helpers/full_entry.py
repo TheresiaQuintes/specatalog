@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Optional
 import specatalog.data_management.measurement_management as mm
 import specatalog.crud_db.create as cr
-from specatalog.data_management.remote import SpecatalogArchive
+from specatalog.data_management.archive_manager import SpecatalogArchive
 from specatalog.main import db_session
 from specatalog.models.measurements import Measurement
 from specatalog.crud_db.delete import _delete_object
