@@ -57,16 +57,20 @@ def _validate_archive(defaults: dict) -> Path:
         raise RuntimeError(f"No archive folder at:\n{base_path}")
 
 
-
 def _validate_allowed_values():
-
     if not archive.exists("allowed_values.py"):
-        raise RuntimeError(f"allowed_values.py could not be found at:\n{archive.archive}")
+        raise RuntimeError(
+            f"allowed_values.py could not be found at:\n{archive.archive}"
+        )
 
     try:
         from specatalog.main import ALLOWED_VALUES
+
+        return ALLOWED_VALUES
     except Exception as exc:
-        raise RuntimeError(f"An exception occured during loading of the allowed values: {exc}")
+        raise RuntimeError(
+            f"An exception occured during loading of the allowed values: {exc}"
+        )
 
 
 def _check_database_connection(defaults: dict):
@@ -88,9 +92,7 @@ def _check_database_connection(defaults: dict):
         with engine.connect():
             pass
     except Exception as exc:
-        raise RuntimeError(
-            "No connection to database is possible.\n"
-        ) from exc
+        raise RuntimeError("No connection to database is possible.\n") from exc
 
 
 # ─────────────────────────────

@@ -1,4 +1,3 @@
-from getpass import getpass
 from pathlib import Path
 import json
 
@@ -6,6 +5,7 @@ import json
 def print_welcome():
     try:
         from specatalog.main import archive
+
         if archive.exists(""):
             print(f"""
                   Welcome to specatalog! \n
@@ -17,8 +17,10 @@ def print_welcome():
             raise FileNotFoundError(f"Archive directory not found at {archive.archive}")
 
     except Exception as e:
-        full_message = input("Specatalog could not be loaded! Please run the postinstall first ('specatalog-configuration')\n"
-              "If this error persists press 'y' to see the full error message... ")
+        full_message = input(
+            "Specatalog could not be loaded! Please run the postinstall first ('specatalog-configuration')\n"
+            "If this error persists press 'y' to see the full error message... "
+        )
         if full_message == "y":
             print(e)
 
@@ -42,17 +44,19 @@ def configure_defaults():
             "archive_password": "",
             "database_url": "",
             "db_usr_name": "",
-            "db_password": ""
+            "db_password": "",
         }
 
     # Step 2: Get user input for each key with current values in messages
     # First handle remote_archive since it affects other fields
     current_remote = result_dict.get("remote_archive", False)
-    remote_input = input(f"Use remote archive? (True/False) [Current: {current_remote}]: ").strip()
+    remote_input = input(
+        f"Use remote archive? (True/False) [Current: {current_remote}]: "
+    ).strip()
 
-    if remote_input.lower() in ['true', 'yes', 'y']:
+    if remote_input.lower() in ["true", "yes", "y"]:
         result_dict["remote_archive"] = True
-    elif remote_input.lower() in ['false', 'no', 'n']:
+    elif remote_input.lower() in ["false", "no", "n"]:
         result_dict["remote_archive"] = False
     elif remote_input:  # Non-empty but invalid input
         print(f"Invalid input. Keeping current value: {current_remote}")
@@ -71,7 +75,7 @@ def configure_defaults():
             ("host", "Enter host name"),
             ("share", "Enter share name"),
             ("archive_usr_name", "Enter archive username"),
-            ("archive_password", "Enter archive password")
+            ("archive_password", "Enter archive password"),
         ]
 
         for field, message in fields:
@@ -84,7 +88,7 @@ def configure_defaults():
     db_fields = [
         ("database_url", "Enter database URL"),
         ("db_usr_name", "Enter database username"),
-        ("db_password", "Enter database password")
+        ("db_password", "Enter database password"),
     ]
 
     for field, message in db_fields:

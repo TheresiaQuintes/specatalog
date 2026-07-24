@@ -54,6 +54,7 @@ Session = orm.scoped_session(
     )
 )
 
+
 @contextmanager
 def db_session():
     """Context manager for database sessions with automatic commit/rollback.
@@ -80,6 +81,7 @@ def db_session():
         raise
     finally:
         Session.remove()
+
 
 # Archive Configuration
 if REMOTE_ARCHIVE:

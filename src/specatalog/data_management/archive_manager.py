@@ -1,6 +1,6 @@
 from typing import Union
 
-from smbclient import register_session, listdir, delete_session
+from smbclient import register_session, delete_session
 from pathlib import Path
 import os
 import smbclient as smb
@@ -14,6 +14,7 @@ from specatalog.config import HOST, USERNAME, SHARE, PWD
 
 class SMBConnectionManager:
     """Manages SMB network connections for the archive."""
+
     def __init__(self) -> None:
         """Initialize the SMB connection manager with configuration."""
         self.host = HOST
@@ -24,7 +25,9 @@ class SMBConnectionManager:
 
     def connect(self) -> None:
         """Establish connection to the SMB server."""
-        self.connection = register_session(self.host, username=self.username, password=self.password)
+        self.connection = register_session(
+            self.host, username=self.username, password=self.password
+        )
 
     def disconnect(self) -> None:
         """Close the SMB connection."""
@@ -50,6 +53,7 @@ class SMBConnectionManager:
         """
         return Path(f"{self.host}/{self.share}")
 
+
 def create_archive(use_remote_archive: bool, local_path: str = "") -> Path:
     """Create and return an archive path.
 
@@ -73,9 +77,11 @@ def create_archive(use_remote_archive: bool, local_path: str = "") -> Path:
         archive = Path(local_path)
         return archive
 
+
 class SpecatalogArchive:
     """Handles file operations for the measurement archive. All file operations
     run relative to the archive root (self.archive)."""
+
     def __init__(self, use_remote_archive: bool, local_path: str = "") -> None:
         """Initialize the archive handler.
 
@@ -221,7 +227,7 @@ class SpecatalogArchive:
             with smb.open_file(remote_path, mode=mode, encoding=encoding) as file:
                 yield file
         else:
-            print(self.archive /p )
+            print(self.archive / p)
             with open(self.archive / p, mode=mode, encoding=encoding) as file:
                 yield file
 
@@ -300,7 +306,7 @@ class SpecatalogArchive:
         else:
             local_path = self.archive / p
             yield local_path
-            
+
     def measurement_path(self, ms_id: Union[str, int]) -> Path:
         """Get measurement directory path 'data/M{ms_id}'.
 
@@ -319,10 +325,12 @@ class SpecatalogArchive:
         FileNotFoundError
             If measurement directory doesn't exist
         """
-        p =  fr"data/M{ms_id}"
+        p = rf"data/M{ms_id}"
 
         if not self.exists(p):
-            raise FileNotFoundError(f"Measurement folder {self.archive/p} does not exist!")
+            raise FileNotFoundError(
+                f"Measurement folder {self.archive / p} does not exist!"
+            )
 
         else:
             return Path(p)
@@ -358,4 +366,3 @@ class SpecatalogArchive:
                 dst,
                 dirs_exist_ok=False,
             )
-    

@@ -39,14 +39,13 @@ def _create_measurement_dir(archive_obj, ms_id: int) -> str:
     - HDF5 file with groups: raw_data, corrected_data, evaluations
     """
     p = f"data/M{ms_id}"
-    
+
     if archive_obj.exists(p):
         raise FileExistsError(f"Measurement folder {p} already exists!")
 
     for subdir in CATEGORIES:
         p_sub = f"{p}/{subdir}"
         archive_obj.make_dir(p_sub)
-
 
     p_measurement = f"{p}/measurement_M{ms_id}.h5"
 
@@ -86,12 +85,9 @@ def create_measurement_dir(ms_id: int) -> str:
     """
     return _create_measurement_dir(archive, ms_id)
 
+
 def _new_file_to_archive(
-    archive_obj,
-    src: Union[str, Path],
-    ms_id: int,
-    category: str,
-    update: bool = False
+    archive_obj, src: Union[str, Path], ms_id: int, category: str, update: bool = False
 ) -> None:
     """
     Copies a file to the archive measurement directory.
@@ -141,7 +137,7 @@ def _new_file_to_archive(
     dst_dir = archive_obj.measurement_path(ms_id) / category
 
     archive_obj.make_dir(dst_dir)
-    dst_file = dst_dir/src.name
+    dst_file = dst_dir / src.name
 
     if archive_obj.exists(dst_file):
         if not update:
@@ -155,10 +151,7 @@ def _new_file_to_archive(
 
 
 def new_file_to_archive(
-    src: Union[str, Path],
-    ms_id: int,
-    category: str,
-    update: bool = False
+    src: Union[str, Path], ms_id: int, category: str, update: bool = False
 ) -> None:
     """
     Copies a file to the archive measurement directory.
@@ -190,11 +183,9 @@ def new_file_to_archive(
     """
     _new_file_to_archive(archive, src, ms_id, category, update)
 
+
 def new_dataset_to_hdf5(
-    data: Optional[np.ndarray],
-    h5_file: h5py.File,
-    group_name: str,
-    dataset_name: str
+    data: Optional[np.ndarray], h5_file: h5py.File, group_name: str, dataset_name: str
 ) -> None:
     """
     Writes a new dataset to an HDF5 file.
@@ -217,16 +208,16 @@ def new_dataset_to_hdf5(
     if data is None:
         return
 
-
     group = h5_file.require_group(group_name)
     group.create_dataset(dataset_name, data=data)
     return
+
 
 def _raw_data_to_folder(
     archive_obj,
     raw_data_path: str,
     fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
-    ms_id: int
+    ms_id: int,
 ) -> None:
     """
     Copies raw data files to the archive directory. Existing data with the same
@@ -282,10 +273,11 @@ def _raw_data_to_folder(
 
     return
 
+
 def raw_data_to_folder(
     raw_data_path: str,
     fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
-    ms_id: int
+    ms_id: int,
 ) -> None:
     """
     Copies raw data files to the archive directory. Existing data with the same
@@ -317,9 +309,7 @@ def raw_data_to_folder(
 
 
 def _get_next_rawdata_index(
-    h5_file: h5py.File,
-    group_name: str,
-    reference_name: str
+    h5_file: h5py.File, group_name: str, reference_name: str
 ) -> int:
     """
     Determines the next available index for a raw dataset series.
@@ -351,7 +341,7 @@ def _get_next_rawdata_index(
 def _raw_data_to_hdf5(
     archive_obj,
     ms_id: Union[str, int],
-    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
 ) -> None:
     """
     Write all data from the raw data datafiles in the archive at
@@ -387,29 +377,39 @@ def _raw_data_to_hdf5(
     # load and save data from Bruker bes3t format
     if fmt == "bruker_bes3t":
         files = archive_obj.list_files(raw_path)
-        bases = sorted(Path(filename).with_suffix("") for filename in files if Path(filename).suffix == ".DSC")
+        bases = sorted(
+            Path(filename).with_suffix("")
+            for filename in files
+            if Path(filename).suffix == ".DSC"
+        )
         if not bases:
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            if not archive_obj.exists(raw_path/base.with_suffix(".DTA")):
+            if not archive_obj.exists(raw_path / base.with_suffix(".DTA")):
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
             with archive_obj.temporary_path(raw_path) as data_path:
-                data, x, params = l.load_bruker_bes3t(data_path/base, "DSC", "")
+                data, x, params = l.load_bruker_bes3t(data_path / base, "DSC", "")
                 # write intensities to dataset
                 with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "data_real")
 
                     new_dataset_to_hdf5(data, h5_file, "raw_data", f"data_{idx}")
-                    new_dataset_to_hdf5(data.real, h5_file, "raw_data", f"data_real_{idx}")
-                    new_dataset_to_hdf5(data.imag, h5_file, "raw_data", f"data_imag_{idx}")
+                    new_dataset_to_hdf5(
+                        data.real, h5_file, "raw_data", f"data_real_{idx}"
+                    )
+                    new_dataset_to_hdf5(
+                        data.imag, h5_file, "raw_data", f"data_imag_{idx}"
+                    )
 
                     # write axes-data
                     if type(x) is list:  # multiple axes
                         for n in range(len(x)):
-                            new_dataset_to_hdf5(x[n], h5_file, "raw_data", f"axis_{idx}_{n}")
+                            new_dataset_to_hdf5(
+                                x[n], h5_file, "raw_data", f"axis_{idx}_{n}"
+                            )
                     else:  # only one xaxis
                         new_dataset_to_hdf5(x, h5_file, "raw_data", f"xaxis_{idx}")
 
@@ -429,18 +429,22 @@ def _raw_data_to_hdf5(
             raise ValueError(f"No raw data at {raw_path}!")
 
         for base in bases:
-            if not archive_obj.exists(raw_path/base.with_suffix(".DTA")):
+            if not archive_obj.exists(raw_path / base.with_suffix(".DTA")):
                 raise ValueError(f"{base.name}.DTA not available!")
 
             # load data to arrays using the loader function
             with archive_obj.temporary_path(raw_path) as data_path:
-                spc_real, spc_imag, field, params = l.load_cw_epr(data_path/base)
+                spc_real, spc_imag, field, params = l.load_cw_epr(data_path / base)
 
                 with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     # write intensities to dataset
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "data_real")
-                    new_dataset_to_hdf5(spc_real, h5_file, "raw_data", f"data_real_{idx}")
-                    new_dataset_to_hdf5(spc_imag, h5_file, "raw_data", f"data_imag_{idx}")
+                    new_dataset_to_hdf5(
+                        spc_real, h5_file, "raw_data", f"data_real_{idx}"
+                    )
+                    new_dataset_to_hdf5(
+                        spc_imag, h5_file, "raw_data", f"data_imag_{idx}"
+                    )
                     new_dataset_to_hdf5(field, h5_file, "raw_data", f"field_{idx}")
 
                     # add metadata from DSC-file as attributes
@@ -463,13 +467,19 @@ def _raw_data_to_hdf5(
 
         for base in bases:
             with archive_obj.temporary_path(raw_path) as data_path:
-                wavelength, intensity, meta = l.load_uvvis_ulm(data_path/base.with_suffix(".txt"))
+                wavelength, intensity, meta = l.load_uvvis_ulm(
+                    data_path / base.with_suffix(".txt")
+                )
 
                 with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "intensity")
 
-                    new_dataset_to_hdf5(intensity, h5_file, "raw_data", f"intensity_{idx}")
-                    new_dataset_to_hdf5(wavelength, h5_file, "raw_data", f"wavelength_{idx}")
+                    new_dataset_to_hdf5(
+                        intensity, h5_file, "raw_data", f"intensity_{idx}"
+                    )
+                    new_dataset_to_hdf5(
+                        wavelength, h5_file, "raw_data", f"wavelength_{idx}"
+                    )
 
                     grp = h5_file.require_group("raw_data")
                     for key, value in meta.items():
@@ -487,14 +497,19 @@ def _raw_data_to_hdf5(
 
         for base in bases:
             with archive_obj.temporary_path(raw_path) as data_path:
-                wavelength, intensity, meta = l.load_uvvis_freiburg(data_path/base.with_suffix(".txt"))
+                wavelength, intensity, meta = l.load_uvvis_freiburg(
+                    data_path / base.with_suffix(".txt")
+                )
 
                 with archive_obj.open_measurement_h5_file(hdf5_path, "a") as h5_file:
                     idx = _get_next_rawdata_index(h5_file, "raw_data", "intensity")
 
-                    new_dataset_to_hdf5(intensity, h5_file, "raw_data", f"intensity_{idx}")
-                    new_dataset_to_hdf5(wavelength, h5_file, "raw_data", f"wavelength_{idx}")
-
+                    new_dataset_to_hdf5(
+                        intensity, h5_file, "raw_data", f"intensity_{idx}"
+                    )
+                    new_dataset_to_hdf5(
+                        wavelength, h5_file, "raw_data", f"wavelength_{idx}"
+                    )
 
                     grp = h5_file.require_group("raw_data")
                     for key, value in meta.items():
@@ -506,9 +521,10 @@ def _raw_data_to_hdf5(
     print("Raw data were successfully added to hdf5.")
     return
 
+
 def raw_data_to_hdf5(
     ms_id: Union[str, int],
-    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"]
+    fmt: Literal["bruker_bes3t", "cw_epr", "uvvis_ulm", "uvvis_freiburg"],
 ) -> None:
     """
     Write all data from the raw data datafiles in the archive at
@@ -536,12 +552,9 @@ def raw_data_to_hdf5(
     """
     _raw_data_to_hdf5(archive, ms_id, fmt)
 
+
 def _delete_element(
-    archive_obj,
-    ms_id: int,
-    category: str,
-    filename: str,
-    save_delete: bool = True
+    archive_obj, ms_id: int, category: str, filename: str, save_delete: bool = True
 ) -> None:
     """
     Deletes a file from the archive measurement directory.
@@ -594,11 +607,8 @@ def _delete_element(
 
     return
 
-def delete_element(
-    ms_id: int,
-    category: str,
-    filename: str,
-    save_delete: bool = True):
+
+def delete_element(ms_id: int, category: str, filename: str, save_delete: bool = True):
     """
     Deletes a file from the archive measurement directory.
 
@@ -627,11 +637,8 @@ def delete_element(
     """
     _delete_element(archive, ms_id, category, filename, save_delete)
 
-def _delete_measurement(
-    archive_obj,
-    ms_id: int,
-    save_delete: bool = True
-) -> None:
+
+def _delete_measurement(archive_obj, ms_id: int, save_delete: bool = True) -> None:
     """
     Deletes an entire measurement directory from the archive.
 
@@ -667,10 +674,8 @@ def _delete_measurement(
     print(f"Measurement directory deleted: {path}")
     return
 
-def delete_measurement(
-    ms_id: int,
-    save_delete: bool = True
-) -> None:
+
+def delete_measurement(ms_id: int, save_delete: bool = True) -> None:
     """
     Deletes an entire measurement directory from the archive.
 
@@ -692,11 +697,8 @@ def delete_measurement(
     """
     _delete_measurement(archive, ms_id, save_delete)
 
-def _list_files(
-    archive_obj,
-    ms_id: Union[str, int],
-    category: str = ""
-) -> list[Path]:
+
+def _list_files(archive_obj, ms_id: Union[str, int], category: str = "") -> list[Path]:
     """
     Lists files in a measurement directory or subdirectory.
 
@@ -738,10 +740,8 @@ def _list_files(
 
     return files
 
-def list_files(
-    ms_id: Union[str, int],
-    category: str = ""
-) -> list[Path]:
+
+def list_files(ms_id: Union[str, int], category: str = "") -> list[Path]:
     """
     Lists files in a measurement directory or subdirectory.
 

@@ -231,7 +231,9 @@ class H5Object:
 
 
 @contextmanager
-def load_h5(filename: str, mode: Literal["r", "a", "w"] = "r") -> tuple[H5Object, h5py.File]:
+def load_h5(
+    filename: str, mode: Literal["r", "a", "w"] = "r"
+) -> tuple[H5Object, h5py.File]:
     """
     Loads an HDF5 file and returns it as an H5Object along with the underlying h5py.File.
 
@@ -256,7 +258,9 @@ def load_h5(filename: str, mode: Literal["r", "a", "w"] = "r") -> tuple[H5Object
 
 
 @contextmanager
-def load_from_id(ms_id: int, mode: Literal["r", "a"] = "r") -> tuple[H5Object, h5py.File]:
+def load_from_id(
+    ms_id: int, mode: Literal["r", "a"] = "r"
+) -> tuple[H5Object, h5py.File]:
     """
     Load a hdf5-measurement-file from the archive as a H5Object.
 
@@ -293,6 +297,7 @@ def load_from_id(ms_id: int, mode: Literal["r", "a"] = "r") -> tuple[H5Object, h
     if len(m) != 0:
         raise ValueError(f"No measurement with the id={ms_id} found.")
 
-    with load_h5(archive.measurement_path(ms_id)/f"measurement_M{ms_id}.h5", mode=mode) as (obj, f):
+    with load_h5(
+        archive.measurement_path(ms_id) / f"measurement_M{ms_id}.h5", mode=mode
+    ) as (obj, f):
         yield obj, f
-

@@ -56,9 +56,7 @@ class CreateMoleculeResult:
 
 
 def create_full_measurement(
-    data: cr.measurement_model_pyd,
-    raw_data_path: list[str],
-    fmt: str
+    data: cr.measurement_model_pyd, raw_data_path: list[str], fmt: str
 ) -> CreateMeasurementResult:
     """Create a complete measurement entry with atomic database and file operations.
 
@@ -98,7 +96,6 @@ def create_full_measurement(
             ms_id = measurement.id
 
             with tempfile.TemporaryDirectory() as temp_dir:
-
                 temp_archive = SpecatalogArchive(False, temp_dir)
                 mm._create_measurement_dir(temp_archive, ms_id)
 
@@ -108,7 +105,9 @@ def create_full_measurement(
                 mm._raw_data_to_hdf5(temp_archive, ms_id, fmt)
 
                 src = Path(temp_dir) / str(temp_archive.measurement_path(ms_id))
-                archive.copy_directory_to_archive(src, temp_archive.measurement_path(ms_id))
+                archive.copy_directory_to_archive(
+                    src, temp_archive.measurement_path(ms_id)
+                )
 
         return CreateMeasurementResult(success=True, measurement_id=measurement.id)
 
@@ -166,9 +165,7 @@ def delete_full_measurement(ms_id: int) -> CreateMeasurementResult:
 
 
 def create_full_molecule(
-    data: cr.molecule_model_pyd,
-    molecular_formula_path: list[str],
-    fmt: str
+    data: cr.molecule_model_pyd, molecular_formula_path: list[str], fmt: str
 ) -> CreateMoleculeResult:
     """Create a complete molecule entry with atomic database and file operations.
 
@@ -216,12 +213,23 @@ def create_full_molecule(
                         for raw in molecular_formula_path:
                             raw_f = Path(raw).with_suffix(f)
                             if raw_f.exists():
-                                temp_archive.copy_to_archive(raw_f, (Path(molecule.structural_formula) / molecule.name).with_suffix(f))
-                                
+                                temp_archive.copy_to_archive(
+                                    raw_f,
+                                    (
+                                        Path(molecule.structural_formula)
+                                        / molecule.name
+                                    ).with_suffix(f),
+                                )
+
                 else:
                     for raw in molecular_formula_path:
                         raw = Path(raw).with_suffix(fmt)
-                        temp_archive.copy_to_archive(raw, (Path(molecule.structural_formula)/molecule.name).with_suffix(fmt))
+                        temp_archive.copy_to_archive(
+                            raw,
+                            (
+                                Path(molecule.structural_formula) / molecule.name
+                            ).with_suffix(fmt),
+                        )
 
                 src = Path(temp_dir) / molecule.structural_formula
                 archive.copy_directory_to_archive(src, molecule.structural_formula)
