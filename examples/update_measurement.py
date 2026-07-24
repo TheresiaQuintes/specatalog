@@ -1,10 +1,28 @@
 from specatalog.crud_db import read as r
 from specatalog.crud_db import update as up
 
-measurement = r.run_query(r.MeasurementFilter(id=1))[0]
 
-updates = up.CWEPRUpdate(
-    frequency_band="Q", temperature=80, solvent="toluene", evaluated=True
+# Eine CW-EPR-Messung mit der ID 1 laden
+results = r.run_query(
+    r.CWEPRFilter(id=1),
 )
 
-up.update_model(measurement, updates)
+if not results:
+    raise ValueError("Keine CW-EPR-Messung mit der ID M1 gefunden.")
+
+measurement = results[0]
+
+# Felder der Messung aktualisieren
+updates = up.CWEPRUpdate(
+    frequency_band="q",
+    temperature=80.0,
+    solvent="toluene",
+    evaluated=True,
+)
+
+up.update_model(
+    entry=measurement,
+    update_data=updates,
+)
+
+print(f"Measurement M{measurement.id} successfully updated.")

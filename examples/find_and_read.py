@@ -1,17 +1,34 @@
+from pathlib import Path
+
 from specatalog.crud_db import read as r
 from specatalog.data_management import measurement_management as mm
-from specatalog.main import BASE_PATH
-
-find_measurement = r.MeasurementFilter(molecular_id=1, method__ilike="__epr")
-order = r.MeasurementOrdering(method="desc")
-
-results = r.run_query(find_measurement, order)
-
-for result in results:
-    print(result)
 
 
-# list files in one categroy of measurement
-a = mm.list_files(BASE_PATH, 1, category="raw")
-for data in a:
-    print(data.name)
+# Alle EPR-Messungen des Moleküls MOL1 suchen.
+# '%' ist ein SQL-Wildcard und steht für beliebig viele Zeichen.
+find_measurement = r.MeasurementFilter(
+    molecular_id=1,
+    method__ilike="%epr",
+)
+
+ordering = r.MeasurementOrdering(
+    method="desc",
+)
+
+results = r.run_query(
+    filters=find_measurement,
+    ordering=ordering,
+)
+
+for measurement in results:
+    print(measurement)
+
+
+# Dateien der Kategorie "raw" für die Messung M1 auflisten
+files = mm.list_files(
+    ms_id=1,
+    category="raw",
+)
+
+for file in files:
+    print(Path(file).name)

@@ -40,7 +40,7 @@ The system is designed to be extensible, allowing the integration of additional 
 * Loaders for common spectroscopic data formats
 * Programmatic access via Python script
 * Graphical user interface (GUI) for interactive data management
-* Synchronization tools for remote data storage
+* Local or remote (via SMB connection) data storage
 
 A central aspect of Specatalog is the tight coupling between metadata and data storage, enabling consistent and reproducible data handling across projects.
 
@@ -70,15 +70,7 @@ The GUI supports:
 
 ## Installation
 
-Clone the repository and install the package locally:
-
-```bash
-git clone https://github.com/TheresiaQuintes/specatalog.git
-cd specatalog
-pip install .
-```
-
-Alternatively just run:
+Install the package via pip:
 
 ```bash
 pip install specatalog
@@ -104,17 +96,21 @@ Specatalog provides several command-line tools:
   Verifies installation and prints the current working directory
 
 * `specatalog-configuration`
-  Initial configuration of the system
+  Initial configuration of paths / user names / passwords
+
+* `specatalog-init`
+  Initial setup of working directory and database
+
+* `specatalog-init-dir`
+  Initial setup of the working directory
+
+* `specatalog-update-db`
+  Updates database models
 
 * `specatalog-gui`
   Launches the graphical user interface
 
-* `specatalog-sync-download`,
-  `specatalog-sync-upload`
-  Synchronization with remote directories
 
-* `specatalog-update-db`
-  Updates database models
 
 ---
 
@@ -175,26 +171,40 @@ This structure allows storing both raw data and derived results in a consistent 
 ### Creating a New Measurement Entry
 
 ```python
-from specatalog.models import creation_pydantic_measurements as ms
 from datetime import date
-from specatalog.helpers.full_entry import create_full_measurement
 
-new_measurement = ms.TREPRModel(
+from specatalog.helpers.full_entry import create_full_measurement
+from specatalog.models.creation_pydantic_measurements import TREPRModel
+
+
+new_measurement = TREPRModel(
     molecular_id=1,
-    temperature=80,
+    temperature=80.0,
     solvent="toluene",
     date=date(2025, 12, 24),
     measured_by="your_name",
-    device="ELEXSYS",
-    frequenc_band="Q",
-    attenuation="20dB",
-    exciation_wl=530
+    device="elexsys",
+    frequency_band="q",
+    attenuation="20 dB",
+    excitation_wl=530.0,
+    corrected=False,
+    evaluated=False,
 )
 
-fm = create_full_measurement(new_measurement, BASE_PATH, raw_data, "bruker_bes3t")
+result = create_full_measurement(
+    data=new_measurement,
+    raw_data_path=[
+        "/path/to/measurement"
+    ],
+    fmt="bruker_bes3t",
+)
 
-print(fm.success)
-print(fm.measurement_id)
+if result.success:
+    print("Measurement successfully created.")
+    print(f"Measurement ID: M{result.measurement_id}")
+else:
+    print("Measurement creation failed.")
+    print(result.error)
 ```
 
 ---
@@ -204,17 +214,29 @@ print(fm.measurement_id)
 ```python
 from specatalog.crud_db import read as r
 
+
 filter_model = r.TREPRFilter(
     molecular_id=1,
-    temperature__le=80,
-    measured_by="your name"
+    temperature__le=80.0,
+    measured_by="your_name",
 )
 
-results = r.run_query(filter_model, ordering_model)
+ordering_model = r.TREPROrdering(
+    date="desc",
+)
 
-print(results)
-print(results[0].id)
-print(results[0].molecule.name)
+results = r.run_query(
+    filters=filter_model,
+    ordering=ordering_model,
+)
+
+if results:
+    for measurement in results:
+        print(measurement)
+        print(f"Measurement ID: M{measurement.id}")
+        print(f"Molecule: {measurement.molecule.name}")
+else:
+    print("No matching measurements found.")
 ```
 
 ---
@@ -222,24 +244,31 @@ print(results[0].molecule.name)
 ### Working with HDF5 Data
 
 ```python
-from specatalog.data_management.hdf5_reader import load_from_id
 import matplotlib.pyplot as plt
 import numpy as np
 
-dat, file = load_from_id(1, mode="a")
+from specatalog.data_management.hdf5_reader import load_from_id
 
-x = dat.raw_data.xaxis
-intensity = dat.raw_data.data
 
-plt.plot(x, np.real(intensity))
+with load_from_id(1, mode="a") as (dat, h5_file):
+    x = dat.raw_data.xaxis_0
+    intensity = dat.raw_data.data_real_0
 
-offset = 2.3
-corrected = x - offset
-fit = -2 * (x - 12000)**2 + 2500
+    plt.plot(x, np.real(intensity))
+    plt.xlabel("Magnetic field")
+    plt.ylabel("Intensity")
+    plt.show()
 
-dat.corrected_data.set_attr("x-offset", 2.3)
-dat.corrected_data.set_dataset("xaxis", corrected)
-dat.evaluations.set_dataset("fit1", fit)
+    offset = 2.3
+    corrected_x = x - offset
+
+    fit = -2 * (x - 12000) ** 2 + 2500
+
+    dat.corrected_data.set_attr("x_offset", offset)
+    dat.corrected_data.set_dataset("xaxis_0_corrected", corrected_x)
+    dat.evaluations.set_dataset("fit_0", fit)
+
+    dat.sync()
 ```
 
 ---

@@ -1,25 +1,32 @@
-import specatalog.data_management.hdf5_reader as hf
 import numpy as np
 
+from specatalog.data_management import hdf5_reader as hf
+from specatalog.helpers.full_entry import delete_full_measurement
+from specatalog.crud_db.delete import delete_molecule
 
-# attributes / datasets from hdf5
-dat, file = hf.load_from_id(11, mode="a")
 
-dat.set_attr("test", 5)
-dat.set_dataset("test_set", np.zeros(5))
-dat.sync()
+# Attributes und Datasets einer HDF5-Messdatei bearbeiten
+with hf.load_from_id(4, mode="a") as (dat, h5_file):
+    dat.set_attr("test", 5)
+    dat.set_dataset("test_set", np.zeros(5))
 
-print(vars(dat))
+    # Änderungen in die HDF5-Datei schreiben
+    dat.sync()
 
-dat.delete_attr("test")
-dat.delete_dataset("test_set")
-dat.sync()
-print(vars(dat))
+    print(vars(dat))
+
+    # Attribute und Dataset wieder löschen
+    dat.delete_attr("test")
+    dat.delete_dataset("test_set")
+
+    # Löschungen in die HDF5-Datei schreiben
+    dat.sync()
+
+    print(vars(dat))
 
 
 # measurements
-# de.delete_measurement(ms_id=14)
-# mm.delete_measurement(BASE_PATH, 14)
+# delete_full_measurement(ms_id=14)
 
 # molecules (all connected measurements are also deleted!! Only delete new molecules)
 # de.delete_molecule(mol_id=2)
