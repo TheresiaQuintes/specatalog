@@ -1,29 +1,30 @@
+from specatalog.helpers.full_entry import create_full_molecule
 from specatalog.models import creation_pydantic_molecules as mol
-from specatalog.crud_db import create
-import shutil
-from pathlib import Path
-from specatalog.main import BASE_PATH
 
-# %%
-structural_formula_src_pdf = "/home/quintes/NAS/Theresia/praesentationen/doktorarbeit/Abbildungen/eigene/strukturformeln/PDI-H-TZ-eTEMPO.pdf"
 
-structural_formula_src_cdxml = "/home/quintes/NAS/Theresia/praesentationen/doktorarbeit/Abbildungen/eigene/strukturformeln/PDI-H-TZ-eTEMPO.cdxml"
-
-new_molecule = mol.TDPModel(
-    molecular_formula="get from chemdraw3",
-    doublet="NO4",
-    linker="co",
-    chromophore="PDI4",
+# Beide Strukturdateien müssen denselben Dateinamen-Stamm besitzen.
+# Die Dateiendungen werden von create_full_molecule() automatisch ergänzt.
+structural_formula_src = (
+    "/home/quintes/NAS/Theresia/praesentationen/doktorarbeit/"
+    "Abbildungen/eigene/strukturformeln/PDI-H-TZ-eTEMPO"
 )
 
+new_molecule = mol.TDPModel(
+    molecular_formula="C...H...N...O...",
+    doublet="no4",
+    linker="co",
+    chromophore="pdi4",
+)
 
-# %%
-molecule = create.create_new_molecule(new_molecule)
+result = create_full_molecule(
+    data=new_molecule,
+    molecular_formula_path=[structural_formula_src],
+    fmt="all",
+)
 
-target_path_pdf = f"{BASE_PATH}/{molecule.structural_formula}/{molecule.name}.pdf"
-target_path_cdxml = f"{BASE_PATH}/{molecule.structural_formula}/{molecule.name}.cdxml"
-
-Path(target_path_pdf).parent.mkdir(parents=True, exist_ok=True)
-
-shutil.copy2(structural_formula_src_pdf, target_path_pdf)
-shutil.copy2(structural_formula_src_cdxml, target_path_cdxml)
+if result.success:
+    print("Molecule successfully created.")
+    print(f"Molecule ID: MOL{result.molecular_id}")
+else:
+    print("Molecule creation failed.")
+    print(result.error)

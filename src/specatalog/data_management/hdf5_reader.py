@@ -294,7 +294,7 @@ def load_from_id(
     """
     find_measurement = r.MeasurementFilter(id=ms_id)
     m = r.run_query(find_measurement)
-    if len(m) != 0:
+    if len(m) == 0:
         raise ValueError(f"No measurement with the id={ms_id} found.")
 
     with load_h5(
