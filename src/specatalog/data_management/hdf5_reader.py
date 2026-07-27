@@ -67,9 +67,11 @@ class H5Object:
         # load groups and datasets recursively
         for key, item in h5node.items():
             if isinstance(item, h5py.Group):
-                setattr(self, key, H5Object(item, writable=writable))
+                setattr(
+                    self, key, H5Object(item, writable=writable, auto_flush=auto_flush)
+                )
             else:
-                setattr(self, key, item[()])  # Dataset laden
+                setattr(self, key, item[()])  # load dataset
                 self._datasets_keys.add(key)
 
         # load attributes of the groups

@@ -6,6 +6,7 @@ from PyQt6.QtCore import Qt
 from specatalog.crud_db import read as r
 from specatalog.models import creation_pydantic_measurements as cpm
 from pathlib import Path
+from PyQt6.QtWidgets import QMessageBox
 
 
 class DragDropLineEdit(QtWidgets.QLineEdit):
@@ -42,6 +43,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
 
         gf.change_ms_mol(self)
+
+        # thread variables
+        self._entry_thread = None
+        self._entry_worker = None
+        self.entry_progress = None
 
         # models
         self.filter_model = r.MeasurementFilter()
@@ -94,3 +100,48 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # connections
         gss.connect_signal_slot(self)
         gss.connections_db_tables(self)
+
+    # Functions for thread for new entries
+    def set_entry_busy(self, busy: bool):
+        widgets = [
+            self.ButtonQuery,
+            self.ButtonClearQuery,
+            self.ButtonNewEntry,
+            self.ButtonRawDataInput,
+            self.ButtonDelete,
+            self.ComboModelChoice,
+            self.ComboModelChoiceNewEntry,
+            self.ComboRawFormat,
+            self.RadioMeasurements,
+        ]
+
+        for widget in widgets:
+            widget.setEnabled(not busy)
+
+    def on_submit_new_entry_success(self, output):
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("Success")
+        msg.setText("New entry has been created successfully!")
+        msg.exec()
+        gf.load_measurements(self)
+
+    def on_submit_new_entry_finished(self):
+        if hasattr(self, "entry_progress"):
+            self.entry_progress.close()
+            self.entry_progress.deleteLater()
+            del self.entry_progress
+
+        self.set_entry_busy(False)
+
+    def on_submit_new_entry_error(self, error_message: str):
+        msg = QMessageBox(self)
+        msg.setIcon(QMessageBox.Icon.Critical)
+        msg.setWindowTitle("An error occurred.")
+        msg.setText("The creation has not been completed.")
+        msg.setDetailedText(error_message)
+        msg.exec()
+
+    def on_submit_new_entry_thread_finished(self):
+        self._entry_worker = None
+        self._entry_thread = None

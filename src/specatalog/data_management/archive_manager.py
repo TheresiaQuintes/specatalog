@@ -1,5 +1,4 @@
-from typing import Union
-
+from typing import Union, Iterator
 from smbclient import register_session, delete_session
 from pathlib import Path
 import os
@@ -10,6 +9,10 @@ import tempfile
 import smbclient.shutil as smb_shutil
 import shutil
 from specatalog.config import HOST, USERNAME, SHARE, PWD
+import hashlib
+import json
+from uuid import uuid4
+import smbclient
 
 
 class SMBConnectionManager:
@@ -232,40 +235,6 @@ class SpecatalogArchive:
                 yield file
 
     @contextmanager
-    def open_measurement_h5_file(self, p: Union[str, Path], mode: str):
-        """Context manager for HDF5 files with remote sync.
-
-        Parameters
-        ----------
-        p : Union[str, Path]
-            Path of HDF5 file
-        mode : str
-            File opening mode
-
-        Yields
-        ------
-        h5py.File
-            Open HDF5 file object
-        """
-        if self.use_remote_archive:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                remote_path = self.path_to_unc(p)
-                local_path = Path(tmpdir) / p
-                local_path.parent.mkdir(parents=True, exist_ok=True)
-
-                if self.exists(p):
-                    smb_shutil.copy2(str(remote_path), str(local_path))
-
-                with h5py.File(local_path, mode=mode) as file:
-                    yield file
-
-                smb_shutil.copy2(str(local_path), remote_path)
-
-        else:
-            with h5py.File(self.archive / p, mode=mode) as file:
-                yield file
-
-    @contextmanager
     def temporary_path(self, p: Union[str, Path]):
         """Context manager for temporary local copies.
 
@@ -366,3 +335,264 @@ class SpecatalogArchive:
                 dst,
                 dirs_exist_ok=False,
             )
+
+    @contextmanager
+    def open_measurement_h5_file(
+        self,
+        p: str | Path,
+        mode: str,
+    ) -> Iterator[h5py.File]:
+        """Open an HDF5 measurement file, optionally using a local cache.
+
+        For remote archives, the file is downloaded to a local cache before
+        opening. Writable changes are uploaded atomically when the context
+        exits successfully. Concurrent remote modifications are detected and
+        prevent the upload.
+
+        Parameters
+        ----------
+        p : str | Path
+            Path to the measurement file relative to the archive root.
+        mode : str
+            HDF5 file access mode.
+
+        Yields
+        ------
+        h5py.File
+            The opened HDF5 file.
+        """
+        if not self.use_remote_archive:
+            with h5py.File(self.archive / p, mode=mode) as file:
+                yield file
+            return
+
+        remote_path = self.path_to_unc(p)
+        local_path, metadata_path = _cache_paths(remote_path)
+
+        writable = mode in {"a", "r+", "w", "w-", "x"}
+
+        # With "w", no existing file is required.
+        if mode == "w":
+            remote_metadata = None
+        else:
+            if not self.exists(p):
+                raise FileNotFoundError(remote_path)
+
+            remote_metadata = _remote_metadata(remote_path)
+            cached_metadata = _read_metadata(metadata_path)
+
+            cache_is_valid = local_path.exists() and cached_metadata == remote_metadata
+
+            if not cache_is_valid:
+                temporary = local_path.with_suffix(".download")
+
+                if temporary.exists():
+                    temporary.unlink()
+
+                smb_shutil.copy2(str(remote_path), str(temporary))
+                os.replace(temporary, local_path)
+
+                _write_metadata(metadata_path, remote_metadata)
+
+        # Remember the previous local metadata
+        local_stat_before = None
+        if local_path.exists():
+            stat = local_path.stat()
+            local_stat_before = (stat.st_size, stat.st_mtime_ns)
+
+        successful = False
+
+        try:
+            with h5py.File(local_path, mode=mode) as file:
+                yield file
+
+            successful = True
+
+        finally:
+            if successful and writable:
+                stat = local_path.stat()
+
+                local_stat_after = (stat.st_size, stat.st_mtime_ns)
+
+                local_file_changed = (
+                    mode in {"w", "w-", "x"} or local_stat_before != local_stat_after
+                )
+
+                if not local_file_changed:
+                    return
+
+                # Check whether the remote file was modified during editing.
+                if remote_metadata is not None:
+                    current_remote_metadata = _remote_metadata(remote_path)
+
+                    if current_remote_metadata != remote_metadata:
+                        raise RuntimeError(
+                            "Die Remote-Datei wurde während der Bearbeitung "
+                            "von einem anderen Prozess geändert. "
+                            "Der Upload wurde abgebrochen."
+                        )
+
+                # Upload the complete file under a temporary name and then
+                # replace the destination atomically.
+                atomic_upload(
+                    local_path=local_path,
+                    remote_path=remote_path,
+                )
+
+                # Read the metadata of the updated remote file.
+
+                new_metadata = _remote_metadata(remote_path)
+
+                # Update the cache metadata.
+
+                _write_metadata(
+                    metadata_path,
+                    new_metadata,
+                )
+
+
+def _cache_paths(remote_path: str) -> tuple[Path, Path]:
+    """Return local cache and metadata paths for a remote file.
+
+    Parameters
+    ----------
+    remote_path : str
+        Remote SMB path used to derive the cache key.
+
+    Returns
+    -------
+    tuple[Path, Path]
+        The local HDF5 cache path and its metadata path.
+    """
+    cache_dir = Path.home() / ".cache" / "specatalog" / "hdf5"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    key = hashlib.sha256(remote_path.encode()).hexdigest()
+
+    local_path = cache_dir / f"{key}.h5"
+    metadata_path = cache_dir / f"{key}.json"
+
+    return local_path, metadata_path
+
+
+def _remote_metadata(path: str) -> dict:
+    """Retrieve metadata for a remote file.
+
+    Parameters
+    ----------
+    path : str
+        Remote SMB file path.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the file size and modification timestamp.
+    """
+    stat = smbclient.stat(path)
+
+    return {
+        "size": stat.st_size,
+        "mtime_ns": stat.st_mtime_ns,
+    }
+
+
+def _read_metadata(path: Path) -> dict | None:
+    """Read cached metadata from a local JSON file.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the metadata file.
+
+    Returns
+    -------
+    dict | None
+        The parsed metadata, or ``None`` if the file is missing or invalid.
+    """
+    if not path.exists():
+        return None
+
+    try:
+        return json.loads(path.read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _write_metadata(path: Path, metadata: dict) -> None:
+    """Write metadata atomically to a local JSON file.
+
+    Parameters
+    ----------
+    path : Path
+        Destination path for the metadata file.
+    metadata : dict
+        Metadata to serialize as JSON.
+    """
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    temporary.write_text(json.dumps(metadata))
+    os.replace(temporary, path)
+
+
+def make_remote_tmp_path(remote_path: str) -> str:
+    """Create a unique temporary path next to a remote SMB file.
+
+    Parameters
+    ----------
+    remote_path : str
+        UNC path of the target remote file.
+
+    Returns
+    -------
+    str
+        A unique temporary path in the same remote directory.
+
+    Raises
+    ------
+    ValueError
+        If ``remote_path`` is not a valid SMB path containing a separator.
+    """
+    parent, separator, name = remote_path.rpartition("\\")
+
+    if not separator:
+        raise ValueError(f"Ungültiger SMB-Pfad: {remote_path!r}")
+
+    return f"{parent}\\.{name}.{uuid4().hex}.uploading"
+
+
+def atomic_upload(local_path: Path, remote_path: Path) -> None:
+    """Upload a local file to an SMB path using an atomic replacement.
+
+    The file is first uploaded under a unique temporary name and then
+    replaced onto the target path. The temporary file is removed if the
+    operation fails.
+
+    Parameters
+    ----------
+    local_path : Path
+        Path to the local source file.
+    remote_path : Path
+        UNC path of the remote destination file.
+    """
+    temporary_remote_path = make_remote_tmp_path(remote_path)
+
+    try:
+        # Upload tmp-name
+        smb_shutil.copy2(
+            str(local_path),
+            str(temporary_remote_path),
+        )
+
+        # change name after upload
+        smbclient.replace(
+            str(temporary_remote_path),
+            str(remote_path),
+        )
+
+    except Exception:
+        try:
+            if smbclient.path.exists(str(temporary_remote_path)):
+                smbclient.remove(str(temporary_remote_path))
+        except Exception:
+            pass
+
+        raise

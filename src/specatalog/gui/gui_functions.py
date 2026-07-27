@@ -24,6 +24,8 @@ from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
 import specatalog.gui.table_models as tm
+from PyQt6.QtWidgets import QProgressDialog
+from PyQt6.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 
 
 MODEL_FILTER_MAPPER = {
@@ -76,11 +78,61 @@ def run_query(self):
     load_measurements(self)
 
 
-def submit_new_entry(self):
+class NewEntryWorker(QObject):
+    succeeded = pyqtSignal(object)
+    failed = pyqtSignal(str)
+    finished = pyqtSignal()
+
+    def __init__(self, model, raw_data, raw_format, is_measurement):
+        super().__init__()
+
+        self.model = model
+        self.raw_data = raw_data
+        self.raw_format = raw_format
+        self.is_measurement = is_measurement
+
+    @pyqtSlot()
+    def run(self):
+        try:
+            if self.is_measurement:
+                output = create_full_measurement(
+                    self.model,
+                    self.raw_data,
+                    self.raw_format,
+                )
+            else:
+                output = create_full_molecule(
+                    self.model,
+                    self.raw_data,
+                    self.raw_format,
+                )
+
+            if output.success:
+                self.succeeded.emit(output)
+            else:
+                self.failed.emit(str(output.error))
+
+        except Exception as exc:
+            self.failed.emit(str(exc))
+
+        finally:
+            self.finished.emit()
+
+
+def start_submit_new_entry(self):
+    # start thread only once
+    if getattr(self, "_entry_thread", None) is not None:
+        return
+
+    # GUI thread
     data = get_values(self, self.new_fields)
-    if self.RadioMeasurements.isChecked():
+
+    is_measurement = self.RadioMeasurements.isChecked()
+
+    if is_measurement:
         if data["corrected"] is None:
             data["corrected"] = False
+
         if data["evaluated"] is None:
             data["evaluated"] = False
 
@@ -89,42 +141,67 @@ def submit_new_entry(self):
             self.ComboModelChoiceNewEntry.currentText()
         ](**data)
 
-    except ValidationError as e:
+    except ValidationError as exc:
         msg = QMessageBox(self)
         msg.setIcon(QMessageBox.Icon.Warning)
         msg.setWindowTitle("Validation Error")
         msg.setText("Please fill out all required fields.")
-        msg.setDetailedText(str(e))
+        msg.setDetailedText(str(exc))
         msg.exec()
         return
 
     raw_data = self.raw_data_files
+    raw_format = self.ComboRawFormat.currentText()
 
-    if self.RadioMeasurements.isChecked():
-        output = create_full_measurement(
-            new_entry_model, raw_data, self.ComboRawFormat.currentText()
-        )
-    else:
-        output = create_full_molecule(
-            new_entry_model, raw_data, self.ComboRawFormat.currentText()
-        )
+    self.set_entry_busy(True)
 
-    if output.success:
-        msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("Success")
-        msg.setText("New entry has been created successfully!")
-        msg.exec()
-        load_measurements(self)
-        return
+    # Unbestimmter Ladebalken:
+    # 0, 0 bedeutet, dass die genaue Dauer unbekannt ist.
+    self.entry_progress = QProgressDialog(
+        "New entry is being created ...",
+        None,  # kein Abbrechen-Button
+        0,
+        0,
+        self,
+    )
 
-    else:
-        msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Icon.Critical)
-        msg.setWindowTitle("An error occured.")
-        msg.setText("The creation has not been completed.")
-        msg.setDetailedText(str(output.error))
-        msg.exec()
+    self.entry_progress.setWindowTitle("Please wait")
+    self.entry_progress.setWindowModality(Qt.WindowModality.WindowModal)
+    self.entry_progress.setAutoClose(False)
+    self.entry_progress.setMinimumDuration(0)
+    self.entry_progress.show()
+
+    # build thread and worker
+    self._entry_thread = QThread(self)
+
+    self._entry_worker = NewEntryWorker(
+        model=new_entry_model,
+        raw_data=raw_data,
+        raw_format=raw_format,
+        is_measurement=is_measurement,
+    )
+
+    self._entry_worker.moveToThread(self._entry_thread)
+
+    # start work when thread was started
+    self._entry_thread.started.connect(self._entry_worker.run)
+
+    self._entry_worker.succeeded.connect(self.on_submit_new_entry_success)
+
+    self._entry_worker.failed.connect(self.on_submit_new_entry_error)
+
+    # clean up
+    self._entry_worker.finished.connect(self.on_submit_new_entry_finished)
+
+    self._entry_worker.finished.connect(self._entry_thread.quit)
+
+    self._entry_worker.finished.connect(self._entry_worker.deleteLater)
+
+    self._entry_thread.finished.connect(self._entry_thread.deleteLater)
+
+    self._entry_thread.finished.connect(self.on_submit_new_entry_thread_finished)
+
+    self._entry_thread.start()
 
 
 def delete_entry(self):
