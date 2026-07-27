@@ -98,8 +98,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for specatalog.data_management.archive_manager</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
-
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Iterator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">smbclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">register_session</span><span class="p">,</span> <span class="n">delete_session</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -110,6 +109,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">smbclient.shutil</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">smb_shutil</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">specatalog.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">HOST</span><span class="p">,</span> <span class="n">USERNAME</span><span class="p">,</span> <span class="n">SHARE</span><span class="p">,</span> <span class="n">PWD</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">smbclient</span>
 
 
 <div class="viewcode-block" id="SMBConnectionManager">
@@ -378,43 +381,6 @@
                 <span class="k">yield</span> <span class="n">file</span></div>
 
 
-<div class="viewcode-block" id="SpecatalogArchive.open_measurement_h5_file">
-<a class="viewcode-back" href="../../../generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.open_measurement_h5_file">[docs]</a>
-    <span class="nd">@contextmanager</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">open_measurement_h5_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Context manager for HDF5 files with remote sync.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        p : Union[str, Path]</span>
-<span class="sd">            Path of HDF5 file</span>
-<span class="sd">        mode : str</span>
-<span class="sd">            File opening mode</span>
-
-<span class="sd">        Yields</span>
-<span class="sd">        ------</span>
-<span class="sd">        h5py.File</span>
-<span class="sd">            Open HDF5 file object</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_remote_archive</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
-                <span class="n">remote_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_to_unc</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-                <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)</span> <span class="o">/</span> <span class="n">p</span>
-                <span class="n">local_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-                    <span class="n">smb_shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">local_path</span><span class="p">))</span>
-
-                <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">file</span>
-
-                <span class="n">smb_shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">local_path</span><span class="p">),</span> <span class="n">remote_path</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive</span> <span class="o">/</span> <span class="n">p</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">file</span></div>
-
-
 <div class="viewcode-block" id="SpecatalogArchive.temporary_path">
 <a class="viewcode-back" href="../../../generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.temporary_path">[docs]</a>
     <span class="nd">@contextmanager</span>
@@ -524,8 +490,272 @@
                 <span class="n">dst</span><span class="p">,</span>
                 <span class="n">dirs_exist_ok</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SpecatalogArchive.open_measurement_h5_file">
+<a class="viewcode-back" href="../../../generated/specatalog.data_management.archive_manager.SpecatalogArchive.html#specatalog.data_management.archive_manager.SpecatalogArchive.open_measurement_h5_file">[docs]</a>
+    <span class="nd">@contextmanager</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">open_measurement_h5_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">p</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Open an HDF5 measurement file, optionally using a local cache.</span>
+
+<span class="sd">        For remote archives, the file is downloaded to a local cache before</span>
+<span class="sd">        opening. Writable changes are uploaded atomically when the context</span>
+<span class="sd">        exits successfully. Concurrent remote modifications are detected and</span>
+<span class="sd">        prevent the upload.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : str | Path</span>
+<span class="sd">            Path to the measurement file relative to the archive root.</span>
+<span class="sd">        mode : str</span>
+<span class="sd">            HDF5 file access mode.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        h5py.File</span>
+<span class="sd">            The opened HDF5 file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_remote_archive</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">archive</span> <span class="o">/</span> <span class="n">p</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">file</span>
+            <span class="k">return</span>
+
+        <span class="n">remote_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_to_unc</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">local_path</span><span class="p">,</span> <span class="n">metadata_path</span> <span class="o">=</span> <span class="n">_cache_paths</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+
+        <span class="n">writable</span> <span class="o">=</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;w-&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">}</span>
+
+        <span class="c1"># With &quot;w&quot;, no existing file is required.</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span>
+            <span class="n">remote_metadata</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+
+            <span class="n">remote_metadata</span> <span class="o">=</span> <span class="n">_remote_metadata</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+            <span class="n">cached_metadata</span> <span class="o">=</span> <span class="n">_read_metadata</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">)</span>
+
+            <span class="n">cache_is_valid</span> <span class="o">=</span> <span class="n">local_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="n">cached_metadata</span> <span class="o">==</span> <span class="n">remote_metadata</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cache_is_valid</span><span class="p">:</span>
+                <span class="n">temporary</span> <span class="o">=</span> <span class="n">local_path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&quot;.download&quot;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">temporary</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">temporary</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+
+                <span class="n">smb_shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">temporary</span><span class="p">))</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">temporary</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span>
+
+                <span class="n">_write_metadata</span><span class="p">(</span><span class="n">metadata_path</span><span class="p">,</span> <span class="n">remote_metadata</span><span class="p">)</span>
+
+        <span class="c1"># Remember the previous local metadata</span>
+        <span class="n">local_stat_before</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">local_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">stat</span> <span class="o">=</span> <span class="n">local_path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+            <span class="n">local_stat_before</span> <span class="o">=</span> <span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_mtime_ns</span><span class="p">)</span>
+
+        <span class="n">successful</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">file</span>
+
+            <span class="n">successful</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">successful</span> <span class="ow">and</span> <span class="n">writable</span><span class="p">:</span>
+                <span class="n">stat</span> <span class="o">=</span> <span class="n">local_path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span>
+
+                <span class="n">local_stat_after</span> <span class="o">=</span> <span class="p">(</span><span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_mtime_ns</span><span class="p">)</span>
+
+                <span class="n">local_file_changed</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">mode</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;w-&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">}</span> <span class="ow">or</span> <span class="n">local_stat_before</span> <span class="o">!=</span> <span class="n">local_stat_after</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">local_file_changed</span><span class="p">:</span>
+                    <span class="k">return</span>
+
+                <span class="c1"># Check whether the remote file was modified during editing.</span>
+                <span class="k">if</span> <span class="n">remote_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">current_remote_metadata</span> <span class="o">=</span> <span class="n">_remote_metadata</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">current_remote_metadata</span> <span class="o">!=</span> <span class="n">remote_metadata</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                            <span class="s2">&quot;Die Remote-Datei wurde während der Bearbeitung &quot;</span>
+                            <span class="s2">&quot;von einem anderen Prozess geändert. &quot;</span>
+                            <span class="s2">&quot;Der Upload wurde abgebrochen.&quot;</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Upload the complete file under a temporary name and then</span>
+                <span class="c1"># replace the destination atomically.</span>
+                <span class="n">atomic_upload</span><span class="p">(</span>
+                    <span class="n">local_path</span><span class="o">=</span><span class="n">local_path</span><span class="p">,</span>
+                    <span class="n">remote_path</span><span class="o">=</span><span class="n">remote_path</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="c1"># Read the metadata of the updated remote file.</span>
+
+                <span class="n">new_metadata</span> <span class="o">=</span> <span class="n">_remote_metadata</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+
+                <span class="c1"># Update the cache metadata.</span>
+
+                <span class="n">_write_metadata</span><span class="p">(</span>
+                    <span class="n">metadata_path</span><span class="p">,</span>
+                    <span class="n">new_metadata</span><span class="p">,</span>
+                <span class="p">)</span></div>
 </div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cache_paths</span><span class="p">(</span><span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="n">Path</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return local cache and metadata paths for a remote file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    remote_path : str</span>
+<span class="sd">        Remote SMB path used to derive the cache key.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple[Path, Path]</span>
+<span class="sd">        The local HDF5 cache path and its metadata path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.cache&quot;</span> <span class="o">/</span> <span class="s2">&quot;specatalog&quot;</span> <span class="o">/</span> <span class="s2">&quot;hdf5&quot;</span>
+    <span class="n">cache_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">remote_path</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="n">local_path</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.h5&quot;</span>
+    <span class="n">metadata_path</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">.json&quot;</span>
+
+    <span class="k">return</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">metadata_path</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_remote_metadata</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve metadata for a remote file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        Remote SMB file path.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">        A dictionary containing the file size and modification timestamp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stat</span> <span class="o">=</span> <span class="n">smbclient</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span>
+        <span class="s2">&quot;mtime_ns&quot;</span><span class="p">:</span> <span class="n">stat</span><span class="o">.</span><span class="n">st_mtime_ns</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_metadata</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read cached metadata from a local JSON file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : Path</span>
+<span class="sd">        Path to the metadata file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict | None</span>
+<span class="sd">        The parsed metadata, or ``None`` if the file is missing or invalid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_write_metadata</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write metadata atomically to a local JSON file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path : Path</span>
+<span class="sd">        Destination path for the metadata file.</span>
+<span class="sd">    metadata : dict</span>
+<span class="sd">        Metadata to serialize as JSON.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temporary</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">+</span> <span class="s2">&quot;.tmp&quot;</span><span class="p">)</span>
+    <span class="n">temporary</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">temporary</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_remote_tmp_path</span><span class="p">(</span><span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a unique temporary path next to a remote SMB file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    remote_path : str</span>
+<span class="sd">        UNC path of the target remote file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        A unique temporary path in the same remote directory.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If ``remote_path`` is not a valid SMB path containing a separator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parent</span><span class="p">,</span> <span class="n">separator</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">remote_path</span><span class="o">.</span><span class="n">rpartition</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">separator</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Ungültiger SMB-Pfad: </span><span class="si">{</span><span class="n">remote_path</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent</span><span class="si">}</span><span class="se">\\</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="si">}</span><span class="s2">.uploading&quot;</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">atomic_upload</span><span class="p">(</span><span class="n">local_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upload a local file to an SMB path using an atomic replacement.</span>
+
+<span class="sd">    The file is first uploaded under a unique temporary name and then</span>
+<span class="sd">    replaced onto the target path. The temporary file is removed if the</span>
+<span class="sd">    operation fails.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local_path : Path</span>
+<span class="sd">        Path to the local source file.</span>
+<span class="sd">    remote_path : Path</span>
+<span class="sd">        UNC path of the remote destination file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temporary_remote_path</span> <span class="o">=</span> <span class="n">make_remote_tmp_path</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Upload tmp-name</span>
+        <span class="n">smb_shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">local_path</span><span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">temporary_remote_path</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="c1"># change name after upload</span>
+        <span class="n">smbclient</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">temporary_remote_path</span><span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">smbclient</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">temporary_remote_path</span><span class="p">)):</span>
+                <span class="n">smbclient</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">temporary_remote_path</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">raise</span>
 </pre></div>
 
            </div>

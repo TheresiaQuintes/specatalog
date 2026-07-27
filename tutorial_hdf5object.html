@@ -154,7 +154,7 @@ to read the file:</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># load data from ms_id=1 (UV-vis)</span>
-<span class="k">with</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+<span class="k">with</span> <span class="n">load_from_id</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="c1"># raw data</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">xaxis</span>
         <span class="n">intensity</span> <span class="o">=</span> <span class="n">dat</span><span class="o">.</span><span class="n">raw_data</span><span class="o">.</span><span class="n">data</span>
@@ -166,6 +166,14 @@ to read the file:</p>
         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;raw measurement&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the archive is located on a remote SMB server, loading an HDF5 file may take some time because the file has to be
+downloaded locally. The downloaded file is cached, so subsequent reads are usually much faster and do not require downloading
+the file again. Use <code class="docutils literal notranslate"><span class="pre">mode=&quot;r&quot;</span></code> whenever you do not intend to modify the file. Only use a writable mode such as <code class="docutils literal notranslate"><span class="pre">mode=&quot;a&quot;</span></code>
+when you actually want to make changes. In that case, call sync() after modifying the H5Object (see below).
+The updated file is uploaded to the remote archive when the context manager is exited.</p>
 </div>
 </section>
 <section id="update">

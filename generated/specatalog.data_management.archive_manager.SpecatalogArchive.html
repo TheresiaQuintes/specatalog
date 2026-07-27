@@ -284,16 +284,23 @@ run relative to the archive root (self.archive).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="specatalog.data_management.archive_manager.SpecatalogArchive.open_measurement_h5_file">
 <span class="sig-name descname"><span class="pre">open_measurement_h5_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/data_management/archive_manager.html#SpecatalogArchive.open_measurement_h5_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.data_management.archive_manager.SpecatalogArchive.open_measurement_h5_file" title="Link to this definition"></a></dt>
-<dd><p>Context manager for HDF5 files with remote sync.</p>
+<dd><p>Open an HDF5 measurement file, optionally using a local cache.</p>
+<p>For remote archives, the file is downloaded to a local cache before
+opening. Writable changes are uploaded atomically when the context
+exits successfully. Concurrent remote modifications are detected and
+prevent the upload.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>p</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>]</em>) – Path of HDF5 file</p></li>
-<li><p><strong>mode</strong> (<em>str</em>) – File opening mode</p></li>
+<li><p><strong>p</strong> (<em>str</em><em> | </em><em>Path</em>) – Path to the measurement file relative to the archive root.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – HDF5 file access mode.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>h5py.File</em> – Open HDF5 file object</p>
+<dd class="field-even"><p><em>h5py.File</em> – The opened HDF5 file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Iterator</em>[<em>File</em>]</p>
 </dd>
 </dl>
 </dd></dl>

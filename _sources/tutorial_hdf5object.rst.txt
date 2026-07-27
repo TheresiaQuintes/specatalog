@@ -46,7 +46,7 @@ to read the file::
 	import numpy as np
 
 	# load data from ms_id=1 (UV-vis)
-	with load_from_id(1, mode="a") as (dat, file):
+	with load_from_id(1, mode="r") as (dat, file):
 		# raw data
 		x = dat.raw_data.xaxis
 		intensity = dat.raw_data.data
@@ -57,6 +57,14 @@ to read the file::
 		plt.ylabel("intensity")
 		plt.title("raw measurement")
 		plt.show()
+
+.. note::
+
+	If the archive is located on a remote SMB server, loading an HDF5 file may take some time because the file has to be
+	downloaded locally. The downloaded file is cached, so subsequent reads are usually much faster and do not require downloading
+	the file again. Use ``mode="r"`` whenever you do not intend to modify the file. Only use a writable mode such as ``mode="a"``
+	when you actually want to make changes. In that case, call sync() after modifying the H5Object (see below).
+	The updated file is uploaded to the remote archive when the context manager is exited.
 
 update
 ^^^^^^
