@@ -42,7 +42,7 @@ def pytest_configure():
 
     # fake defaults.json
     defaults = {
-        "base_path": str(workspace),
+        "archive_path": str(workspace),
         "usr_name": "test",
         "password": "test",
         "database_url": "localhost/test",
