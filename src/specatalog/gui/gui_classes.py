@@ -101,7 +101,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         gss.connect_signal_slot(self)
         gss.connections_db_tables(self)
 
-
     # Functions for thread for new entries
     def set_entry_busy(self, busy: bool):
         widgets = [
@@ -146,7 +145,3 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def on_submit_new_entry_thread_finished(self):
         self._entry_worker = None
         self._entry_thread = None
-
-
-
-

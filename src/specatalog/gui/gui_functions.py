@@ -24,8 +24,7 @@ from pydantic_core._pydantic_core import ValidationError
 from PyQt6 import QtWidgets
 from pathlib import Path
 import specatalog.gui.table_models as tm
-from PyQt6.QtWidgets import QMessageBox, QProgressDialog
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QProgressDialog
 from PyQt6.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 
 
@@ -77,6 +76,8 @@ def run_query(self):
     data = get_values(self, self.filter_fields)
     self.filter_model = self.filter_model.copy(update=data)
     load_measurements(self)
+
+
 class NewEntryWorker(QObject):
     succeeded = pyqtSignal(object)
     failed = pyqtSignal(str)
@@ -116,6 +117,7 @@ class NewEntryWorker(QObject):
 
         finally:
             self.finished.emit()
+
 
 def start_submit_new_entry(self):
     # start thread only once
@@ -157,16 +159,14 @@ def start_submit_new_entry(self):
     # 0, 0 bedeutet, dass die genaue Dauer unbekannt ist.
     self.entry_progress = QProgressDialog(
         "New entry is being created ...",
-        None,       # kein Abbrechen-Button
+        None,  # kein Abbrechen-Button
         0,
         0,
         self,
     )
 
     self.entry_progress.setWindowTitle("Please wait")
-    self.entry_progress.setWindowModality(
-        Qt.WindowModality.WindowModal
-    )
+    self.entry_progress.setWindowModality(Qt.WindowModality.WindowModal)
     self.entry_progress.setAutoClose(False)
     self.entry_progress.setMinimumDuration(0)
     self.entry_progress.show()
@@ -184,41 +184,24 @@ def start_submit_new_entry(self):
     self._entry_worker.moveToThread(self._entry_thread)
 
     # start work when thread was started
-    self._entry_thread.started.connect(
-        self._entry_worker.run
-    )
+    self._entry_thread.started.connect(self._entry_worker.run)
 
-    self._entry_worker.succeeded.connect(
-        self.on_submit_new_entry_success
-    )
+    self._entry_worker.succeeded.connect(self.on_submit_new_entry_success)
 
-    self._entry_worker.failed.connect(
-        self.on_submit_new_entry_error
-    )
+    self._entry_worker.failed.connect(self.on_submit_new_entry_error)
 
     # clean up
-    self._entry_worker.finished.connect(
-        self.on_submit_new_entry_finished
-    )
+    self._entry_worker.finished.connect(self.on_submit_new_entry_finished)
 
-    self._entry_worker.finished.connect(
-        self._entry_thread.quit
-    )
+    self._entry_worker.finished.connect(self._entry_thread.quit)
 
-    self._entry_worker.finished.connect(
-        self._entry_worker.deleteLater
-    )
+    self._entry_worker.finished.connect(self._entry_worker.deleteLater)
 
-    self._entry_thread.finished.connect(
-        self._entry_thread.deleteLater
-    )
+    self._entry_thread.finished.connect(self._entry_thread.deleteLater)
 
-    self._entry_thread.finished.connect(
-        self.on_submit_new_entry_thread_finished
-    )
+    self._entry_thread.finished.connect(self.on_submit_new_entry_thread_finished)
 
     self._entry_thread.start()
-
 
 
 def delete_entry(self):
