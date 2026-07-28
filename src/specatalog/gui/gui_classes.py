@@ -7,6 +7,7 @@ from specatalog.crud_db import read as r
 from specatalog.models import creation_pydantic_measurements as cpm
 from pathlib import Path
 from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtCore import pyqtSlot
 
 
 class DragDropLineEdit(QtWidgets.QLineEdit):
@@ -126,11 +127,21 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         msg.exec()
         gf.load_measurements(self)
 
+    @pyqtSlot(int, str)
+    def on_submit_new_entry_progress(self, value: int, message: str):
+        if getattr(self, "entry_progress", None) is None:
+            return
+
+        self.entry_progress.setLabelText(message)
+        self.entry_progress.setValue(value)
+
+    @pyqtSlot()
     def on_submit_new_entry_finished(self):
-        if hasattr(self, "entry_progress"):
+        if getattr(self, "entry_progress", None) is not None:
+            self.entry_progress.setValue(100)
             self.entry_progress.close()
             self.entry_progress.deleteLater()
-            del self.entry_progress
+            self.entry_progress = None
 
         self.set_entry_busy(False)
 

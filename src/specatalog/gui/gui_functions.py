@@ -81,6 +81,7 @@ def run_query(self):
 class NewEntryWorker(QObject):
     succeeded = pyqtSignal(object)
     failed = pyqtSignal(str)
+    progress = pyqtSignal(int, str)
     finished = pyqtSignal()
 
     def __init__(self, model, raw_data, raw_format, is_measurement):
@@ -94,17 +95,24 @@ class NewEntryWorker(QObject):
     @pyqtSlot()
     def run(self):
         try:
+
+            def report(fraction: float, message: str) -> None:
+                percent = round(fraction * 100)
+                self.progress.emit(percent, message)
+
             if self.is_measurement:
                 output = create_full_measurement(
                     self.model,
                     self.raw_data,
                     self.raw_format,
+                    progress=report,
                 )
             else:
                 output = create_full_molecule(
                     self.model,
                     self.raw_data,
                     self.raw_format,
+                    progress=report,
                 )
 
             if output.success:
@@ -155,13 +163,11 @@ def start_submit_new_entry(self):
 
     self.set_entry_busy(True)
 
-    # Unbestimmter Ladebalken:
-    # 0, 0 bedeutet, dass die genaue Dauer unbekannt ist.
     self.entry_progress = QProgressDialog(
         "New entry is being created ...",
-        None,  # kein Abbrechen-Button
+        None,
         0,
-        0,
+        100,
         self,
     )
 
@@ -169,6 +175,7 @@ def start_submit_new_entry(self):
     self.entry_progress.setWindowModality(Qt.WindowModality.WindowModal)
     self.entry_progress.setAutoClose(False)
     self.entry_progress.setMinimumDuration(0)
+    self.entry_progress.setValue(0)
     self.entry_progress.show()
 
     # build thread and worker
@@ -185,6 +192,8 @@ def start_submit_new_entry(self):
 
     # start work when thread was started
     self._entry_thread.started.connect(self._entry_worker.run)
+
+    self._entry_worker.progress.connect(self.on_submit_new_entry_progress)
 
     self._entry_worker.succeeded.connect(self.on_submit_new_entry_success)
 
