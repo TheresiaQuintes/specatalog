@@ -1,3 +1,9 @@
+import argparse
+import datetime
+import shutil
+import subprocess
+import tempfile
+from getpass import getpass
 from pathlib import Path
 import json
 
@@ -106,3 +112,186 @@ def configure_defaults():
         json.dump(result_dict, f, indent=2)
 
     return result_dict
+
+def build_backup_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="specatalog-backup",
+        description="Backup specatalog archive and database",
+    )
+
+    parser.add_argument("--destination",
+                        type=str,
+                        required=True,
+                        help="destination for backup")
+
+    parser.add_argument("--db_admin",
+                        type=str,
+                        default="",
+                        help="database admin username")
+
+    parser.add_argument("--db_name",
+                        type=str,
+                        default="specatalog",
+                        help="database name")
+
+    return parser
+
+def call_backup():
+    import specatalog.config as c
+    from specatalog.main import archive
+    parser = build_backup_parser()
+    args = parser.parse_args()
+
+    if args.db_admin:
+        admin_password = getpass(prompt="Specatalog admin password: ")
+        admin_name = args.db_admin
+    else:
+        admin_name = c.USR_NAME
+        admin_password = c.PASSWORD
+
+    if not archive.use_remote_archive:
+
+        create_backup(args.destination,
+                      archive,
+                      c.database,
+                      admin_name,
+                      admin_password)
+
+    else:
+        create_backup(args.destination,
+                      archive,
+                      c.database,
+                      admin_name,
+                      admin_password,
+                      c.USERNAME,
+                      c.PWD)
+    print("BACKUP!")
+
+
+def create_backup(
+    backup_root: Path,
+    archive: Path,
+    database_url: str,
+    admin_name: str,
+    admin_password: str,
+    archive_usr_name=None,
+    archive_password=None
+) -> Path:
+
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+    backup_root = Path(backup_root)
+    backup_root.mkdir(parents=True, exist_ok=True)
+
+    temporary_directory = Path(
+        tempfile.mkdtemp(
+            prefix=f".{timestamp}.",
+            dir=backup_root,
+        )
+    )
+
+    final_directory = backup_root / timestamp
+
+    database_dump = temporary_directory / "database.dump"
+    archive_backup = temporary_directory / "archive.tar.zst"
+
+    try:
+        # PostgreSQL-Dump im Custom-Format
+        subprocess.run(
+            [
+                "pg_dump",
+                "--dbname",
+                f"postgresql://{admin_name}:{admin_password}@{database_url}",
+                "--format",
+                "custom",
+                "--file",
+                str(database_dump),
+            ],
+            check=True,
+        )
+        if archive.use_remote_archive:
+            mount_point = Path("/mnt")
+            mount_smb(archive.path_to_unc(""), mount_point, str(archive_usr_name), str(archive_password))
+            try:
+                subprocess.run(
+                    [
+                        "tar",
+                        "--verbose",
+                        "--zstd",
+                        "--create",
+                        "--file",
+                        str(archive_backup),
+                        "--directory",
+                        f"{mount_point}", ".",
+                    ],
+                    check=True,
+                )
+            finally:
+                print("unmount")
+                subprocess.run(
+                    ["sudo","umount", str(mount_point)],
+                    check=True,
+                )
+        else:
+            subprocess.run(
+                [
+                    "tar",
+                    "--verbose",
+                    "--zstd",
+                    "--create",
+                    "--file", str(archive_backup),
+                    "--directory", str(archive.archive.parent),
+                    archive.archive.name,
+                ],
+                check=True,
+            )
+
+        manifest = {
+            "created_at": timestamp,
+            "database": {
+                "db_url" : database_url,
+                "format": "custom",
+            },
+            "archive_directory": str(archive.archive),
+            "files": {
+                "database_dump": database_dump.name,
+                "archive_backup": archive_backup.name,
+            },
+        }
+
+        (temporary_directory / "manifest.json").write_text(
+            json.dumps(manifest, indent=2),
+            encoding="utf-8",
+        )
+
+        # Atomisches Fertigstellen des Backups
+        temporary_directory.rename(final_directory)
+
+        return final_directory
+
+    except Exception:
+        shutil.rmtree(temporary_directory, ignore_errors=True)
+        raise
+
+def mount_smb(
+    remote: str,
+    mount_point: Path,
+    username: str,
+    password: str,
+) -> None:
+    mount_point.mkdir(parents=True, exist_ok=True)
+
+    subprocess.run(
+        [
+            "sudo",
+            "mount",
+            "-t",
+            "cifs",
+            remote,
+            str(mount_point),
+            "-o",
+            f"username={username},password={password}",
+        ],
+        check=True,
+    )
+    print("MOUNT!")
