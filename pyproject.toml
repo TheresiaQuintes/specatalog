@@ -1,6 +1,6 @@
 [project]
 name = "specatalog"
-version = "2.2.0"
+version = "2.3.0"
 description = "Specatalog is a software framework for the systematic management and archival of spectroscopic measurement data, integrating a relational metadata database with structured data storage and analysis workflows. "
 authors = [
   { name = "Theresia Quintes", email = "theresia.quintes@physchem.uni-freiburg.de" }
@@ -53,6 +53,7 @@ specatalog-init = "specatalog.helpers.create_database:specatalog_init"
 specatalog-init-dir = "specatalog.helpers.create_database:create_archive_directory"
 specatalog-update-db = "specatalog.helpers.create_database:run_alembic_upgrade"
 specatalog-gui = "specatalog.gui.gui_launcher:start_gui"
+specatalog-backup = "specatalog.cli:call_backup"
 
 [project.urls]
 Repository = "https://github.com/TheresiaQuintes/specatalog"
