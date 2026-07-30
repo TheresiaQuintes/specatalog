@@ -73,8 +73,11 @@
 <li class="toctree-l1"><a class="reference internal" href="admin_new_models.html">Adding new models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="admin_new_data_loader.html">Adding new loaders</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Backup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#backup-the-database">Backup the database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#backup-the-archive-directory">Backup the archive directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-backup">Creating a backup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restoring-the-database">Restoring the database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restoring-the-archive">Restoring the archive</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#backup-manifest">Backup manifest</a></li>
 </ul>
 </li>
 </ul>
@@ -107,27 +110,106 @@
              
   <section id="backup">
 <h1>Backup<a class="headerlink" href="#backup" title="Link to this heading"></a></h1>
-<section id="backup-the-database">
-<h2>Backup the database<a class="headerlink" href="#backup-the-database" title="Link to this heading"></a></h2>
-<ol class="arabic">
-<li><p>Open your terminal and navigate to the folder where you want to save the backup</p></li>
-<li><p>Create the backup file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pg_dump -h HOST -p PORT -U USER -d specatalog -F c -f backup_$(date +%F).dump
-</pre></div>
-</div>
-</li>
-</ol>
-<p>You can restore the database from the backup-file if you need to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pg_restore</span> <span class="o">-</span><span class="n">h</span> <span class="n">HOST</span> <span class="o">-</span><span class="n">p</span> <span class="n">PORT</span> <span class="o">-</span><span class="n">U</span> <span class="n">USER</span> <span class="o">-</span><span class="n">d</span> <span class="n">neue_datenbank</span> <span class="n">backup_DATE</span><span class="o">.</span><span class="n">dump</span>
-</pre></div>
-</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">specatalog-backup</span></code> command creates a backup of the Specatalog database
+and archive directory.</p>
+<p>The backup contains:</p>
+<ul class="simple">
+<li><p>a PostgreSQL database dump in custom format</p></li>
+<li><p>a compressed archive of the archive directory</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> file containing metadata about the backup</p></li>
+</ul>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">specatalog-backup</span></code> has currently only been tested on Linux.</p>
+<p>The following requirements must be met:</p>
+<ul class="simple">
+<li><p>Access to the complete Specatalog database</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> installed</p></li>
+<li><p>A <code class="docutils literal notranslate"><span class="pre">pg_dump</span></code> version compatible with the PostgreSQL server
+(preferably the same major version)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tar</span></code> installed</p></li>
+<li><p>Zstandard support for <code class="docutils literal notranslate"><span class="pre">tar</span></code> installed</p></li>
+<li><p>Sufficient permissions to read the complete archive directory</p></li>
+<li><p>Sufficient free disk space for the temporary and final backup files</p></li>
+</ul>
+<p>For remote archives, the following additional requirements apply:</p>
+<ul class="simple">
+<li><p>CIFS/SMB support must be installed</p></li>
+<li><p>The user must be allowed to mount and unmount the remote archive</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span></code> permissions may be required for <code class="docutils literal notranslate"><span class="pre">mount</span></code> and <code class="docutils literal notranslate"><span class="pre">umount</span></code></p></li>
+</ul>
 </section>
-<section id="backup-the-archive-directory">
-<h2>Backup the archive directory<a class="headerlink" href="#backup-the-archive-directory" title="Link to this heading"></a></h2>
-<p>You should always backup the archive directory following the backup of the database. Compress your archive folder and copy the compressed folder to an external place:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>tar -I zstd -cf backup_$(date +%F).tar.zst archive_directory/
+<section id="creating-a-backup">
+<h2>Creating a backup<a class="headerlink" href="#creating-a-backup" title="Link to this heading"></a></h2>
+<p>Specify the directory in which the backup should be stored:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">specatalog-backup --destination /path/to/backup</span>
 </pre></div>
 </div>
+<p>The command creates a timestamped subdirectory inside the destination
+directory. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/path/to/backup/
+└── 2026-07-30_14-25-10/
+    ├── database.dump
+    ├── archive.tar.zst
+    └── manifest.json
+</pre></div>
+</div>
+<p>The database credentials configured for Specatalog are used by default.</p>
+<p>If a different database administrator should be used, specify the username
+with <code class="docutils literal notranslate"><span class="pre">--db_admin</span></code>. The password is then requested interactively:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">specatalog-backup \</span>
+<span class="go">    --destination /path/to/backup \</span>
+<span class="go">    --db_admin DATABASE_ADMIN</span>
+</pre></div>
+</div>
+<p>The database administrator must have sufficient permissions to dump the
+complete database.</p>
+</section>
+<section id="restoring-the-database">
+<h2>Restoring the database<a class="headerlink" href="#restoring-the-database" title="Link to this heading"></a></h2>
+<p>The database dump is stored as <code class="docutils literal notranslate"><span class="pre">database.dump</span></code> in the timestamped backup
+directory. Create the target database first, if necessary, and restore the
+dump with <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pg_restore \</span>
+<span class="go">    -h HOST \</span>
+<span class="go">    -p PORT \</span>
+<span class="go">    -U USER \</span>
+<span class="go">    -d TARGET_DATABASE \</span>
+<span class="go">    /path/to/backup/DATE/database.dump</span>
+</pre></div>
+</div>
+<p>Depending on the target database, it may be necessary to create the database
+with the appropriate owner and permissions before running <code class="docutils literal notranslate"><span class="pre">pg_restore</span></code>.</p>
+</section>
+<section id="restoring-the-archive">
+<h2>Restoring the archive<a class="headerlink" href="#restoring-the-archive" title="Link to this heading"></a></h2>
+<p>The archive backup is stored as <code class="docutils literal notranslate"><span class="pre">archive.tar.zst</span></code>. Extract it into the
+desired parent directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">tar \</span>
+<span class="go">    --zstd \</span>
+<span class="go">    --extract \</span>
+<span class="go">    --file /path/to/backup/DATE/archive.tar.zst \</span>
+<span class="go">    --directory /path/to/restore</span>
+</pre></div>
+</div>
+<p>For a local archive, the archive backup contains the configured archive
+directory. For a remote archive, it contains the contents of the mounted SMB
+share.</p>
+</section>
+<section id="backup-manifest">
+<h2>Backup manifest<a class="headerlink" href="#backup-manifest" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> file contains metadata about the backup, including:</p>
+<ul class="simple">
+<li><p>the creation timestamp</p></li>
+<li><p>the database connection URL</p></li>
+<li><p>the database dump format</p></li>
+<li><p>the original archive directory</p></li>
+<li><p>the names of the backup files</p></li>
+</ul>
+<p>The backup is first created in a temporary directory. After all files and the
+manifest have been written successfully, the temporary directory is renamed to
+the final timestamped directory. In case of an error, the incomplete temporary
+backup is removed.</p>
 </section>
 </section>
 

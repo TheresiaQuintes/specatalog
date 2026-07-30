@@ -122,38 +122,77 @@
 <h1>create_full_molecule<a class="headerlink" href="#create-full-molecule" title="Link to this heading"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="specatalog.helpers.full_entry.create_full_molecule">
-<span class="sig-prename descclassname"><span class="pre">specatalog.helpers.full_entry.</span></span><span class="sig-name descname"><span class="pre">create_full_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_formula_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/helpers/full_entry.html#create_full_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.helpers.full_entry.create_full_molecule" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">specatalog.helpers.full_entry.</span></span><span class="sig-name descname"><span class="pre">create_full_molecule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecular_formula_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/specatalog/helpers/full_entry.html#create_full_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#specatalog.helpers.full_entry.create_full_molecule" title="Link to this definition"></a></dt>
 <dd><p>Create a complete molecule entry with atomic database and file operations.</p>
-<p>Performs all molecule creation steps in a transaction-safe manner:
-1. Creates database entry
-2. Sets up temporary directory
-3. Copies molecular structure files
-4. Commits to final archive location</p>
+<p>Performs all molecule creation steps in a transaction-safe manner:</p>
+<ol class="arabic simple">
+<li><p>Creates the database entry.</p></li>
+<li><p>Sets up a temporary directory.</p></li>
+<li><p>Creates the temporary molecule directory.</p></li>
+<li><p>Determines the structural formula files to copy.</p></li>
+<li><p>Copies the molecular structure files into the temporary archive.</p></li>
+<li><p>Copies the completed molecule to the final archive location.</p></li>
+<li><p>Commits the database transaction.</p></li>
+</ol>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>cr.molecule_model_pyd</em>) – Molecule metadata model</p></li>
-<li><p><strong>molecular_formula_path</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of paths to structural formula files</p></li>
-<li><p><strong>fmt</strong> (<em>str</em>) – File format suffix (e.g., “.pdf”) or “all” for multiple formats</p></li>
+<li><p><strong>data</strong> (<em>cr.molecule_model_pyd</em>) – Molecule metadata used to create the database entry.</p></li>
+<li><p><strong>molecular_formula_path</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – <p>List of paths to structural formula files.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">fmt</span></code> is a specific format, the corresponding suffix is applied
+to each path. If <code class="docutils literal notranslate"><span class="pre">fmt</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code>, all supported formats are
+searched for and copied if they exist.</p>
+</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – File format suffix, for example <code class="docutils literal notranslate"><span class="pre">&quot;.pdf&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code> to process
+all supported formats.</p></li>
+<li><p><strong>progress</strong> (<em>ProgressCallback</em><em>, </em><em>optional</em>) – <p>Optional callback used to report the progress of the operation.
+The callback is called with two arguments:</p>
+<ul>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">fraction</span></code><span class="classifier">float</span></dt><dd><p>Progress value between <code class="docutils literal notranslate"><span class="pre">0.0</span></code> and <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">message</span></code><span class="classifier">str</span></dt><dd><p>Human-readable description of the current processing step.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The callback is independent of the GUI and may, for example, be
+connected to a graphical progress bar by the caller.</p>
+</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Result object containing:
-- success: bool indicating operation status
-- molecular_id: int (on success)
-- error: Exception (on failure)</p>
+<dd class="field-even"><p><p>Result object containing the status of the operation.</p>
+<p>If the operation succeeds, <code class="docutils literal notranslate"><span class="pre">success</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code> and
+<code class="docutils literal notranslate"><span class="pre">molecular_id</span></code> contains the ID of the created molecule.</p>
+<p>If the operation fails, <code class="docutils literal notranslate"><span class="pre">success</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">error</span></code>
+contains the exception that caused the failure.</p>
+</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>CreateMoleculeResult</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
+<p>A temporary directory is used to ensure that incomplete files are not
+written directly to the final archive location.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">fmt</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code>, the following file formats are searched for:</p>
 <ul class="simple">
-<li><p>Uses temporary directory for atomic file operations</p></li>
-<li><p>Supports multiple file formats when fmt=”all”</p></li>
-<li><p>Rolls back database and file operations if any step fails</p></li>
-<li><p>Cleans up temporary files on completion</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.pdf</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.cdxml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.png</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.jpeg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.jpg</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.svg</span></code></p></li>
 </ul>
+<p>If an error occurs, database and file operations are rolled back where
+possible, and partially created archive data is removed.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">progress</span></code> callback is optional. If it is <code class="docutils literal notranslate"><span class="pre">None</span></code>, no progress
+information is reported.</p>
+<p>The function does not depend on Qt or any other GUI framework.</p>
 </dd></dl>
 
 </section>
