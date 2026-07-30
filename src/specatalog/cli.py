@@ -113,32 +113,51 @@ def configure_defaults():
 
     return result_dict
 
+
 def build_backup_parser() -> argparse.ArgumentParser:
+    """
+    Build the command-line argument parser for the backup command.
+
+    Returns
+    -------
+    argparse.ArgumentParser
+        Configured argument parser for backup options.
+    """
     parser = argparse.ArgumentParser(
         prog="specatalog-backup",
         description="Backup specatalog archive and database",
     )
 
-    parser.add_argument("--destination",
-                        type=str,
-                        required=True,
-                        help="destination for backup")
+    parser.add_argument(
+        "--destination", type=str, required=True, help="destination for backup"
+    )
 
-    parser.add_argument("--db_admin",
-                        type=str,
-                        default="",
-                        help="database admin username")
+    parser.add_argument(
+        "--db_admin", type=str, default="", help="database admin username"
+    )
 
-    parser.add_argument("--db_name",
-                        type=str,
-                        default="specatalog",
-                        help="database name")
+    parser.add_argument(
+        "--db_name", type=str, default="specatalog", help="database name"
+    )
 
     return parser
 
-def call_backup():
+
+def call_backup() -> None:
+    """
+    Parse command-line arguments and create a backup.
+
+    This function determines the database credentials, selects the
+    appropriate archive configuration, and starts the backup process.
+
+    Returns
+    -------
+    None
+        This function does not return a value.
+    """
     import specatalog.config as c
     from specatalog.main import archive
+
     parser = build_backup_parser()
     args = parser.parse_args()
 
@@ -149,34 +168,73 @@ def call_backup():
         admin_name = c.USR_NAME
         admin_password = c.PASSWORD
 
-    if not archive.use_remote_archive:
+    print("Starting backup...")
 
-        create_backup(args.destination,
-                      archive,
-                      c.database,
-                      admin_name,
-                      admin_password)
+    if not archive.use_remote_archive:
+        create_backup(args.destination, archive, c.database, admin_name, admin_password)
 
     else:
-        create_backup(args.destination,
-                      archive,
-                      c.database,
-                      admin_name,
-                      admin_password,
-                      c.USERNAME,
-                      c.PWD)
-    print("BACKUP!")
+        create_backup(
+            args.destination,
+            archive,
+            c.database,
+            admin_name,
+            admin_password,
+            c.USERNAME,
+            c.PWD,
+        )
+
+    print("Backup completed successfully.")
 
 
 def create_backup(
-    backup_root: Path,
-    archive: Path,
+    backup_root: str | Path,
+    archive,
     database_url: str,
     admin_name: str,
     admin_password: str,
-    archive_usr_name=None,
-    archive_password=None
+    archive_usr_name: str | None = None,
+    archive_password: str | None = None,
 ) -> Path:
+    """
+    Create a backup of the database and archive.
+
+    The database is exported using PostgreSQL's custom dump format. The
+    archive is either read from the local filesystem or mounted from a
+    remote SMB share. Both backup files and a manifest are written to a
+    temporary directory, which is atomically renamed after successful
+    completion.
+
+    Parameters
+    ----------
+    backup_root : str or pathlib.Path
+        Directory in which the completed backup directory is created.
+    archive : Any
+        Archive configuration object. It must provide the attributes
+        ``use_remote_archive``, ``archive``, and ``path_to_unc``.
+    database_url : str
+        PostgreSQL database connection URL without credentials.
+    admin_name : str
+        PostgreSQL administrator username.
+    admin_password : str
+        PostgreSQL administrator password.
+    archive_usr_name : str or None, optional
+        Username for accessing the remote archive.
+    archive_password : str or None, optional
+        Password for accessing the remote archive.
+
+    Returns
+    -------
+    pathlib.Path
+        Path to the completed backup directory.
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If creating the database dump, archive, or unmounting fails.
+    OSError
+        If a filesystem operation fails.
+    """
 
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -196,7 +254,8 @@ def create_backup(
     archive_backup = temporary_directory / "archive.tar.zst"
 
     try:
-        # PostgreSQL-Dump im Custom-Format
+        print("Creating database dump...")
+
         subprocess.run(
             [
                 "pg_dump",
@@ -211,8 +270,18 @@ def create_backup(
         )
         if archive.use_remote_archive:
             mount_point = Path("/mnt")
-            mount_smb(archive.path_to_unc(""), mount_point, str(archive_usr_name), str(archive_password))
+
+            print("Mounting remote archive...")
+
+            mount_smb(
+                archive.path_to_unc(""),
+                mount_point,
+                str(archive_usr_name),
+                str(archive_password),
+            )
             try:
+                print("Creating archive backup...")
+
                 subprocess.run(
                     [
                         "tar",
@@ -222,34 +291,42 @@ def create_backup(
                         "--file",
                         str(archive_backup),
                         "--directory",
-                        f"{mount_point}", ".",
+                        f"{mount_point}",
+                        ".",
                     ],
                     check=True,
                 )
             finally:
-                print("unmount")
+                print("Unmounting remote archive...")
+
                 subprocess.run(
-                    ["sudo","umount", str(mount_point)],
+                    ["sudo", "umount", str(mount_point)],
                     check=True,
                 )
         else:
+            print("Creating archive backup...")
+
             subprocess.run(
                 [
                     "tar",
                     "--verbose",
                     "--zstd",
                     "--create",
-                    "--file", str(archive_backup),
-                    "--directory", str(archive.archive.parent),
+                    "--file",
+                    str(archive_backup),
+                    "--directory",
+                    str(archive.archive.parent),
                     archive.archive.name,
                 ],
                 check=True,
             )
 
+        print("Writing backup manifest...")
+
         manifest = {
             "created_at": timestamp,
             "database": {
-                "db_url" : database_url,
+                "db_url": database_url,
                 "format": "custom",
             },
             "archive_directory": str(archive.archive),
@@ -264,14 +341,17 @@ def create_backup(
             encoding="utf-8",
         )
 
-        # Atomisches Fertigstellen des Backups
+        # Rename the temporary directory atomically to finalize the backup.
         temporary_directory.rename(final_directory)
+
+        print(f"Backup stored in {final_directory}")
 
         return final_directory
 
     except Exception:
         shutil.rmtree(temporary_directory, ignore_errors=True)
         raise
+
 
 def mount_smb(
     remote: str,
@@ -294,4 +374,3 @@ def mount_smb(
         ],
         check=True,
     )
-    print("MOUNT!")
